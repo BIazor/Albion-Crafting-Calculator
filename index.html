@@ -7507,9 +7507,16 @@
     scheduleSave();
   }
 
+  let craftPriceFetchInProgress = false;
+  let lastCraftPriceFetchStartedAt = 0;
+  const PRICE_FETCH_DUPLICATE_GUARD_MS = 1800;
+
   async function fetchAlbionPrices() {
     const btn = $("#craft-get-prices");
-    if (!btn || btn.disabled) return;
+    const now = Date.now();
+    if (!btn || btn.disabled || craftPriceFetchInProgress || now - lastCraftPriceFetchStartedAt < PRICE_FETCH_DUPLICATE_GUARD_MS) return;
+    craftPriceFetchInProgress = true;
+    lastCraftPriceFetchStartedAt = now;
     const selection = ensureCraftSelection();
     const rows = buildCraftRecipe(selection);
     const productId = craftProductId(selection.item, selection.tier, selection.enchant);
@@ -7584,6 +7591,7 @@
         button.disabled = false;
         button.innerHTML = originalHtml;
       });
+      craftPriceFetchInProgress = false;
     }
   }
 
@@ -8907,8 +8915,14 @@
     tbody.innerHTML = html;
   }
 
+  let dbPriceFetchInProgress = false;
+  let lastDbPriceFetchStartedAt = 0;
+
   async function fetchDbPrices(ids) {
-    if (!ids || !ids.length) return;
+    const now = Date.now();
+    if (!ids || !ids.length || dbPriceFetchInProgress || now - lastDbPriceFetchStartedAt < PRICE_FETCH_DUPLICATE_GUARD_MS) return;
+    dbPriceFetchInProgress = true;
+    lastDbPriceFetchStartedAt = now;
     const fetchVisibleBtn = $("#db-get-prices") || $("#db-fetch-visible");
     let originalHtml = "";
     if (fetchVisibleBtn && ids.length > 1) {
@@ -8978,6 +8992,7 @@
         currentVisibleBtn.disabled = false;
         currentVisibleBtn.innerHTML = originalHtml;
       }
+      dbPriceFetchInProgress = false;
     }
   }
 
