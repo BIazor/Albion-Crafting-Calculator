@@ -7576,10 +7576,14 @@
       console.warn("AODP fetch error:", err);
       showToast("Could not fetch prices. Check connection or try again shortly.");
     } finally {
-      if (btn) {
-        btn.disabled = false;
-        btn.innerHTML = originalHtml;
-      }
+      // Rendering the updated prices can replace the button node while this
+      // request is in flight. Reset the live button as well as the original
+      // reference so the visible control never stays in its loading state.
+      const currentBtn = $("#craft-get-prices");
+      [btn, currentBtn].filter((button, index, buttons) => button && buttons.indexOf(button) === index).forEach((button) => {
+        button.disabled = false;
+        button.innerHTML = originalHtml;
+      });
     }
   }
 
@@ -8968,6 +8972,11 @@
       if (fetchVisibleBtn && originalHtml) {
         fetchVisibleBtn.disabled = false;
         fetchVisibleBtn.innerHTML = originalHtml;
+      }
+      const currentVisibleBtn = $("#db-get-prices") || $("#db-fetch-visible");
+      if (currentVisibleBtn && originalHtml) {
+        currentVisibleBtn.disabled = false;
+        currentVisibleBtn.innerHTML = originalHtml;
       }
     }
   }
