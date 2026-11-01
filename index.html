@@ -9360,7 +9360,7 @@
     const preview = $("#spec-selected-preview");
     if (!preview) return;
     if (!item) {
-      preview.innerHTML = '<div class="planner-session-empty" style="width: 100%;">No craftable item selected. Type above to search items.</div>';
+      preview.innerHTML = "";
       return;
     }
 
@@ -9389,6 +9389,7 @@
   function selectSpecItem(key) {
     if (!key) return;
     state.specSelectedItem = key;
+    state.specSelectedByUser = true;
     scheduleSave();
     const item = CRAFT_BY_KEY.get(key);
     renderSpecItemPreview(item);
@@ -9466,17 +9467,21 @@
     if (dropdown) dropdown.hidden = true;
     if (box) box.classList.remove("has-results");
 
-    if (!state.specSelectedItem || !CRAFT_BY_KEY.has(state.specSelectedItem)) {
-      state.specSelectedItem = CRAFT_ITEM_KEY(CRAFT_ITEMS[0]);
+    if (!state.specSelectedByUser) {
+      state.specSelectedItem = null;
     }
-    const currentItem = CRAFT_BY_KEY.get(state.specSelectedItem);
+
+    const currentItem = (state.specSelectedItem && CRAFT_BY_KEY.has(state.specSelectedItem))
+      ? CRAFT_BY_KEY.get(state.specSelectedItem)
+      : null;
+
     renderSpecItemPreview(currentItem);
 
     if (searchInput) {
-      searchInput.value = "";
-      specSearchQuery = "";
+      searchInput.value = currentItem ? currentItem[0] : "";
+      specSearchQuery = searchInput.value;
     }
-    }
+  }
 
   function bindEvents() {
     // Spec Calculator search and suggestions binding
