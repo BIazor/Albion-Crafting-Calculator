@@ -5270,101 +5270,6 @@
   #panel-database { background: transparent !important; }
   #panel-spec { background: transparent !important; border: 0 !important; }
 
-  .spec-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 12px;
-    padding-top: 16px;
-  }
-  .spec-bubble {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    padding: 12px 16px;
-    border: 1px solid rgba(242, 222, 194, .14);
-    border-radius: 12px;
-    background: #17191e;
-    box-shadow: 0 5px 14px rgba(0, 0, 0, .16);
-    transition: border-color .15s ease, background .15s ease;
-  }
-  .spec-bubble:hover {
-    border-color: rgba(233, 187, 98, .3);
-    background: #1b1e25;
-  }
-  .spec-bubble-identity {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    min-width: 0;
-  }
-  .spec-bubble-image {
-    flex: 0 0 36px;
-    width: 36px;
-    height: 36px;
-    border-radius: 8px;
-    overflow: hidden;
-  }
-  .spec-bubble-image img, .spec-bubble-image .gear-icon, .spec-bubble-image .item-icon {
-    width: 36px;
-    height: 36px;
-  }
-  .spec-bubble-info {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    min-width: 0;
-  }
-  .spec-bubble-info strong {
-    color: var(--text);
-    font-size: 12px;
-    font-weight: 700;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .spec-bubble-info small {
-    color: var(--muted);
-    font-size: 10px;
-    font-variant-numeric: tabular-nums;
-  }
-  .spec-bubble-controls {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-shrink: 0;
-  }
-  .spec-bubble-input {
-    width: 60px;
-    height: 34px;
-    padding: 0 4px;
-    border: 1px solid var(--border-soft);
-    border-radius: 8px;
-    background: #242832;
-    color: var(--gold);
-    font-family: var(--font);
-    font-size: 13px;
-    font-weight: 800;
-    text-align: center;
-    font-variant-numeric: tabular-nums;
-    transition: border-color .15s ease, box-shadow .15s ease;
-  }
-  .spec-bubble-input:focus {
-    border-color: var(--gold) !important;
-    box-shadow: 0 0 0 2px rgba(233, 187, 98, .12);
-  }
-  .spec-bubble-badge {
-    padding: 4px 7px;
-    border-radius: 6px;
-    background: rgba(233, 187, 98, .1);
-    border: 1px solid rgba(233, 187, 98, .2);
-    color: var(--gold);
-    font-size: 10px;
-    font-weight: 700;
-    font-variant-numeric: tabular-nums;
-    white-space: nowrap;
-  }
-
   .card, .panel, .craft-card, .craft-crafting-card, .craft-config, .craft-plan, .table-card,
   .db-resource-card, .db-journal-card, .planner-material-card,
   .planner-artifact-shell, .planner-craft-total, .journal-section,
@@ -5882,37 +5787,10 @@
     </section>
 
     <section class="panel" id="panel-spec" role="tabpanel" aria-labelledby="tab-spec" hidden>
-      <div class="craft-topbar">
-        <div class="craft-topgroup">
-          <span class="craft-label">Category</span>
-          <div class="segmented" id="spec-cat-selector" role="radiogroup" aria-label="Crafting Category">
-            <button type="button" class="seg-btn active" data-spec-cat="Armors">Plate Armor</button>
-            <button type="button" class="seg-btn" data-spec-cat="Helmets">Plate Helmet</button>
-            <button type="button" class="seg-btn" data-spec-cat="Boots">Plate Boots</button>
-            <button type="button" class="seg-btn" data-spec-cat="Jackets">Leather Jacket</button>
-            <button type="button" class="seg-btn" data-spec-cat="Hoods">Leather Hood</button>
-            <button type="button" class="seg-btn" data-spec-cat="Shoes">Leather Shoes</button>
-            <button type="button" class="seg-btn" data-spec-cat="Robes">Cloth Robe</button>
-            <button type="button" class="seg-btn" data-spec-cat="Cowls">Cloth Cowl</button>
-            <button type="button" class="seg-btn" data-spec-cat="Sandals">Cloth Sandals</button>
-            <button type="button" class="seg-btn" data-spec-cat="Swords">Swords</button>
-            <button type="button" class="seg-btn" data-spec-cat="Battleaxes">Axes</button>
-            <button type="button" class="seg-btn" data-spec-cat="Bows">Bows</button>
-          </div>
-        </div>
+      <div class="planner-page" id="spec-page">
+        <h2 class="planner-active-session-title">Spec Calculator</h2>
       </div>
-
-      <div class="spec-page planner-page" id="spec-page">
-        <section class="planner-session-card" aria-label="Specialization Levels">
-          <header class="planner-session-card-head">
-            <div>
-              <span>DESTINY BOARD SPECIALIZATION</span>
-              <strong id="spec-card-title">Plate Armor Crafting Specialization</strong>
-            </div>
-            <button type="button" class="planner-craft-market-toggle" id="spec-reset-btn" title="Reset all levels in this category to 0">RESET CATEGORY</button>
-          </header>
-          <div class="spec-grid" id="spec-items-grid"></div>
-        </section>
+    </section>
 
         <div class="planner-craft-summary-wrap">
           <header class="planner-craft-summary-heading">
@@ -9205,7 +9083,7 @@
         const titles = {
           database: "Database · Items, City & Black Market Prices",
           planner: "Crafting Planner · Saved Queues",
-          spec: "Spec Calculator · Destiny Board & Focus Efficiency",
+          spec: "Spec Calculator",
           help: "Settings & Albion Guide"
         };
         sectionTitleEl.textContent = titles[name] || name;
@@ -9215,8 +9093,7 @@
     if (name === "craft") renderCraft();
     if (name === "database") renderDatabase();
     if (name === "planner") renderPlannerPage();
-    if (name === "spec") renderSpecPage();
-    if (name === "help") updateStorageNote();
+        if (name === "help") updateStorageNote();
 
     try { history.replaceState(null, "", "#" + name); } catch (err) { /* file:// may block this */ }
     if (opts.scroll !== false && window.scrollY > 180) {
@@ -9224,116 +9101,7 @@
     }
   }
 
-  let specActiveCategory = "Armors";
-
-  function renderSpecPage() {
-    const grid = $("#spec-items-grid");
-    if (!grid) return;
-    if (!state.specLevels || typeof state.specLevels !== "object") state.specLevels = {};
-
-    const titleEl = $("#spec-card-title");
-    if (titleEl) {
-      const activeBtn = $("#spec-cat-selector .seg-btn.active");
-      titleEl.textContent = (activeBtn ? activeBtn.textContent : specActiveCategory) + " Crafting Specialization";
-    }
-
-    const items = CRAFT_ITEMS.filter((item) => item[1] === specActiveCategory);
-    let totalSpec = 0;
-    const maxSpec = items.length * 100;
-
-    grid.innerHTML = items.map((item) => {
-      const name = item[0];
-      const lvl = Math.min(120, Math.max(0, Number(state.specLevels[name]) || 0));
-      totalSpec += lvl;
-
-      // Albion Focus Cost Efficiency formula:
-      // +30 FCE per point in own item spec, +10 FCE per point in other specs of same family
-      const otherSpecs = items.reduce((acc, it) => it[0] !== name ? acc + (Number(state.specLevels[it[0]]) || 0) : acc, 0);
-      const fce = (lvl * 30) + (otherSpecs * 10);
-
-      return '<article class="spec-bubble" data-spec-item="' + esc(name) + '">' +
-        '<div class="spec-bubble-identity">' +
-          '<div class="spec-bubble-image">' + craftIconHtml(item, 4, 0) + '</div>' +
-          '<div class="spec-bubble-info">' +
-            '<strong title="' + esc(name) + '">' + esc(name) + '</strong>' +
-            '<small>+30 own / +10 tree</small>' +
-          '</div>' +
-        '</div>' +
-        '<div class="spec-bubble-controls">' +
-          '<span class="spec-bubble-badge">+' + fmt(fce) + ' FCE</span>' +
-          '<input class="spec-bubble-input" type="number" min="0" max="120" step="1" value="' + lvl + '" data-spec-input="' + esc(name) + '" aria-label="' + esc(name) + ' spec level">' +
-        '</div>' +
-      '</article>';
-    }).join("");
-
-    updateSpecSummary(items, totalSpec, maxSpec);
-  }
-
-  function updateSpecSummary(items, totalSpec, maxSpec) {
-    if (!items) items = CRAFT_ITEMS.filter((item) => item[1] === specActiveCategory);
-    if (totalSpec === undefined) {
-      totalSpec = items.reduce((acc, it) => acc + (Number(state.specLevels[it[0]]) || 0), 0);
-      maxSpec = items.length * 100;
-    }
-
-    const avgLvl = items.length ? (totalSpec / items.length) : 0;
-    // Average item FCE in tree: (avgLvl * 30) + (avgLvl * (items.length - 1) * 10)
-    const avgFce = Math.round(items.length ? ((avgLvl * 30) + (avgLvl * (items.length - 1) * 10)) : 0);
-    const reductionPct = avgFce > 0 ? (1 - Math.pow(0.5, avgFce / 10000)) * 100 : 0;
-    const costPer1k = avgFce > 0 ? Math.round(1000 * Math.pow(0.5, avgFce / 10000)) : 1000;
-
-    const totalEl = $("#spec-sum-total");
-    if (totalEl) totalEl.textContent = fmt(totalSpec) + " / " + fmt(maxSpec);
-
-    const fceEl = $("#spec-sum-fce");
-    if (fceEl) fceEl.textContent = "+" + fmt(avgFce) + " FCE";
-
-    const redEl = $("#spec-sum-reduction");
-    if (redEl) redEl.textContent = reductionPct.toFixed(1) + "%";
-
-    const costEl = $("#spec-sum-cost");
-    if (costEl) costEl.textContent = fmt(costPer1k);
-  }
-
   function bindEvents() {
-    // Spec Calculator category switcher and inputs
-    const specCatSelector = $("#spec-cat-selector");
-    if (specCatSelector) {
-      specCatSelector.addEventListener("click", (e) => {
-        const btn = e.target.closest("[data-spec-cat]");
-        if (!btn) return;
-        $$("#spec-cat-selector .seg-btn").forEach((b) => b.classList.remove("active"));
-        btn.classList.add("active");
-        specActiveCategory = btn.dataset.specCat;
-        renderSpecPage();
-      });
-    }
-
-    const specPageEl = $("#panel-spec");
-    if (specPageEl) {
-      specPageEl.addEventListener("input", (e) => {
-        const input = e.target.closest("[data-spec-input]");
-        if (!input) return;
-        const itemName = input.dataset.specInput;
-        const val = Math.min(120, Math.max(0, parseInt(input.value, 10) || 0));
-        if (!state.specLevels) state.specLevels = {};
-        state.specLevels[itemName] = val;
-        scheduleSave();
-        renderSpecPage();
-      });
-
-      const resetBtn = $("#spec-reset-btn");
-      if (resetBtn) {
-        resetBtn.addEventListener("click", () => {
-          const items = CRAFT_ITEMS.filter((item) => item[1] === specActiveCategory);
-          items.forEach((item) => {
-            delete state.specLevels[item[0]];
-          });
-          scheduleSave();
-          renderSpecPage();
-        });
-      }
-    }
 
     // Database search, filters, views and price actions (bound once)
     const dbSearch = $("#db-search");
