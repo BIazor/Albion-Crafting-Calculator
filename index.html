@@ -5293,12 +5293,17 @@
     width: 100%;
     max-width: none;
     position: relative;
+    height: 44px;
+    flex: none;
+    display: block;
   }
-  .spec-search-bar svg {
+  .spec-search-icon {
     position: absolute;
     left: 14px;
     top: 50%;
     transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
     color: var(--faint);
     pointer-events: none;
     z-index: 2;
@@ -5306,7 +5311,7 @@
   .spec-search-bar input {
     width: 100%;
     height: 44px;
-    padding: 0 16px 0 42px;
+    padding: 0 16px 0 40px;
     border: 1px solid rgba(242, 222, 194, .14);
     border-radius: 12px;
     background: #17191e;
@@ -5315,23 +5320,29 @@
     font-size: 13px;
     font-weight: 600;
     box-sizing: border-box;
-    transition: border-color .15s ease, box-shadow .15s ease;
+    transition: border-color .15s ease, box-shadow .15s ease, border-radius .12s ease;
   }
   .spec-search-bar input:focus {
     border-color: var(--gold) !important;
     box-shadow: 0 0 0 2px rgba(233, 187, 98, .14);
     outline: none;
   }
+  .spec-search-bar.has-results input {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-color: rgba(242, 222, 194, .1);
+  }
   .spec-search-dropdown {
     position: absolute;
-    top: calc(100% + 6px);
+    top: 100%;
     left: 0;
     right: 0;
     max-height: 380px;
     overflow-y: auto;
     background: #17191e;
-    border: 1px solid rgba(242, 222, 194, .18);
-    border-radius: 12px;
+    border: 1px solid rgba(233, 187, 98, .35);
+    border-top: 1px solid rgba(242, 222, 194, .08);
+    border-radius: 0 0 12px 12px;
     box-shadow: 0 14px 34px rgba(0, 0, 0, .6);
     z-index: 150;
     padding: 6px;
@@ -6050,8 +6061,8 @@
           <div class="spec-picker-container">
             <div class="spec-search-wrap">
               <label for="spec-item-search" class="spec-input-label">SEARCH ITEMS</label>
-              <div class="search spec-search-bar" id="spec-search-box">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+              <div class="spec-search-bar" id="spec-search-box">
+                <svg class="spec-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
                 <input id="spec-item-search" type="search" placeholder="Type to search craftable items (e.g. Soldier, Sword, Bow)…" autocomplete="off" aria-label="Search craftable items">
                 <div class="spec-search-dropdown" id="spec-search-dropdown" hidden role="listbox" aria-label="Craftable items suggestions"></div>
               </div>
@@ -9391,10 +9402,13 @@
     }
     const dropdown = $("#spec-search-dropdown");
     if (dropdown) dropdown.hidden = true;
+    const box = $("#spec-search-box");
+    if (box) box.classList.remove("has-results");
   }
 
   function renderSpecSearchResults(query = "") {
     const dropdown = $("#spec-search-dropdown");
+    const box = $("#spec-search-box");
     const counter = $("#spec-items-counter");
     if (!dropdown) return;
 
@@ -9404,6 +9418,7 @@
     if (!q) {
       dropdown.hidden = true;
       dropdown.innerHTML = "";
+      if (box) box.classList.remove("has-results");
       if (counter) counter.textContent = CRAFT_ITEMS.length + " Items";
       return;
     }
@@ -9421,6 +9436,7 @@
     if (!filtered.length) {
       dropdown.innerHTML = '<div class="spec-dropdown-empty">No craftable items match "' + esc(query) + '"</div>';
       dropdown.hidden = false;
+      if (box) box.classList.add("has-results");
       return;
     }
 
@@ -9448,12 +9464,15 @@
 
     dropdown.innerHTML = html;
     dropdown.hidden = false;
+    if (box) box.classList.add("has-results");
   }
 
   function renderSpecPage() {
     const searchInput = $("#spec-item-search");
     const dropdown = $("#spec-search-dropdown");
+    const box = $("#spec-search-box");
     if (dropdown) dropdown.hidden = true;
+    if (box) box.classList.remove("has-results");
 
     if (!state.specSelectedItem || !CRAFT_BY_KEY.has(state.specSelectedItem)) {
       state.specSelectedItem = CRAFT_ITEM_KEY(CRAFT_ITEMS[0]);
@@ -9512,6 +9531,8 @@
           }
         } else if (e.key === "Escape") {
           specDropdown.hidden = true;
+          const box = $("#spec-search-box");
+          if (box) box.classList.remove("has-results");
         }
       });
     }
@@ -9530,6 +9551,8 @@
       if (specDropdown && !specDropdown.hidden) {
         if (!e.target.closest("#spec-search-box")) {
           specDropdown.hidden = true;
+          const box = $("#spec-search-box");
+          if (box) box.classList.remove("has-results");
         }
       }
     });
