@@ -5270,6 +5270,197 @@
   #panel-database { background: transparent !important; }
   #panel-spec { background: transparent !important; border: 0 !important; }
 
+  .spec-picker-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding-top: 16px;
+  }
+  .spec-picker-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 14px;
+    width: 100%;
+  }
+  .spec-search-wrap {
+    flex: 1 1 280px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .spec-dropdown-wrap {
+    flex: 1 1 280px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .spec-input-label {
+    color: var(--muted);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+  }
+  .spec-search-bar {
+    width: 100%;
+    max-width: none;
+    position: relative;
+  }
+  .spec-search-bar svg {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--faint);
+    pointer-events: none;
+  }
+  .spec-search-bar input {
+    width: 100%;
+    height: 42px;
+    padding: 0 14px 0 38px;
+    border: 1px solid rgba(242, 222, 194, .14);
+    border-radius: 10px;
+    background: #17191e;
+    color: var(--text);
+    font-family: var(--font);
+    font-size: 13px;
+    font-weight: 600;
+    box-sizing: border-box;
+    transition: border-color .15s ease, box-shadow .15s ease;
+  }
+  .spec-search-bar input:focus {
+    border-color: var(--gold) !important;
+    box-shadow: 0 0 0 2px rgba(233, 187, 98, .12);
+    outline: none;
+  }
+  .spec-select-wrapper {
+    position: relative;
+    width: 100%;
+  }
+  .spec-item-select {
+    width: 100%;
+    height: 42px;
+    padding: 0 32px 0 14px;
+    border: 1px solid rgba(242, 222, 194, .14);
+    border-radius: 10px;
+    background: #17191e;
+    color: var(--text);
+    font-family: var(--font);
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    box-sizing: border-box;
+    transition: border-color .15s ease, box-shadow .15s ease;
+  }
+  .spec-item-select:focus {
+    border-color: var(--gold) !important;
+    box-shadow: 0 0 0 2px rgba(233, 187, 98, .12);
+    outline: none;
+  }
+  .spec-item-select optgroup {
+    background: #17191e;
+    color: var(--gold);
+    font-weight: 800;
+    font-size: 12px;
+  }
+  .spec-item-select option {
+    background: #242832;
+    color: var(--text);
+    font-weight: 600;
+    font-size: 13px;
+    padding: 6px;
+  }
+  .spec-selected-bubble {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 14px 18px;
+    border: 1px solid rgba(242, 222, 194, .14);
+    border-radius: 12px;
+    background: #17191e;
+    box-shadow: 0 5px 14px rgba(0, 0, 0, .16);
+    margin-top: 4px;
+  }
+  .spec-selected-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+  }
+  .spec-selected-image {
+    flex: 0 0 42px;
+    width: 42px;
+    height: 42px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .spec-selected-image > * {
+    width: 42px;
+    height: 42px;
+    --gear-size: 42px;
+  }
+  .spec-selected-info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+  }
+  .spec-selected-name-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .spec-selected-name-row strong {
+    color: var(--text);
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: .02em;
+  }
+  .spec-selected-cat {
+    padding: 2px 7px;
+    border: 1px solid rgba(233, 187, 98, .2);
+    border-radius: 999px;
+    background: rgba(201, 118, 65, .1);
+    color: var(--gold);
+    font: 800 9px var(--font);
+    letter-spacing: .06em;
+    text-transform: uppercase;
+  }
+  .spec-selected-meta {
+    color: var(--muted);
+    font-size: 11px;
+  }
+  .spec-selected-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .spec-tier-pill {
+    padding: 4px 10px;
+    border-radius: 8px;
+    background: rgba(69, 198, 176, .12);
+    border: 1px solid rgba(69, 198, 176, .25);
+    color: var(--green);
+    font: 800 11px var(--font);
+    letter-spacing: .04em;
+  }
+  .spec-recipe-chip {
+    padding: 4px 8px;
+    border-radius: 8px;
+    background: #242832;
+    border: 1px solid var(--border-soft);
+    color: var(--muted);
+    font: 700 11px var(--font);
+  }
+
   .card, .panel, .craft-card, .craft-crafting-card, .craft-config, .craft-plan, .table-card,
   .db-resource-card, .db-journal-card, .planner-material-card,
   .planner-artifact-shell, .planner-craft-total, .journal-section,
@@ -5789,6 +5980,39 @@
     <section class="panel" id="panel-spec" role="tabpanel" aria-labelledby="tab-spec" hidden>
       <div class="planner-page" id="spec-page">
         <h2 class="planner-active-session-title">Spec Calculator</h2>
+
+        <section class="planner-session-card" aria-label="Select Craftable Item">
+          <header class="planner-session-card-head">
+            <div>
+              <span>CRAFTABLE ITEMS</span>
+              <strong>Search and choose an item</strong>
+            </div>
+            <span class="planner-craft-market-toggle" id="spec-items-counter">270 Items</span>
+          </header>
+
+          <div class="spec-picker-container">
+            <div class="spec-picker-row">
+              <div class="spec-search-wrap">
+                <label for="spec-item-search" class="spec-input-label">SEARCH ITEMS</label>
+                <div class="search spec-search-bar">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+                  <input id="spec-item-search" type="search" placeholder="Type to filter items (e.g. Soldier, Sword, Bow)…" autocomplete="off" aria-label="Filter craftable items">
+                </div>
+              </div>
+
+              <div class="spec-dropdown-wrap">
+                <label for="spec-item-dropdown" class="spec-input-label">CRAFTABLE ITEMS DROPDOWN</label>
+                <div class="spec-select-wrapper">
+                  <select id="spec-item-dropdown" class="spec-item-select" aria-label="Choose craftable item">
+                    <!-- Populated dynamically -->
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="spec-selected-preview" id="spec-selected-preview" aria-live="polite"></div>
+          </div>
+        </section>
       </div>
     </section>
 
@@ -9065,7 +9289,8 @@
     if (name === "craft") renderCraft();
     if (name === "database") renderDatabase();
     if (name === "planner") renderPlannerPage();
-        if (name === "help") updateStorageNote();
+    if (name === "spec") renderSpecPage();
+    if (name === "help") updateStorageNote();
 
     try { history.replaceState(null, "", "#" + name); } catch (err) { /* file:// may block this */ }
     if (opts.scroll !== false && window.scrollY > 180) {
@@ -9073,7 +9298,119 @@
     }
   }
 
+  let specSearchQuery = "";
+
+  function renderSpecItemPreview(item) {
+    const preview = $("#spec-selected-preview");
+    if (!preview) return;
+    if (!item) {
+      preview.innerHTML = '<div class="planner-session-empty" style="width: 100%;">No craftable item matches your search.</div>';
+      return;
+    }
+
+    const availableTiers = Object.keys(item[3]).filter((t) => item[3][t] && item[3][t][1] && item[3][t][1].length).sort((a, b) => Number(a) - Number(b));
+    const tierRange = availableTiers.length ? ("T" + availableTiers[0] + " – T" + availableTiers[availableTiers.length - 1]) : "";
+
+    preview.innerHTML =
+      '<article class="spec-selected-bubble">' +
+        '<div class="spec-selected-left">' +
+          '<span class="spec-selected-image">' + craftIconHtml(item, Number(availableTiers[0]) || 4, 0) + '</span>' +
+          '<div class="spec-selected-info">' +
+            '<div class="spec-selected-name-row">' +
+              '<strong>' + esc(item[0]) + '</strong>' +
+              '<span class="spec-selected-cat">' + esc(item[1]) + '</span>' +
+            '</div>' +
+            '<small class="spec-selected-meta">Craftable gear · Destiny Board</small>' +
+          '</div>' +
+        '</div>' +
+        '<div class="spec-selected-right">' +
+          (tierRange ? '<span class="spec-tier-pill">' + esc(tierRange) + '</span>' : '') +
+          '<span class="spec-recipe-chip">' + availableTiers.length + ' Tier Recipes</span>' +
+        '</div>' +
+      '</article>';
+  }
+
+  function populateSpecDropdown(query = "") {
+    const select = $("#spec-item-dropdown");
+    if (!select) return;
+    const q = (query || "").trim().toLowerCase();
+
+    const filtered = q
+      ? CRAFT_ITEMS.filter((item) => {
+          if (item[0].toLowerCase().includes(q)) return true;
+          if (item[1].toLowerCase().includes(q)) return true;
+          return Object.values(item[3]).some((t) => String(t[0]).toLowerCase().includes(q));
+        })
+      : CRAFT_ITEMS;
+
+    const counter = $("#spec-items-counter");
+    if (counter) {
+      counter.textContent = q ? (filtered.length + " / " + CRAFT_ITEMS.length + " Items") : (CRAFT_ITEMS.length + " Items");
+    }
+
+    if (!filtered.length) {
+      select.innerHTML = '<option value="" disabled selected>No items match "' + esc(query) + '"</option>';
+      renderSpecItemPreview(null);
+      return;
+    }
+
+    // Group items by category in the dropdown using <optgroup>
+    const byCategory = new Map();
+    for (const item of filtered) {
+      const cat = item[1];
+      if (!byCategory.has(cat)) byCategory.set(cat, []);
+      byCategory.get(cat).push(item);
+    }
+
+    let html = "";
+    for (const [cat, items] of byCategory.entries()) {
+      html += '<optgroup label="' + esc(cat) + '">';
+      for (const item of items) {
+        const key = CRAFT_ITEM_KEY(item);
+        const selected = key === state.specSelectedItem ? " selected" : "";
+        html += '<option value="' + esc(key) + '"' + selected + '>' + esc(item[0]) + ' (' + esc(cat) + ')</option>';
+      }
+      html += '</optgroup>';
+    }
+    select.innerHTML = html;
+
+    // Keep active selection valid
+    if (!filtered.some((item) => CRAFT_ITEM_KEY(item) === state.specSelectedItem)) {
+      state.specSelectedItem = CRAFT_ITEM_KEY(filtered[0]);
+      select.value = state.specSelectedItem;
+    }
+    const currentItem = CRAFT_BY_KEY.get(state.specSelectedItem) || filtered[0];
+    renderSpecItemPreview(currentItem);
+  }
+
+  function renderSpecPage() {
+    const searchInput = $("#spec-item-search");
+    if (searchInput) searchInput.value = specSearchQuery;
+    populateSpecDropdown(specSearchQuery);
+  }
+
   function bindEvents() {
+    // Spec Calculator search bar and dropdown binding
+    const specSearchInput = $("#spec-item-search");
+    if (specSearchInput) {
+      specSearchInput.addEventListener("input", (e) => {
+        specSearchQuery = e.target.value;
+        populateSpecDropdown(specSearchQuery);
+      });
+    }
+
+    const specDropdown = $("#spec-item-dropdown");
+    if (specDropdown) {
+      specDropdown.addEventListener("change", (e) => {
+        const selectedKey = e.target.value;
+        if (!selectedKey) return;
+        state.specSelectedItem = selectedKey;
+        scheduleSave();
+        const item = CRAFT_BY_KEY.get(selectedKey);
+        renderSpecItemPreview(item);
+      });
+    }
+
 
     // Database search, filters, views and price actions (bound once)
     const dbSearch = $("#db-search");
