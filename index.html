@@ -6903,12 +6903,25 @@
   async function fetchAlbionPriceData(ids) {
     const url = "https://west.albion-online-data.com/api/v2/stats/prices/" + encodeURIComponent(ids.join(",")) + ".json";
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 30000);
+    const timeout = setTimeout(() => controller.abort(), 20000);
     try {
-      return await fetch(url, { headers: { Accept: "application/json" }, signal: controller.signal });
+      const resp = await fetch(url, { headers: { Accept: "application/json" }, signal: controller.signal });
+      if (!resp.ok) throw new Error("HTTP " + resp.status);
+      const data = await resp.json();
+      return Array.isArray(data) ? data : [];
     } finally {
       clearTimeout(timeout);
     }
+  }
+
+  async function fetchAlbionPriceDataInBatches(ids, batchSize = 40) {
+    const results = [];
+    for (let i = 0; i < ids.length; i += batchSize) {
+      const chunk = ids.slice(i, i + batchSize);
+      const chunkData = await fetchAlbionPriceData(chunk);
+      if (Array.isArray(chunkData)) results.push(...chunkData);
+    }
+    return results;
   }
 
   // Hideout return rate is derived directly from the production bonus formula in
@@ -7528,9 +7541,7 @@
     btn.innerHTML = '<span class="craft-btn-spinner"></span> FETCHING...';
 
     try {
-      const resp = await fetchAlbionPriceData(ids);
-      if (!resp.ok) throw new Error("HTTP " + resp.status);
-      const data = await resp.json();
+      const data = await fetchAlbionPriceData(ids);
       if (!Array.isArray(data) || !data.length) throw new Error("No data returned");
 
       let updatedCount = 0;
@@ -8915,26 +8926,23 @@
     tbody.innerHTML = html;
   }
 
+  const DB_GET_PRICES_DEFAULT_HTML = '<span aria-hidden="true">◎</span> GET PRICES';
   let dbPriceFetchInProgress = false;
   let lastDbPriceFetchStartedAt = 0;
 
   async function fetchDbPrices(ids) {
     const now = Date.now();
-    if (!ids || !ids.length || dbPriceFetchInProgress || now - lastDbPriceFetchStartedAt < PRICE_FETCH_DUPLICATE_GUARD_MS) return;
+    const fetchVisibleBtn = $("#db-get-prices") || $("#db-fetch-visible");
+    if (!ids || !ids.length || dbPriceFetchInProgress || (fetchVisibleBtn && fetchVisibleBtn.disabled) || now - lastDbPriceFetchStartedAt < PRICE_FETCH_DUPLICATE_GUARD_MS) return;
     dbPriceFetchInProgress = true;
     lastDbPriceFetchStartedAt = now;
-    const fetchVisibleBtn = $("#db-get-prices") || $("#db-fetch-visible");
-    let originalHtml = "";
     if (fetchVisibleBtn && ids.length > 1) {
-      originalHtml = fetchVisibleBtn.innerHTML;
       fetchVisibleBtn.disabled = true;
       fetchVisibleBtn.innerHTML = '<span class="craft-btn-spinner"></span> FETCHING...';
     }
 
     try {
-      const resp = await fetchAlbionPriceData(ids);
-      if (!resp.ok) throw new Error("HTTP " + resp.status);
-      const data = await resp.json();
+      const data = ids.length > 40 ? await fetchAlbionPriceDataInBatches(ids, 40) : await fetchAlbionPriceData(ids);
       if (!Array.isArray(data)) throw new Error("Invalid response");
 
       let updated = 0;
@@ -8983,15 +8991,11 @@
       console.warn("AODP fetch error:", err);
       showToast("Could not fetch prices. Check connection or try again shortly.");
     } finally {
-      if (fetchVisibleBtn && originalHtml) {
-        fetchVisibleBtn.disabled = false;
-        fetchVisibleBtn.innerHTML = originalHtml;
-      }
       const currentVisibleBtn = $("#db-get-prices") || $("#db-fetch-visible");
-      if (currentVisibleBtn && originalHtml) {
-        currentVisibleBtn.disabled = false;
-        currentVisibleBtn.innerHTML = originalHtml;
-      }
+      [fetchVisibleBtn, currentVisibleBtn].filter((button, index, buttons) => button && buttons.indexOf(button) === index).forEach((button) => {
+        button.disabled = false;
+        button.innerHTML = DB_GET_PRICES_DEFAULT_HTML;
+      });
       dbPriceFetchInProgress = false;
     }
   }
@@ -9009,7 +9013,54 @@
       btn.tabIndex = active ? 0 : -1;
     });
 
-        // Database search and filters
+    $$(".app-util-btn").forEach((btn) => {
+      btn.classList.toggle("active", btn.dataset.tab === name);
+    });
+
+    const calculatorPane = $("#sidebar-calculator");
+    const plannerPane = $("#sidebar-planner");
+    if (calculatorPane) calculatorPane.hidden = name !== "craft";
+    if (plannerPane) plannerPane.hidden = name !== "planner";
+
+    $$(".panel").forEach((panel) => {
+      const active = panel.id === "panel-" + name;
+      panel.classList.toggle("active", active);
+      panel.hidden = !active;
+    });
+
+    const addToPlannerBtn = $("#add-to-planner");
+    const crumbEl = $("#craft-breadcrumb");
+    const sectionTitleEl = $("#topbar-section-title");
+    if (addToPlannerBtn) addToPlannerBtn.hidden = name !== "craft";
+    if (crumbEl && sectionTitleEl) {
+      if (name === "craft") {
+        crumbEl.hidden = false;
+        sectionTitleEl.hidden = true;
+      } else {
+        crumbEl.hidden = true;
+        sectionTitleEl.hidden = false;
+        const titles = {
+          database: "Database · Items, City & Black Market Prices",
+          planner: "Crafting Planner · Saved Queues",
+          help: "Settings & Albion Guide"
+        };
+        sectionTitleEl.textContent = titles[name] || name;
+      }
+    }
+
+    if (name === "craft") renderCraft();
+    if (name === "database") renderDatabase();
+    if (name === "planner") renderPlannerPage();
+    if (name === "help") updateStorageNote();
+
+    try { history.replaceState(null, "", "#" + name); } catch (err) { /* file:// may block this */ }
+    if (opts.scroll !== false && window.scrollY > 180) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }
+
+  function bindEvents() {
+    // Database search, filters, views and price actions (bound once)
     const dbSearch = $("#db-search");
     if (dbSearch) {
       dbSearch.addEventListener("input", (e) => {
@@ -9222,53 +9273,6 @@
       });
     }
 
-    $$(".app-util-btn").forEach((btn) => {
-      btn.classList.toggle("active", btn.dataset.tab === name);
-    });
-
-    const calculatorPane = $("#sidebar-calculator");
-    const plannerPane = $("#sidebar-planner");
-    if (calculatorPane) calculatorPane.hidden = name !== "craft";
-    if (plannerPane) plannerPane.hidden = name !== "planner";
-
-    $$(".panel").forEach((panel) => {
-      const active = panel.id === "panel-" + name;
-      panel.classList.toggle("active", active);
-      panel.hidden = !active;
-    });
-
-    const addToPlannerBtn = $("#add-to-planner");
-    const crumbEl = $("#craft-breadcrumb");
-    const sectionTitleEl = $("#topbar-section-title");
-    if (addToPlannerBtn) addToPlannerBtn.hidden = name !== "craft";
-    if (crumbEl && sectionTitleEl) {
-      if (name === "craft") {
-        crumbEl.hidden = false;
-        sectionTitleEl.hidden = true;
-      } else {
-        crumbEl.hidden = true;
-        sectionTitleEl.hidden = false;
-        const titles = {
-          database: "Database · Items, City & Black Market Prices",
-          planner: "Crafting Planner · Saved Queues",
-          help: "Settings & Albion Guide"
-        };
-        sectionTitleEl.textContent = titles[name] || name;
-      }
-    }
-
-    if (name === "craft") renderCraft();
-    if (name === "database") renderDatabase();
-    if (name === "planner") renderPlannerPage();
-    if (name === "help") updateStorageNote();
-
-    try { history.replaceState(null, "", "#" + name); } catch (err) { /* file:// may block this */ }
-    if (opts.scroll !== false && window.scrollY > 180) {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  }
-
-  function bindEvents() {
     // Sidebar navigation
     $$(".app-nav-btn").forEach((btn) => {
       btn.addEventListener("click", () => switchTab(btn.dataset.view === "planner" ? "planner" : "craft"));
