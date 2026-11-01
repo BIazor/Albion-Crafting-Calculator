@@ -5617,6 +5617,11 @@
           <span id="save-text">Saved locally</span>
         </div>
 
+        <button class="app-util-btn" type="button" data-tab="spec">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="16" height="20" x="4" y="2" rx="2"></rect><line x1="8" x2="16" y1="6" y2="6"></line><line x1="16" x2="16" y1="14" y2="18"></line><path d="M16 10h.01M12 10h.01M8 10h.01M12 14h.01M8 14h.01M12 18h.01M8 18h.01"></path></svg>
+          Spec Calculator
+        </button>
+
         <button class="app-util-btn" type="button" data-tab="database">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="8" ry="3"></ellipse><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5"></path><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"></path></svg>
           Database
@@ -5778,6 +5783,23 @@
       </div>
       <div id="db-resources-panel" class="db-view-panel" role="tabpanel"><div id="db-resources"></div></div>
       <div id="db-journals-panel" class="db-view-panel" role="tabpanel" hidden><div id="db-journal-prices"></div></div>
+    </section>
+
+    <section class="panel" id="panel-spec" role="tabpanel" aria-labelledby="tab-spec" hidden>
+      <div class="db-page-header">
+        <div class="db-page-title">
+          <div>
+            <h1>SPEC CALCULATOR</h1>
+            <p>Destiny Board mastery and specialization calculator for crafting focus efficiency.</p>
+          </div>
+        </div>
+      </div>
+      <div style="padding: 24px; max-width: 900px;">
+        <div style="padding: 28px; border: 1px solid #304366; border-radius: 12px; background: #1b2d4d;">
+          <h2 style="margin: 0 0 10px; color: #f5f7ff; font-size: 18px;">Destiny Board Specialization</h2>
+          <p style="margin: 0; color: #8ea9d1; font-size: 13px; line-height: 1.6;">Configure specialization levels to calculate focus cost reduction and resource efficiency bonuses.</p>
+        </div>
+      </div>
     </section>
 
     <section class="panel" id="panel-help" role="tabpanel" aria-labelledby="tab-help" hidden>
@@ -9002,7 +9024,7 @@
 
   function switchTab(name, options) {
     const opts = options || {};
-    if (!["craft", "database", "help", "planner"].includes(name)) name = "craft";
+    if (!["craft", "database", "help", "planner", "spec"].includes(name)) name = "craft";
     state.ui.tab = name;
 
     $$(".app-nav-btn").forEach((btn) => {
@@ -9042,6 +9064,7 @@
         const titles = {
           database: "Database · Items, City & Black Market Prices",
           planner: "Crafting Planner · Saved Queues",
+          spec: "Spec Calculator · Destiny Board & Focus Efficiency",
           help: "Settings & Albion Guide"
         };
         sectionTitleEl.textContent = titles[name] || name;
