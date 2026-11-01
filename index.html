@@ -5268,6 +5268,102 @@
   #panel-craft { background: transparent !important; }
   #panel-planner { background: transparent !important; }
   #panel-database { background: transparent !important; }
+  #panel-spec { background: transparent !important; border: 0 !important; }
+
+  .spec-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px;
+    padding-top: 16px;
+  }
+  .spec-bubble {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 16px;
+    border: 1px solid rgba(242, 222, 194, .14);
+    border-radius: 12px;
+    background: #17191e;
+    box-shadow: 0 5px 14px rgba(0, 0, 0, .16);
+    transition: border-color .15s ease, background .15s ease;
+  }
+  .spec-bubble:hover {
+    border-color: rgba(233, 187, 98, .3);
+    background: #1b1e25;
+  }
+  .spec-bubble-identity {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+  }
+  .spec-bubble-image {
+    flex: 0 0 36px;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .spec-bubble-image img, .spec-bubble-image .gear-icon, .spec-bubble-image .item-icon {
+    width: 36px;
+    height: 36px;
+  }
+  .spec-bubble-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+  .spec-bubble-info strong {
+    color: var(--text);
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .spec-bubble-info small {
+    color: var(--muted);
+    font-size: 10px;
+    font-variant-numeric: tabular-nums;
+  }
+  .spec-bubble-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  .spec-bubble-input {
+    width: 60px;
+    height: 34px;
+    padding: 0 4px;
+    border: 1px solid var(--border-soft);
+    border-radius: 8px;
+    background: #242832;
+    color: var(--gold);
+    font-family: var(--font);
+    font-size: 13px;
+    font-weight: 800;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+    transition: border-color .15s ease, box-shadow .15s ease;
+  }
+  .spec-bubble-input:focus {
+    border-color: var(--gold) !important;
+    box-shadow: 0 0 0 2px rgba(233, 187, 98, .12);
+  }
+  .spec-bubble-badge {
+    padding: 4px 7px;
+    border-radius: 6px;
+    background: rgba(233, 187, 98, .1);
+    border: 1px solid rgba(233, 187, 98, .2);
+    color: var(--gold);
+    font-size: 10px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
 
   .card, .panel, .craft-card, .craft-crafting-card, .craft-config, .craft-plan, .table-card,
   .db-resource-card, .db-journal-card, .planner-material-card,
@@ -5786,18 +5882,62 @@
     </section>
 
     <section class="panel" id="panel-spec" role="tabpanel" aria-labelledby="tab-spec" hidden>
-      <div class="db-page-header">
-        <div class="db-page-title">
-          <div>
-            <h1>SPEC CALCULATOR</h1>
-            <p>Destiny Board mastery and specialization calculator for crafting focus efficiency.</p>
+      <div class="craft-topbar">
+        <div class="craft-topgroup">
+          <span class="craft-label">Category</span>
+          <div class="segmented" id="spec-cat-selector" role="radiogroup" aria-label="Crafting Category">
+            <button type="button" class="seg-btn active" data-spec-cat="Armors">Plate Armor</button>
+            <button type="button" class="seg-btn" data-spec-cat="Helmets">Plate Helmet</button>
+            <button type="button" class="seg-btn" data-spec-cat="Boots">Plate Boots</button>
+            <button type="button" class="seg-btn" data-spec-cat="Jackets">Leather Jacket</button>
+            <button type="button" class="seg-btn" data-spec-cat="Hoods">Leather Hood</button>
+            <button type="button" class="seg-btn" data-spec-cat="Shoes">Leather Shoes</button>
+            <button type="button" class="seg-btn" data-spec-cat="Robes">Cloth Robe</button>
+            <button type="button" class="seg-btn" data-spec-cat="Cowls">Cloth Cowl</button>
+            <button type="button" class="seg-btn" data-spec-cat="Sandals">Cloth Sandals</button>
+            <button type="button" class="seg-btn" data-spec-cat="Swords">Swords</button>
+            <button type="button" class="seg-btn" data-spec-cat="Battleaxes">Axes</button>
+            <button type="button" class="seg-btn" data-spec-cat="Bows">Bows</button>
           </div>
         </div>
       </div>
-      <div style="padding: 24px; max-width: 900px;">
-        <div style="padding: 28px; border: 1px solid #304366; border-radius: 12px; background: #1b2d4d;">
-          <h2 style="margin: 0 0 10px; color: #f5f7ff; font-size: 18px;">Destiny Board Specialization</h2>
-          <p style="margin: 0; color: #8ea9d1; font-size: 13px; line-height: 1.6;">Configure specialization levels to calculate focus cost reduction and resource efficiency bonuses.</p>
+
+      <div class="spec-page planner-page" id="spec-page">
+        <section class="planner-session-card" aria-label="Specialization Levels">
+          <header class="planner-session-card-head">
+            <div>
+              <span>DESTINY BOARD SPECIALIZATION</span>
+              <strong id="spec-card-title">Plate Armor Crafting Specialization</strong>
+            </div>
+            <button type="button" class="planner-craft-market-toggle" id="spec-reset-btn" title="Reset all levels in this category to 0">RESET CATEGORY</button>
+          </header>
+          <div class="spec-grid" id="spec-items-grid"></div>
+        </section>
+
+        <div class="planner-craft-summary-wrap">
+          <header class="planner-craft-summary-heading">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16M4 12h16M4 19h16"></path><path d="M2 5h.01M2 12h.01M2 19h.01"></path></svg>
+            <h3>FOCUS EFFICIENCY SUMMARY</h3>
+            <i></i>
+          </header>
+          <section class="planner-craft-summary" aria-label="Specialization summary">
+            <article class="planner-summary-metric is-sell-value">
+              <span class="planner-summary-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></span>
+              <span class="planner-summary-copy"><small>TOTAL CATEGORY SPEC</small><strong id="spec-sum-total">0 / 700</strong></span>
+            </article>
+            <article class="planner-summary-metric is-profit">
+              <span class="planner-summary-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m13 2-2 10h4l-3 10 9-12h-5l3-8z"></path></svg></span>
+              <span class="planner-summary-copy"><small>AVG FOCUS EFFICIENCY</small><strong id="spec-sum-fce">+0 FCE</strong></span>
+            </article>
+            <article class="planner-summary-metric is-roi">
+              <span class="planner-summary-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="7" cy="7" r="3"></circle><circle cx="17" cy="17" r="3"></circle><path d="M19 5 5 19"></path></svg></span>
+              <span class="planner-summary-copy"><small>FOCUS COST REDUCTION</small><strong id="spec-sum-reduction">0.0%</strong></span>
+            </article>
+            <article class="planner-summary-metric is-investment">
+              <span class="planner-summary-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg></span>
+              <span class="planner-summary-copy"><small>FOCUS PER 1,000 BASE</small><strong id="spec-sum-cost">1,000</strong></span>
+            </article>
+          </section>
         </div>
       </div>
     </section>
@@ -6268,6 +6408,7 @@
       plannerSessions: [],
       lifetimeSessions: [],
       plannerActive: "",
+      specLevels: {},
       ui: { tab: "craft", craft: { item: "", tier: 4, enchant: 0, taxMode: "premium", marketTarget: "city" } }
     };
   }
@@ -9074,6 +9215,7 @@
     if (name === "craft") renderCraft();
     if (name === "database") renderDatabase();
     if (name === "planner") renderPlannerPage();
+    if (name === "spec") renderSpecPage();
     if (name === "help") updateStorageNote();
 
     try { history.replaceState(null, "", "#" + name); } catch (err) { /* file:// may block this */ }
@@ -9082,7 +9224,117 @@
     }
   }
 
+  let specActiveCategory = "Armors";
+
+  function renderSpecPage() {
+    const grid = $("#spec-items-grid");
+    if (!grid) return;
+    if (!state.specLevels || typeof state.specLevels !== "object") state.specLevels = {};
+
+    const titleEl = $("#spec-card-title");
+    if (titleEl) {
+      const activeBtn = $("#spec-cat-selector .seg-btn.active");
+      titleEl.textContent = (activeBtn ? activeBtn.textContent : specActiveCategory) + " Crafting Specialization";
+    }
+
+    const items = CRAFT_ITEMS.filter((item) => item[1] === specActiveCategory);
+    let totalSpec = 0;
+    const maxSpec = items.length * 100;
+
+    grid.innerHTML = items.map((item) => {
+      const name = item[0];
+      const lvl = Math.min(120, Math.max(0, Number(state.specLevels[name]) || 0));
+      totalSpec += lvl;
+
+      // Albion Focus Cost Efficiency formula:
+      // +30 FCE per point in own item spec, +10 FCE per point in other specs of same family
+      const otherSpecs = items.reduce((acc, it) => it[0] !== name ? acc + (Number(state.specLevels[it[0]]) || 0) : acc, 0);
+      const fce = (lvl * 30) + (otherSpecs * 10);
+
+      return '<article class="spec-bubble" data-spec-item="' + esc(name) + '">' +
+        '<div class="spec-bubble-identity">' +
+          '<div class="spec-bubble-image">' + craftIconHtml(item, 4, 0) + '</div>' +
+          '<div class="spec-bubble-info">' +
+            '<strong title="' + esc(name) + '">' + esc(name) + '</strong>' +
+            '<small>+30 own / +10 tree</small>' +
+          '</div>' +
+        '</div>' +
+        '<div class="spec-bubble-controls">' +
+          '<span class="spec-bubble-badge">+' + fmt(fce) + ' FCE</span>' +
+          '<input class="spec-bubble-input" type="number" min="0" max="120" step="1" value="' + lvl + '" data-spec-input="' + esc(name) + '" aria-label="' + esc(name) + ' spec level">' +
+        '</div>' +
+      '</article>';
+    }).join("");
+
+    updateSpecSummary(items, totalSpec, maxSpec);
+  }
+
+  function updateSpecSummary(items, totalSpec, maxSpec) {
+    if (!items) items = CRAFT_ITEMS.filter((item) => item[1] === specActiveCategory);
+    if (totalSpec === undefined) {
+      totalSpec = items.reduce((acc, it) => acc + (Number(state.specLevels[it[0]]) || 0), 0);
+      maxSpec = items.length * 100;
+    }
+
+    const avgLvl = items.length ? (totalSpec / items.length) : 0;
+    // Average item FCE in tree: (avgLvl * 30) + (avgLvl * (items.length - 1) * 10)
+    const avgFce = Math.round(items.length ? ((avgLvl * 30) + (avgLvl * (items.length - 1) * 10)) : 0);
+    const reductionPct = avgFce > 0 ? (1 - Math.pow(0.5, avgFce / 10000)) * 100 : 0;
+    const costPer1k = avgFce > 0 ? Math.round(1000 * Math.pow(0.5, avgFce / 10000)) : 1000;
+
+    const totalEl = $("#spec-sum-total");
+    if (totalEl) totalEl.textContent = fmt(totalSpec) + " / " + fmt(maxSpec);
+
+    const fceEl = $("#spec-sum-fce");
+    if (fceEl) fceEl.textContent = "+" + fmt(avgFce) + " FCE";
+
+    const redEl = $("#spec-sum-reduction");
+    if (redEl) redEl.textContent = reductionPct.toFixed(1) + "%";
+
+    const costEl = $("#spec-sum-cost");
+    if (costEl) costEl.textContent = fmt(costPer1k);
+  }
+
   function bindEvents() {
+    // Spec Calculator category switcher and inputs
+    const specCatSelector = $("#spec-cat-selector");
+    if (specCatSelector) {
+      specCatSelector.addEventListener("click", (e) => {
+        const btn = e.target.closest("[data-spec-cat]");
+        if (!btn) return;
+        $$("#spec-cat-selector .seg-btn").forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        specActiveCategory = btn.dataset.specCat;
+        renderSpecPage();
+      });
+    }
+
+    const specPageEl = $("#panel-spec");
+    if (specPageEl) {
+      specPageEl.addEventListener("input", (e) => {
+        const input = e.target.closest("[data-spec-input]");
+        if (!input) return;
+        const itemName = input.dataset.specInput;
+        const val = Math.min(120, Math.max(0, parseInt(input.value, 10) || 0));
+        if (!state.specLevels) state.specLevels = {};
+        state.specLevels[itemName] = val;
+        scheduleSave();
+        renderSpecPage();
+      });
+
+      const resetBtn = $("#spec-reset-btn");
+      if (resetBtn) {
+        resetBtn.addEventListener("click", () => {
+          const items = CRAFT_ITEMS.filter((item) => item[1] === specActiveCategory);
+          items.forEach((item) => {
+            delete state.specLevels[item[0]];
+          });
+          scheduleSave();
+          renderSpecPage();
+        });
+      }
+    }
+
     // Database search, filters, views and price actions (bound once)
     const dbSearch = $("#db-search");
     if (dbSearch) {
