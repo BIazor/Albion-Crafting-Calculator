@@ -5441,6 +5441,408 @@
     font-weight: 600;
   }
 
+  /* Spec Calculator Sliders & Options */
+  .spec-calc-section {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 6px;
+  }
+  .spec-calc-controls {
+    padding: 20px;
+    background: #17191e;
+    border: 1px solid rgba(242, 222, 194, .14);
+    border-radius: 14px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, .22);
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .spec-slider-group {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 18px;
+  }
+  .spec-slider-row {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .spec-slider-label-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .spec-slider-title {
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+  .spec-level-badge {
+    padding: 2px 8px;
+    border-radius: 6px;
+    background: #242832;
+    border: 1px solid rgba(242, 222, 194, .14);
+    color: var(--text);
+    font-size: 11px;
+    font-weight: 800;
+  }
+  .spec-level-badge.highlight {
+    background: rgba(233, 187, 98, .14);
+    border-color: rgba(233, 187, 98, .3);
+    color: var(--gold);
+  }
+  .spec-slider-inputs {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .spec-range-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    flex: 1;
+    height: 8px;
+    border-radius: 999px;
+    background: #242832;
+    border: 1px solid rgba(242, 222, 194, .1);
+    outline: none;
+    cursor: pointer;
+  }
+  .spec-range-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--gold);
+    border: 2px solid #17191e;
+    box-shadow: 0 0 10px rgba(233, 187, 98, .45);
+    cursor: pointer;
+    transition: transform .12s ease;
+  }
+  .spec-range-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.18);
+  }
+  .spec-range-slider::-moz-range-thumb {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--gold);
+    border: 2px solid #17191e;
+    box-shadow: 0 0 10px rgba(233, 187, 98, .45);
+    cursor: pointer;
+  }
+  .spec-number-field {
+    width: 64px;
+    height: 38px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 800;
+    font-family: inherit;
+    border-radius: 8px;
+    background: #242832 !important;
+    border: 1px solid rgba(242, 222, 194, .18) !important;
+    color: var(--text) !important;
+    padding: 0 6px !important;
+    box-sizing: border-box;
+  }
+  .spec-number-field:focus {
+    border-color: var(--gold) !important;
+    box-shadow: 0 0 0 2px rgba(233, 187, 98, .16) !important;
+    outline: none;
+  }
+  .spec-config-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(242, 222, 194, .08);
+  }
+  .spec-checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .spec-premium-input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .spec-checkbox-box {
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+    border: 1px solid rgba(242, 222, 194, .25);
+    background: #242832;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: transparent;
+    transition: background .12s, border-color .12s, color .12s;
+  }
+  .spec-premium-input:checked + .spec-checkbox-box {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: #17191e;
+  }
+  .spec-checkbox-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .spec-premium-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .spec-premium-sub {
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .spec-preset-buttons {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .spec-presets-tag {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .08em;
+    color: var(--muted);
+  }
+  .spec-preset-btn {
+    padding: 5px 10px;
+    border-radius: 6px;
+    background: #242832;
+    border: 1px solid rgba(242, 222, 194, .14);
+    color: var(--text);
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background .12s, border-color .12s, color .12s;
+  }
+  .spec-preset-btn:hover {
+    background: rgba(233, 187, 98, .14);
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+
+  /* Summary Card */
+  .spec-summary-card {
+    padding: 16px 20px;
+    background: linear-gradient(135deg, rgba(233, 187, 98, .09) 0%, #17191e 100%);
+    border: 1px solid rgba(233, 187, 98, .25);
+    border-radius: 14px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, .22);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+  }
+  .spec-summary-left {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .spec-summary-label {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .spec-summary-fame {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--gold);
+    letter-spacing: .01em;
+  }
+  .spec-summary-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .spec-badge-pill {
+    padding: 4px 10px;
+    border-radius: 8px;
+    background: #242832;
+    border: 1px solid rgba(242, 222, 194, .14);
+    color: var(--text);
+    font-size: 11px;
+    font-weight: 800;
+  }
+  .spec-badge-pill.gold {
+    background: rgba(233, 187, 98, .12);
+    border-color: rgba(233, 187, 98, .28);
+    color: var(--gold);
+  }
+  .spec-badge-pill.teal {
+    background: rgba(69, 198, 176, .12);
+    border-color: rgba(69, 198, 176, .28);
+    color: var(--teal);
+  }
+  .spec-badge-pill.muted {
+    color: var(--muted);
+  }
+
+  /* Tiers Grid & Cards */
+  .spec-tiers-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .spec-tiers-head {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 0 2px;
+  }
+  .spec-tiers-head h3 {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--text);
+  }
+  .spec-tiers-head small {
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .spec-tiers-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .spec-tier-card {
+    padding: 14px 18px;
+    background: #17191e;
+    border: 1px solid rgba(242, 222, 194, .14);
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .14);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    transition: border-color .15s ease, background .15s ease;
+  }
+  .spec-tier-card:hover {
+    border-color: rgba(233, 187, 98, .3);
+    background: #191b22;
+  }
+  .spec-tier-card-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+  }
+  .spec-tier-card-icon {
+    flex: 0 0 42px;
+    width: 42px;
+    height: 42px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .spec-tier-card-icon > * {
+    width: 42px;
+    height: 42px;
+    --gear-size: 42px;
+  }
+  .spec-tier-card-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+  }
+  .spec-tier-card-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .spec-tier-card-title strong {
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--text);
+  }
+  .spec-tier-tag {
+    padding: 2px 7px;
+    border-radius: 6px;
+    background: rgba(69, 198, 176, .14);
+    border: 1px solid rgba(69, 198, 176, .28);
+    color: var(--teal);
+    font-size: 10px;
+    font-weight: 800;
+  }
+  .spec-tier-fame-info {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .spec-fame-chip {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--gold);
+  }
+  .spec-fame-sub {
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .spec-tier-card-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+    min-width: 0;
+  }
+  .spec-tier-items-box {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+  .spec-tier-items-label {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .08em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .spec-tier-items-val {
+    font-size: 22px;
+    font-weight: 800;
+    color: #45c6b0;
+    letter-spacing: .01em;
+  }
+  .spec-tier-mats {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    font-size: 11px;
+    color: var(--muted);
+    justify-content: flex-end;
+  }
+  .spec-tier-mats strong {
+    color: var(--text);
+    font-weight: 700;
+  }
+  .spec-mat-sep {
+    color: var(--faint);
+  }
+
   .spec-selected-bubble {
     display: flex;
     flex-wrap: wrap;
@@ -6067,6 +6469,7 @@
             </div>
 
             <div class="spec-selected-preview" id="spec-selected-preview" aria-live="polite"></div>
+            <div class="spec-calc-section" id="spec-calc-section" hidden></div>
           </div>
         </section>
       </div>
@@ -9356,6 +9759,90 @@
 
   let specSearchQuery = "";
 
+  const CRAFT_SPEC_LEVEL_FAME = [
+    14424, 14934, 15464, 16014, 16582, 17170, 17780, 18410, 19064, 19740,
+    20440, 21166, 21918, 22694, 23500, 24334, 25198, 26092, 27018, 27976,
+    28970, 29996, 31062, 32164, 33304, 34486, 35710, 36978, 38290, 39648,
+    41056, 42512, 44020, 45582, 47200, 48876, 50610, 52406, 54266, 56190,
+    58184, 60250, 62388, 64602, 66894, 69268, 71726, 74270, 76906, 79634,
+    82460, 85386, 88416, 91554, 94804, 98168, 101650, 105258, 108992, 112860,
+    116866, 121012, 125306, 129752, 134356, 139124, 144062, 149174, 154466, 159948,
+    165624, 171500, 177586, 183888, 190414, 197170, 204166, 211412, 218914, 226682,
+    234726, 243054, 251680, 260610, 269858, 279434, 289350, 299618, 310250, 321258,
+    332658, 344462, 356686, 369342, 382448, 396020, 410072, 424624, 439692, 455294
+  ];
+
+  function getSpecFameMultiplier(item) {
+    const cat = String((item && item[1]) || "").toLowerCase();
+    if (['armors', 'chestplates', 'jackets', 'robes'].includes(cat)) return 1.0;
+    if (['helmets', 'cowls', 'hoods', 'boots', 'shoes', 'sandals', 'offhands', 'off-hand'].includes(cat)) return 0.5;
+    if (['bags', 'capes'].includes(cat)) return 1.5;
+    return 2.0; // Weapons
+  }
+
+  function getSpecNodeDescription(item) {
+    const mult = getSpecFameMultiplier(item);
+    if (mult === 1.0) return "Armor Node (1× Fame)";
+    if (mult === 0.5) return "Helmet / Shoes / Offhand (0.5× Fame)";
+    if (mult === 1.5) return "Bag / Cape Node (1.5× Fame)";
+    return "Weapon Node (2× Fame)";
+  }
+
+  function getItemBaseCraftFame(item, tier) {
+    const name = String((item && item[0]) || '').toLowerCase();
+    const category = String((item && item[1]) || '').toLowerCase();
+    let table = null;
+
+    if (['armors', 'chestplates', 'jackets', 'robes'].includes(category)) {
+      table = ARMOR_CRAFT_FAME;
+    } else if (['helmets', 'cowls', 'hoods', 'boots', 'shoes', 'sandals'].includes(category)) {
+      table = HELMET_BOOTS_CRAFT_FAME;
+    } else if (category === 'capes') {
+      table = CAPE_CRAFT_FAME;
+    } else if (category === 'bags') {
+      table = BAG_CRAFT_FAME;
+    } else if (['offhands', 'off-hand'].includes(category) || /tome|torch|shield|horn|censer|talisman|eye|skull|candle|lamp/.test(name)) {
+      table = OFFHAND_CRAFT_FAME;
+    } else {
+      const tierData = item[3] && (item[3][tier] || item[3][4] || Object.values(item[3])[0]);
+      let totalMats = 0;
+      if (tierData && tierData[1]) {
+        for (const m of tierData[1]) {
+          if (/T\d+_(METALBAR|LEATHER|CLOTH|PLANKS)/.test(m[0])) totalMats += Number(m[1]) || 0;
+        }
+      }
+      if (totalMats >= 30) {
+        table = TWO_HAND_WEAPON_CRAFT_FAME;
+      } else if (totalMats > 0 && totalMats <= 24) {
+        table = ONE_HAND_WEAPON_CRAFT_FAME;
+      } else {
+        const isTwoHand = /bow|crossbow|spear|quarterstaff|shapeshifter|nature staff|fire staff|holy staff|arcane staff|frost staff|cursed staff|hammer|mace|greataxe|halberd|gloves|staff|twin|scythe|pair|claws|deathgivers|blasters|shaper|repeater|polehammer|tombhammer|forgehammer|grovekeeper|justice|truebolt|brawler|battlebracers|gauntlet|mauler|hands|cestus|fists|bracer|dual|carving|galatine|kingmaker|pike|glaive|rift|blade|prowling|rootbound|primal|bloodmoon|hellspawn|earthrune|lightcaller|stillgaze/.test(name);
+        table = isTwoHand ? TWO_HAND_WEAPON_CRAFT_FAME : ONE_HAND_WEAPON_CRAFT_FAME;
+      }
+    }
+    const row = table && table[tier];
+    return row ? Number(row[0]) : 0;
+  }
+
+  function calculateSpecFameRequired(fromLevel, toLevel, item) {
+    const from = Math.max(0, Math.min(100, Math.floor(fromLevel || 0)));
+    const to = Math.max(0, Math.min(100, Math.floor(toLevel || 0)));
+    if (from >= to) return 0;
+    const mult = getSpecFameMultiplier(item);
+    let total = 0;
+    for (let lvl = from; lvl < to; lvl++) {
+      total += CRAFT_SPEC_LEVEL_FAME[lvl] * mult;
+    }
+    return Math.round(total);
+  }
+
+  function formatMaterialLabel(matCode) {
+    if (typeof CRAFT_DATA !== 'undefined' && CRAFT_DATA.resourceNames && CRAFT_DATA.resourceNames[matCode]) {
+      return CRAFT_DATA.resourceNames[matCode];
+    }
+    return matCode.replace(/^T\d+_/, '').replace(/_/g, ' ');
+  }
+
   function renderSpecItemPreview(item) {
     const preview = $("#spec-selected-preview");
     if (!preview) return;
@@ -9376,7 +9863,7 @@
               '<strong>' + esc(item[0]) + '</strong>' +
               '<span class="spec-selected-cat">' + esc(item[1]) + '</span>' +
             '</div>' +
-            '<small class="spec-selected-meta">Craftable gear · Destiny Board</small>' +
+            '<small class="spec-selected-meta">Craftable gear · Destiny Board Specialization</small>' +
           '</div>' +
         '</div>' +
         '<div class="spec-selected-right">' +
@@ -9386,6 +9873,150 @@
       '</article>';
   }
 
+  function renderSpecCalculator(item) {
+    const section = $("#spec-calc-section");
+    if (!section) return;
+    if (!item) {
+      section.hidden = true;
+      section.innerHTML = "";
+      return;
+    }
+
+    const fromVal = Math.max(0, Math.min(100, Number(state.specFrom != null ? state.specFrom : 0)));
+    const toVal = Math.max(0, Math.min(100, Number(state.specTo != null ? state.specTo : 100)));
+    const isPremium = state.specPremium !== false; // default true
+
+    const totalFame = calculateSpecFameRequired(fromVal, toVal, item);
+    const multDesc = getSpecNodeDescription(item);
+    const availableTiers = Object.keys(item[3] || {})
+      .map(Number)
+      .filter((t) => t >= 4 && item[3][t] && item[3][t][1] && item[3][t][1].length)
+      .sort((a, b) => a - b);
+
+    let tiersHtml = "";
+    if (!availableTiers.length) {
+      tiersHtml = '<div class="planner-session-empty">No craftable Tier 4+ recipes found for this item.</div>';
+    } else {
+      for (const tier of availableTiers) {
+        const recipeData = item[3][tier];
+        const tierName = recipeData[0] || (item[0] + " T" + tier);
+        const baseFame = getItemBaseCraftFame(item, tier);
+        const famePerCraft = isPremium ? Math.round(baseFame * 1.5) : baseFame;
+        const itemsNeeded = (totalFame > 0 && famePerCraft > 0) ? Math.ceil(totalFame / famePerCraft) : 0;
+
+        let matsHtml = "";
+        if (recipeData[1] && recipeData[1].length) {
+          const matParts = [];
+          for (const mat of recipeData[1]) {
+            const matCode = mat[0];
+            const matQtyPer = Number(mat[1]) || 0;
+            const totalMatQty = itemsNeeded * matQtyPer;
+            const label = formatMaterialLabel(matCode);
+            matParts.push('<span><strong>' + fmt(totalMatQty) + '</strong> ' + esc(label) + '</span>');
+          }
+          matsHtml = matParts.join('<span class="spec-mat-sep">·</span>');
+        }
+
+        tiersHtml +=
+          '<article class="spec-tier-card">' +
+            '<div class="spec-tier-card-left">' +
+              '<span class="spec-tier-card-icon">' + craftIconHtml(item, tier, 0) + '</span>' +
+              '<div class="spec-tier-card-meta">' +
+                '<div class="spec-tier-card-title">' +
+                  '<span class="spec-tier-tag">T' + tier + '</span>' +
+                  '<strong>' + esc(tierName) + '</strong>' +
+                '</div>' +
+                '<div class="spec-tier-fame-info">' +
+                  '<span class="spec-fame-chip">' + fmt(famePerCraft) + ' Fame / craft</span>' +
+                  (isPremium
+                    ? '<span class="spec-fame-sub">(' + fmt(baseFame) + ' base + 50%)</span>'
+                    : '<span class="spec-fame-sub">(Base fame, no premium)</span>') +
+                '</div>' +
+              '</div>' +
+            '</div>' +
+            '<div class="spec-tier-card-right">' +
+              '<div class="spec-tier-items-box">' +
+                '<span class="spec-tier-items-label">ITEMS TO CRAFT</span>' +
+                '<strong class="spec-tier-items-val">' + fmt(itemsNeeded) + '</strong>' +
+              '</div>' +
+              (matsHtml ? '<div class="spec-tier-mats">' + matsHtml + '</div>' : '') +
+            '</div>' +
+          '</article>';
+      }
+    }
+
+    section.innerHTML =
+      '<div class="spec-calc-controls">' +
+        '<div class="spec-slider-group">' +
+          '<div class="spec-slider-row">' +
+            '<div class="spec-slider-label-wrap">' +
+              '<label for="spec-from-slider" class="spec-slider-title">CURRENT SPEC</label>' +
+              '<span class="spec-level-badge" id="spec-from-badge">Level ' + fromVal + '</span>' +
+            '</div>' +
+            '<div class="spec-slider-inputs">' +
+              '<input type="range" id="spec-from-slider" min="0" max="100" value="' + fromVal + '" class="spec-range-slider" aria-label="Current Spec Slider">' +
+              '<input type="number" id="spec-from-input" min="0" max="100" value="' + fromVal + '" class="spec-number-field" aria-label="Current Spec Level">' +
+            '</div>' +
+          '</div>' +
+
+          '<div class="spec-slider-row">' +
+            '<div class="spec-slider-label-wrap">' +
+              '<label for="spec-to-slider" class="spec-slider-title">TARGET SPEC</label>' +
+              '<span class="spec-level-badge highlight" id="spec-to-badge">Level ' + toVal + '</span>' +
+            '</div>' +
+            '<div class="spec-slider-inputs">' +
+              '<input type="range" id="spec-to-slider" min="0" max="100" value="' + toVal + '" class="spec-range-slider" aria-label="Target Spec Slider">' +
+              '<input type="number" id="spec-to-input" min="0" max="100" value="' + toVal + '" class="spec-number-field" aria-label="Target Spec Level">' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+
+        '<div class="spec-config-row">' +
+          '<label class="spec-checkbox-label" for="spec-premium-checkbox">' +
+            '<input type="checkbox" id="spec-premium-checkbox"' + (isPremium ? ' checked' : '') + ' class="spec-premium-input">' +
+            '<span class="spec-checkbox-box">' +
+              '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>' +
+            '</span>' +
+            '<span class="spec-checkbox-text">' +
+              '<span class="spec-premium-name">Premium Status (+50% Crafting Fame)</span>' +
+              '<span class="spec-premium-sub">' + (isPremium ? 'Active: 1.5× fame per craft' : 'Inactive: 1.0× base fame') + '</span>' +
+            '</span>' +
+          '</label>' +
+
+          '<div class="spec-preset-buttons">' +
+            '<span class="spec-presets-tag">PRESETS:</span>' +
+            '<button type="button" class="spec-preset-btn" data-from="0" data-to="100">0 → 100</button>' +
+            '<button type="button" class="spec-preset-btn" data-from="0" data-to="50">0 → 50</button>' +
+            '<button type="button" class="spec-preset-btn" data-from="50" data-to="100">50 → 100</button>' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+
+      '<div class="spec-summary-card" id="spec-summary-card">' +
+        '<div class="spec-summary-left">' +
+          '<span class="spec-summary-label">TOTAL FAME REQUIRED</span>' +
+          '<strong class="spec-summary-fame">' + fmt(totalFame) + ' Fame</strong>' +
+        '</div>' +
+        '<div class="spec-summary-right">' +
+          '<span class="spec-badge-pill">Levels ' + fromVal + ' → ' + toVal + ' (' + (toVal >= fromVal ? ('+' + (toVal - fromVal)) : '0') + ')</span>' +
+          '<span class="spec-badge-pill gold">' + esc(multDesc) + '</span>' +
+          '<span class="spec-badge-pill ' + (isPremium ? 'teal' : 'muted') + '">' + (isPremium ? 'Premium (1.5×)' : 'Non-Premium (1.0×)') + '</span>' +
+        '</div>' +
+      '</div>' +
+
+      '<div class="spec-tiers-wrapper">' +
+        '<div class="spec-tiers-head">' +
+          '<h3>TIER BREAKDOWN & CRAFT REQUIREMENTS</h3>' +
+          '<small>Crafting quantities needed to achieve your target spec (Level ' + fromVal + ' → ' + toVal + ')</small>' +
+        '</div>' +
+        '<div class="spec-tiers-grid">' +
+          tiersHtml +
+        '</div>' +
+      '</div>';
+
+    section.hidden = false;
+  }
+
   function selectSpecItem(key) {
     if (!key) return;
     state.specSelectedItem = key;
@@ -9393,6 +10024,7 @@
     scheduleSave();
     const item = CRAFT_BY_KEY.get(key);
     renderSpecItemPreview(item);
+    renderSpecCalculator(item);
 
     const searchInput = $("#spec-item-search");
     if (searchInput && item) {
@@ -9476,6 +10108,7 @@
       : null;
 
     renderSpecItemPreview(currentItem);
+    renderSpecCalculator(currentItem);
 
     if (searchInput) {
       searchInput.value = currentItem ? currentItem[0] : "";
@@ -9538,6 +10171,57 @@
         if (!itemBtn) return;
         const key = itemBtn.getAttribute("data-item-key");
         selectSpecItem(key);
+      });
+    }
+
+    // Spec Calculator section inputs and delegation
+    const specCalcSec = $("#spec-calc-section");
+    if (specCalcSec) {
+      specCalcSec.addEventListener("input", (e) => {
+        const item = state.specSelectedItem ? CRAFT_BY_KEY.get(state.specSelectedItem) : null;
+        if (!item) return;
+
+        if (e.target.id === "spec-from-slider" || e.target.id === "spec-from-input") {
+          let val = Math.max(0, Math.min(100, Math.round(Number(e.target.value) || 0)));
+          state.specFrom = val;
+          if (state.specTo != null && state.specTo < val) {
+            state.specTo = val;
+          }
+          scheduleSave();
+          renderSpecCalculator(item);
+        } else if (e.target.id === "spec-to-slider" || e.target.id === "spec-to-input") {
+          let val = Math.max(0, Math.min(100, Math.round(Number(e.target.value) || 0)));
+          state.specTo = val;
+          if (state.specFrom != null && state.specFrom > val) {
+            state.specFrom = val;
+          }
+          scheduleSave();
+          renderSpecCalculator(item);
+        }
+      });
+
+      specCalcSec.addEventListener("change", (e) => {
+        const item = state.specSelectedItem ? CRAFT_BY_KEY.get(state.specSelectedItem) : null;
+        if (!item) return;
+
+        if (e.target.id === "spec-premium-checkbox") {
+          state.specPremium = e.target.checked;
+          scheduleSave();
+          renderSpecCalculator(item);
+        }
+      });
+
+      specCalcSec.addEventListener("click", (e) => {
+        const presetBtn = e.target.closest(".spec-preset-btn");
+        if (presetBtn) {
+          const from = Number(presetBtn.getAttribute("data-from")) || 0;
+          const to = Number(presetBtn.getAttribute("data-to")) || 100;
+          state.specFrom = from;
+          state.specTo = to;
+          scheduleSave();
+          const item = state.specSelectedItem ? CRAFT_BY_KEY.get(state.specSelectedItem) : null;
+          renderSpecCalculator(item);
+        }
       });
     }
 
