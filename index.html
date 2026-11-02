@@ -5510,6 +5510,7 @@
     border: 1px solid rgba(242, 222, 194, .1);
     outline: none;
     cursor: pointer;
+    touch-action: none;
   }
   .spec-range-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
@@ -5520,11 +5521,12 @@
     background: var(--gold);
     border: 2px solid #17191e;
     box-shadow: 0 0 10px rgba(233, 187, 98, .45);
-    cursor: pointer;
+    cursor: grab;
     transition: transform .12s ease;
   }
-  .spec-range-slider::-webkit-slider-thumb:hover {
-    transform: scale(1.18);
+  .spec-range-slider:active::-webkit-slider-thumb {
+    cursor: grabbing;
+    transform: scale(1.22);
   }
   .spec-range-slider::-moz-range-thumb {
     width: 22px;
@@ -5533,7 +5535,11 @@
     background: var(--gold);
     border: 2px solid #17191e;
     box-shadow: 0 0 10px rgba(233, 187, 98, .45);
-    cursor: pointer;
+    cursor: grab;
+  }
+  .spec-range-slider:active::-moz-range-thumb {
+    cursor: grabbing;
+    transform: scale(1.22);
   }
   .spec-number-field {
     width: 64px;
@@ -5699,13 +5705,20 @@
   .spec-tiers-wrapper {
     display: flex;
     flex-direction: column;
+    gap: 14px;
+  }
+  .spec-tiers-header-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
     gap: 12px;
+    padding: 0 2px;
   }
   .spec-tiers-head {
     display: flex;
     flex-direction: column;
     gap: 2px;
-    padding: 0 2px;
   }
   .spec-tiers-head h3 {
     margin: 0;
@@ -5719,93 +5732,203 @@
     font-size: 11px;
     color: var(--muted);
   }
+
+  /* Enchantment Filter Bar */
+  .spec-ench-filter-bar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .spec-ench-filter-label {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .08em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .spec-ench-filter-btn {
+    padding: 4px 10px;
+    border-radius: 6px;
+    background: #242832;
+    border: 1px solid rgba(242, 222, 194, .14);
+    color: var(--text);
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background .12s, border-color .12s, color .12s;
+  }
+  .spec-ench-filter-btn:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+  .spec-ench-filter-btn.active {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: #17191e;
+    font-weight: 800;
+  }
+  .spec-ench-filter-btn.ench-1.active { background: #45c6b0; border-color: #45c6b0; color: #17191e; }
+  .spec-ench-filter-btn.ench-2.active { background: #54a0ff; border-color: #54a0ff; color: #17191e; }
+  .spec-ench-filter-btn.ench-3.active { background: #a55eea; border-color: #a55eea; color: #ffffff; }
+  .spec-ench-filter-btn.ench-4.active { background: var(--gold); border-color: var(--gold); color: #17191e; }
+
+  /* Enchantment Badges & Colors */
+  .spec-ench-badge {
+    padding: 2px 7px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .04em;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .spec-ench-badge.ench-0 {
+    background: rgba(242, 222, 194, .08);
+    border: 1px solid rgba(242, 222, 194, .18);
+    color: var(--muted);
+  }
+  .spec-ench-badge.ench-1 {
+    background: rgba(69, 198, 176, .14);
+    border: 1px solid rgba(69, 198, 176, .35);
+    color: #45c6b0;
+  }
+  .spec-ench-badge.ench-2 {
+    background: rgba(84, 160, 255, .14);
+    border: 1px solid rgba(84, 160, 255, .35);
+    color: #54a0ff;
+  }
+  .spec-ench-badge.ench-3 {
+    background: rgba(165, 94, 234, .14);
+    border: 1px solid rgba(165, 94, 234, .35);
+    color: #a55eea;
+  }
+  .spec-ench-badge.ench-4 {
+    background: rgba(233, 187, 98, .16);
+    border: 1px solid rgba(233, 187, 98, .4);
+    color: var(--gold);
+  }
+
+  .spec-tier-items-val.ench-0 { color: #45c6b0; }
+  .spec-tier-items-val.ench-1 { color: #45c6b0; }
+  .spec-tier-items-val.ench-2 { color: #54a0ff; }
+  .spec-tier-items-val.ench-3 { color: #a55eea; }
+  .spec-tier-items-val.ench-4 { color: var(--gold); }
+
   .spec-tiers-grid {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
   }
   .spec-tier-card {
-    padding: 14px 18px;
+    padding: 16px 20px;
     background: #17191e;
     border: 1px solid rgba(242, 222, 194, .14);
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, .14);
+    border-radius: 14px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, .16);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    transition: border-color .15s ease;
+  }
+  .spec-tier-card:hover {
+    border-color: rgba(233, 187, 98, .28);
+  }
+  .spec-tier-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(242, 222, 194, .08);
+  }
+  .spec-tier-card-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .spec-tier-card-title strong {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--text);
+  }
+  .spec-tier-tag {
+    padding: 2px 8px;
+    border-radius: 6px;
+    background: rgba(69, 198, 176, .14);
+    border: 1px solid rgba(69, 198, 176, .28);
+    color: var(--teal);
+    font-size: 11px;
+    font-weight: 800;
+  }
+  .spec-tier-card-sub {
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .spec-ench-table {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+  }
+  .spec-ench-row {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    gap: 14px;
-    transition: border-color .15s ease, background .15s ease;
+    gap: 12px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    background: rgba(36, 40, 50, .5);
+    border: 1px solid rgba(242, 222, 194, .06);
+    transition: background .12s, border-color .12s;
   }
-  .spec-tier-card:hover {
-    border-color: rgba(233, 187, 98, .3);
-    background: #191b22;
+  .spec-ench-row:hover {
+    background: rgba(36, 40, 50, .9);
+    border-color: rgba(233, 187, 98, .2);
   }
-  .spec-tier-card-left {
+  .spec-ench-left {
     display: flex;
     align-items: center;
     gap: 12px;
     min-width: 0;
   }
-  .spec-tier-card-icon {
-    flex: 0 0 42px;
-    width: 42px;
-    height: 42px;
+  .spec-ench-icon {
+    flex: 0 0 38px;
+    width: 38px;
+    height: 38px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
   }
-  .spec-tier-card-icon > * {
-    width: 42px;
-    height: 42px;
-    --gear-size: 42px;
+  .spec-ench-icon > * {
+    width: 38px;
+    height: 38px;
+    --gear-size: 38px;
   }
-  .spec-tier-card-meta {
+  .spec-ench-meta {
     display: flex;
     flex-direction: column;
-    gap: 3px;
+    gap: 2px;
     min-width: 0;
-  }
-  .spec-tier-card-title {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
-  .spec-tier-card-title strong {
-    font-size: 14px;
-    font-weight: 800;
-    color: var(--text);
-  }
-  .spec-tier-tag {
-    padding: 2px 7px;
-    border-radius: 6px;
-    background: rgba(69, 198, 176, .14);
-    border: 1px solid rgba(69, 198, 176, .28);
-    color: var(--teal);
-    font-size: 10px;
-    font-weight: 800;
-  }
-  .spec-tier-fame-info {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    flex-wrap: wrap;
   }
   .spec-fame-chip {
     font-size: 12px;
     font-weight: 700;
     color: var(--gold);
   }
-  .spec-fame-sub {
+  .spec-fame-chip small {
     font-size: 11px;
     color: var(--muted);
+    font-weight: 600;
   }
-  .spec-tier-card-right {
+  .spec-ench-right {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    gap: 6px;
+    gap: 4px;
     min-width: 0;
   }
   .spec-tier-items-box {
@@ -5821,9 +5944,8 @@
     text-transform: uppercase;
   }
   .spec-tier-items-val {
-    font-size: 22px;
+    font-size: 20px;
     font-weight: 800;
-    color: #45c6b0;
     letter-spacing: .01em;
   }
   .spec-tier-mats {
@@ -9772,6 +9894,14 @@
     332658, 344462, 356686, 369342, 382448, 396020, 410072, 424624, 439692, 455294
   ];
 
+  const SPEC_ENCHANT_DEFS = [
+    { level: 0, tag: ".0", name: "Flat", css: "ench-0" },
+    { level: 1, tag: ".1", name: "Uncommon", css: "ench-1" },
+    { level: 2, tag: ".2", name: "Rare", css: "ench-2" },
+    { level: 3, tag: ".3", name: "Exceptional", css: "ench-3" },
+    { level: 4, tag: ".4", name: "Pristine", css: "ench-4" }
+  ];
+
   function getSpecFameMultiplier(item) {
     const cat = String((item && item[1]) || "").toLowerCase();
     if (['armors', 'chestplates', 'jackets', 'robes'].includes(cat)) return 1.0;
@@ -9788,9 +9918,10 @@
     return "Weapon Node (2× Fame)";
   }
 
-  function getItemBaseCraftFame(item, tier) {
+  function getItemBaseCraftFame(item, tier, enchant = 0) {
     const name = String((item && item[0]) || '').toLowerCase();
     const category = String((item && item[1]) || '').toLowerCase();
+    const level = Math.max(0, Math.min(4, Number(enchant) || 0));
     let table = null;
 
     if (['armors', 'chestplates', 'jackets', 'robes'].includes(category)) {
@@ -9821,7 +9952,8 @@
       }
     }
     const row = table && table[tier];
-    return row ? Number(row[0]) : 0;
+    if (!row) return 0;
+    return Number(row[level] != null ? row[level] : (row[0] * Math.pow(2, level))) || 0;
   }
 
   function calculateSpecFameRequired(fromLevel, toLevel, item) {
@@ -9836,11 +9968,18 @@
     return Math.round(total);
   }
 
-  function formatMaterialLabel(matCode) {
+  function formatMaterialLabel(matCode, ench = 0) {
+    let name = "";
     if (typeof CRAFT_DATA !== 'undefined' && CRAFT_DATA.resourceNames && CRAFT_DATA.resourceNames[matCode]) {
-      return CRAFT_DATA.resourceNames[matCode];
+      name = CRAFT_DATA.resourceNames[matCode];
+    } else {
+      name = matCode.replace(/^T\d+_/, '').replace(/_/g, ' ');
     }
-    return matCode.replace(/^T\d+_/, '').replace(/_/g, ' ');
+    const isRefined = /_METALBAR|_PLANKS|_LEATHER|_CLOTH/.test(matCode);
+    if (isRefined && ench > 0) {
+      name += " ." + ench;
+    }
+    return name;
   }
 
   function renderSpecItemPreview(item) {
@@ -9873,6 +10012,122 @@
       '</article>';
   }
 
+  function buildSpecTiersGridHtml(item, fromVal, toVal, isPremium) {
+    const availableTiers = Object.keys(item[3] || {})
+      .map(Number)
+      .filter((t) => t >= 4 && item[3][t] && item[3][t][1] && item[3][t][1].length)
+      .sort((a, b) => a - b);
+
+    if (!availableTiers.length) {
+      return '<div class="planner-session-empty">No craftable Tier 4+ recipes found for this item.</div>';
+    }
+
+    const totalFame = calculateSpecFameRequired(fromVal, toVal, item);
+    const filter = state.specEnchantFilter || "all";
+    const enchantsToShow = filter === "all" ? [0, 1, 2, 3, 4] : [Number(filter)];
+
+    let html = "";
+    for (const tier of availableTiers) {
+      const recipeData = item[3][tier];
+      const tierName = recipeData[0] || (item[0] + " T" + tier);
+
+      let rowsHtml = "";
+      for (const ench of enchantsToShow) {
+        const enchInfo = SPEC_ENCHANT_DEFS[ench];
+        const baseFame = getItemBaseCraftFame(item, tier, ench);
+        const famePerCraft = isPremium ? Math.round(baseFame * 1.5) : baseFame;
+        const itemsNeeded = (totalFame > 0 && famePerCraft > 0) ? Math.ceil(totalFame / famePerCraft) : 0;
+
+        let matsHtml = "";
+        if (recipeData[1] && recipeData[1].length) {
+          const matParts = [];
+          for (const mat of recipeData[1]) {
+            const matCode = mat[0];
+            const matQtyPer = Number(mat[1]) || 0;
+            const totalMatQty = itemsNeeded * matQtyPer;
+            const label = formatMaterialLabel(matCode, ench);
+            matParts.push('<span><strong>' + fmt(totalMatQty) + '</strong> ' + esc(label) + '</span>');
+          }
+          matsHtml = matParts.join('<span class="spec-mat-sep">·</span>');
+        }
+
+        rowsHtml +=
+          '<div class="spec-ench-row">' +
+            '<div class="spec-ench-left">' +
+              '<span class="spec-ench-icon">' + craftIconHtml(item, tier, ench) + '</span>' +
+              '<div class="spec-ench-meta">' +
+                '<span class="spec-ench-badge ' + enchInfo.css + '">' + enchInfo.tag + ' ' + enchInfo.name + '</span>' +
+                '<span class="spec-fame-chip">' + fmt(famePerCraft) + ' Fame / craft' +
+                  (isPremium ? ' <small>(' + fmt(baseFame) + ' + 50%)</small>' : '') +
+                '</span>' +
+              '</div>' +
+            '</div>' +
+            '<div class="spec-ench-right">' +
+              '<div class="spec-tier-items-box">' +
+                '<span class="spec-tier-items-label">ITEMS TO CRAFT</span>' +
+                '<strong class="spec-tier-items-val ' + enchInfo.css + '">' + fmt(itemsNeeded) + '</strong>' +
+              '</div>' +
+              (matsHtml ? '<div class="spec-tier-mats">' + matsHtml + '</div>' : '') +
+            '</div>' +
+          '</div>';
+      }
+
+      html +=
+        '<article class="spec-tier-card">' +
+          '<header class="spec-tier-card-header">' +
+            '<div class="spec-tier-card-title">' +
+              '<span class="spec-tier-tag">T' + tier + '</span>' +
+              '<strong>' + esc(tierName) + '</strong>' +
+            '</div>' +
+            '<span class="spec-tier-card-sub">Tier ' + tier + ' (' + enchantsToShow.length + ' enchantment ' + (enchantsToShow.length === 1 ? 'level' : 'levels') + ')</span>' +
+          '</header>' +
+          '<div class="spec-ench-table">' +
+            rowsHtml +
+          '</div>' +
+        '</article>';
+    }
+
+    return html;
+  }
+
+  function updateSpecOutputs(item) {
+    if (!item) return;
+
+    const fromVal = Math.max(0, Math.min(100, Number(state.specFrom != null ? state.specFrom : 0)));
+    const toVal = Math.max(0, Math.min(100, Number(state.specTo != null ? state.specTo : 100)));
+    const isPremium = state.specPremium !== false;
+
+    // 1. Update badges
+    const fromBadge = $("#spec-from-badge");
+    if (fromBadge) fromBadge.textContent = "Level " + fromVal;
+
+    const toBadge = $("#spec-to-badge");
+    if (toBadge) toBadge.textContent = "Level " + toVal;
+
+    // 2. Update summary card
+    const totalFame = calculateSpecFameRequired(fromVal, toVal, item);
+    const multDesc = getSpecNodeDescription(item);
+    const summaryCard = $("#spec-summary-card");
+    if (summaryCard) {
+      summaryCard.innerHTML =
+        '<div class="spec-summary-left">' +
+          '<span class="spec-summary-label">TOTAL FAME REQUIRED</span>' +
+          '<strong class="spec-summary-fame">' + fmt(totalFame) + ' Fame</strong>' +
+        '</div>' +
+        '<div class="spec-summary-right">' +
+          '<span class="spec-badge-pill">Levels ' + fromVal + ' → ' + toVal + ' (' + (toVal >= fromVal ? ('+' + (toVal - fromVal)) : '0') + ')</span>' +
+          '<span class="spec-badge-pill gold">' + esc(multDesc) + '</span>' +
+          '<span class="spec-badge-pill ' + (isPremium ? 'teal' : 'muted') + '">' + (isPremium ? 'Premium (1.5×)' : 'Non-Premium (1.0×)') + '</span>' +
+        '</div>';
+    }
+
+    // 3. Update tiers grid
+    const tiersGrid = $("#spec-tiers-grid");
+    if (tiersGrid) {
+      tiersGrid.innerHTML = buildSpecTiersGridHtml(item, fromVal, toVal, isPremium);
+    }
+  }
+
   function renderSpecCalculator(item) {
     const section = $("#spec-calc-section");
     if (!section) return;
@@ -9884,69 +10139,14 @@
 
     const fromVal = Math.max(0, Math.min(100, Number(state.specFrom != null ? state.specFrom : 0)));
     const toVal = Math.max(0, Math.min(100, Number(state.specTo != null ? state.specTo : 100)));
-    const isPremium = state.specPremium !== false; // default true
+    const isPremium = state.specPremium !== false;
+    const filter = state.specEnchantFilter || "all";
 
     const totalFame = calculateSpecFameRequired(fromVal, toVal, item);
     const multDesc = getSpecNodeDescription(item);
-    const availableTiers = Object.keys(item[3] || {})
-      .map(Number)
-      .filter((t) => t >= 4 && item[3][t] && item[3][t][1] && item[3][t][1].length)
-      .sort((a, b) => a - b);
-
-    let tiersHtml = "";
-    if (!availableTiers.length) {
-      tiersHtml = '<div class="planner-session-empty">No craftable Tier 4+ recipes found for this item.</div>';
-    } else {
-      for (const tier of availableTiers) {
-        const recipeData = item[3][tier];
-        const tierName = recipeData[0] || (item[0] + " T" + tier);
-        const baseFame = getItemBaseCraftFame(item, tier);
-        const famePerCraft = isPremium ? Math.round(baseFame * 1.5) : baseFame;
-        const itemsNeeded = (totalFame > 0 && famePerCraft > 0) ? Math.ceil(totalFame / famePerCraft) : 0;
-
-        let matsHtml = "";
-        if (recipeData[1] && recipeData[1].length) {
-          const matParts = [];
-          for (const mat of recipeData[1]) {
-            const matCode = mat[0];
-            const matQtyPer = Number(mat[1]) || 0;
-            const totalMatQty = itemsNeeded * matQtyPer;
-            const label = formatMaterialLabel(matCode);
-            matParts.push('<span><strong>' + fmt(totalMatQty) + '</strong> ' + esc(label) + '</span>');
-          }
-          matsHtml = matParts.join('<span class="spec-mat-sep">·</span>');
-        }
-
-        tiersHtml +=
-          '<article class="spec-tier-card">' +
-            '<div class="spec-tier-card-left">' +
-              '<span class="spec-tier-card-icon">' + craftIconHtml(item, tier, 0) + '</span>' +
-              '<div class="spec-tier-card-meta">' +
-                '<div class="spec-tier-card-title">' +
-                  '<span class="spec-tier-tag">T' + tier + '</span>' +
-                  '<strong>' + esc(tierName) + '</strong>' +
-                '</div>' +
-                '<div class="spec-tier-fame-info">' +
-                  '<span class="spec-fame-chip">' + fmt(famePerCraft) + ' Fame / craft</span>' +
-                  (isPremium
-                    ? '<span class="spec-fame-sub">(' + fmt(baseFame) + ' base + 50%)</span>'
-                    : '<span class="spec-fame-sub">(Base fame, no premium)</span>') +
-                '</div>' +
-              '</div>' +
-            '</div>' +
-            '<div class="spec-tier-card-right">' +
-              '<div class="spec-tier-items-box">' +
-                '<span class="spec-tier-items-label">ITEMS TO CRAFT</span>' +
-                '<strong class="spec-tier-items-val">' + fmt(itemsNeeded) + '</strong>' +
-              '</div>' +
-              (matsHtml ? '<div class="spec-tier-mats">' + matsHtml + '</div>' : '') +
-            '</div>' +
-          '</article>';
-      }
-    }
 
     section.innerHTML =
-      '<div class="spec-calc-controls">' +
+      '<div class="spec-calc-controls" id="spec-calc-controls">' +
         '<div class="spec-slider-group">' +
           '<div class="spec-slider-row">' +
             '<div class="spec-slider-label-wrap">' +
@@ -10005,12 +10205,23 @@
       '</div>' +
 
       '<div class="spec-tiers-wrapper">' +
-        '<div class="spec-tiers-head">' +
-          '<h3>TIER BREAKDOWN & CRAFT REQUIREMENTS</h3>' +
-          '<small>Crafting quantities needed to achieve your target spec (Level ' + fromVal + ' → ' + toVal + ')</small>' +
+        '<div class="spec-tiers-header-row">' +
+          '<div class="spec-tiers-head">' +
+            '<h3>TIER & ENCHANTMENT BREAKDOWN</h3>' +
+            '<small>Required craft counts to reach target spec (Level ' + fromVal + ' → ' + toVal + ')</small>' +
+          '</div>' +
+          '<div class="spec-ench-filter-bar">' +
+            '<span class="spec-ench-filter-label">ENCHANTMENT:</span>' +
+            '<button type="button" class="spec-ench-filter-btn' + (filter === 'all' ? ' active' : '') + '" data-ench="all">All (.0–.4)</button>' +
+            '<button type="button" class="spec-ench-filter-btn ench-0' + (filter === '0' ? ' active' : '') + '" data-ench="0">.0 Flat</button>' +
+            '<button type="button" class="spec-ench-filter-btn ench-1' + (filter === '1' ? ' active' : '') + '" data-ench="1">.1</button>' +
+            '<button type="button" class="spec-ench-filter-btn ench-2' + (filter === '2' ? ' active' : '') + '" data-ench="2">.2</button>' +
+            '<button type="button" class="spec-ench-filter-btn ench-3' + (filter === '3' ? ' active' : '') + '" data-ench="3">.3</button>' +
+            '<button type="button" class="spec-ench-filter-btn ench-4' + (filter === '4' ? ' active' : '') + '" data-ench="4">.4</button>' +
+          '</div>' +
         '</div>' +
-        '<div class="spec-tiers-grid">' +
-          tiersHtml +
+        '<div class="spec-tiers-grid" id="spec-tiers-grid">' +
+          buildSpecTiersGridHtml(item, fromVal, toVal, isPremium) +
         '</div>' +
       '</div>';
 
@@ -10177,26 +10388,73 @@
     // Spec Calculator section inputs and delegation
     const specCalcSec = $("#spec-calc-section");
     if (specCalcSec) {
+      // Input event handles real-time dragging & typing WITHOUT destroying controls DOM
       specCalcSec.addEventListener("input", (e) => {
         const item = state.specSelectedItem ? CRAFT_BY_KEY.get(state.specSelectedItem) : null;
         if (!item) return;
 
-        if (e.target.id === "spec-from-slider" || e.target.id === "spec-from-input") {
+        if (e.target.id === "spec-from-slider") {
           let val = Math.max(0, Math.min(100, Math.round(Number(e.target.value) || 0)));
           state.specFrom = val;
+          const fromInput = $("#spec-from-input");
+          if (fromInput) fromInput.value = val;
+
+          // If from > to, push to slider & input
           if (state.specTo != null && state.specTo < val) {
             state.specTo = val;
+            const toSlider = $("#spec-to-slider");
+            const toInput = $("#spec-to-input");
+            if (toSlider) toSlider.value = val;
+            if (toInput) toInput.value = val;
           }
           scheduleSave();
-          renderSpecCalculator(item);
-        } else if (e.target.id === "spec-to-slider" || e.target.id === "spec-to-input") {
+          updateSpecOutputs(item);
+        } else if (e.target.id === "spec-from-input") {
+          let val = Math.max(0, Math.min(100, Math.round(Number(e.target.value) || 0)));
+          state.specFrom = val;
+          const fromSlider = $("#spec-from-slider");
+          if (fromSlider) fromSlider.value = val;
+
+          if (state.specTo != null && state.specTo < val) {
+            state.specTo = val;
+            const toSlider = $("#spec-to-slider");
+            const toInput = $("#spec-to-input");
+            if (toSlider) toSlider.value = val;
+            if (toInput) toInput.value = val;
+          }
+          scheduleSave();
+          updateSpecOutputs(item);
+        } else if (e.target.id === "spec-to-slider") {
           let val = Math.max(0, Math.min(100, Math.round(Number(e.target.value) || 0)));
           state.specTo = val;
+          const toInput = $("#spec-to-input");
+          if (toInput) toInput.value = val;
+
+          // If to < from, pull from slider & input
           if (state.specFrom != null && state.specFrom > val) {
             state.specFrom = val;
+            const fromSlider = $("#spec-from-slider");
+            const fromInput = $("#spec-from-input");
+            if (fromSlider) fromSlider.value = val;
+            if (fromInput) fromInput.value = val;
           }
           scheduleSave();
-          renderSpecCalculator(item);
+          updateSpecOutputs(item);
+        } else if (e.target.id === "spec-to-input") {
+          let val = Math.max(0, Math.min(100, Math.round(Number(e.target.value) || 0)));
+          state.specTo = val;
+          const toSlider = $("#spec-to-slider");
+          if (toSlider) toSlider.value = val;
+
+          if (state.specFrom != null && state.specFrom > val) {
+            state.specFrom = val;
+            const fromSlider = $("#spec-from-slider");
+            const fromInput = $("#spec-from-input");
+            if (fromSlider) fromSlider.value = val;
+            if (fromInput) fromInput.value = val;
+          }
+          scheduleSave();
+          updateSpecOutputs(item);
         }
       });
 
@@ -10207,11 +10465,15 @@
         if (e.target.id === "spec-premium-checkbox") {
           state.specPremium = e.target.checked;
           scheduleSave();
-          renderSpecCalculator(item);
+          updateSpecOutputs(item);
         }
       });
 
       specCalcSec.addEventListener("click", (e) => {
+        const item = state.specSelectedItem ? CRAFT_BY_KEY.get(state.specSelectedItem) : null;
+        if (!item) return;
+
+        // Preset buttons
         const presetBtn = e.target.closest(".spec-preset-btn");
         if (presetBtn) {
           const from = Number(presetBtn.getAttribute("data-from")) || 0;
@@ -10219,8 +10481,35 @@
           state.specFrom = from;
           state.specTo = to;
           scheduleSave();
-          const item = state.specSelectedItem ? CRAFT_BY_KEY.get(state.specSelectedItem) : null;
-          renderSpecCalculator(item);
+          const fromSlider = $("#spec-from-slider");
+          const fromInput = $("#spec-from-input");
+          const toSlider = $("#spec-to-slider");
+          const toInput = $("#spec-to-input");
+          if (fromSlider) fromSlider.value = from;
+          if (fromInput) fromInput.value = from;
+          if (toSlider) toSlider.value = to;
+          if (toInput) toInput.value = to;
+          updateSpecOutputs(item);
+          return;
+        }
+
+        // Enchantment filter buttons (.0, .1, .2, .3, .4, all)
+        const filterBtn = e.target.closest(".spec-ench-filter-btn");
+        if (filterBtn) {
+          const ench = filterBtn.getAttribute("data-ench") || "all";
+          state.specEnchantFilter = ench;
+          scheduleSave();
+          specCalcSec.querySelectorAll(".spec-ench-filter-btn").forEach((btn) => {
+            btn.classList.toggle("active", btn.getAttribute("data-ench") === ench);
+          });
+          const tiersGrid = $("#spec-tiers-grid");
+          if (tiersGrid) {
+            const fromVal = Math.max(0, Math.min(100, Number(state.specFrom != null ? state.specFrom : 0)));
+            const toVal = Math.max(0, Math.min(100, Number(state.specTo != null ? state.specTo : 100)));
+            const isPremium = state.specPremium !== false;
+            tiersGrid.innerHTML = buildSpecTiersGridHtml(item, fromVal, toVal, isPremium);
+          }
+          return;
         }
       });
     }
