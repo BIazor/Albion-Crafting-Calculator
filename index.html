@@ -5700,6 +5700,11 @@
   .spec-badge-pill.muted {
     color: var(--muted);
   }
+  .spec-badge-pill.coral {
+    background: rgba(230, 57, 70, .14);
+    border-color: rgba(255, 107, 107, .38);
+    color: #ff6b6b;
+  }
 
   /* Tiers Grid & Cards */
   .spec-tiers-wrapper {
@@ -7775,6 +7780,10 @@
     state.craftReturn.rate = rate;
     updateReturnRateButton();
     renderCraftPriceViews();
+    if (state.specSelectedItem) {
+      const specItem = CRAFT_BY_KEY.get(state.specSelectedItem);
+      if (specItem) updateSpecOutputs(specItem);
+    }
     scheduleSave();
   }
 
@@ -7819,6 +7828,11 @@
     const slider = $("#craft-return-slider");
     if (slider) slider.value = String(rate);
 
+    const specVal = $("#spec-craft-return-value");
+    if (specVal) specVal.textContent = rate.toFixed(2);
+    const specSlider = $("#spec-craft-return-slider");
+    if (specSlider) specSlider.value = String(rate);
+
     const cr = state.craftReturn || {};
     const daily = cr.dailyBonus || 0;
     const mode = cr.mode || "royal";
@@ -7826,14 +7840,14 @@
     const quality = cr.zoneQuality || 5;
     const power = cr.powerLevel || 5;
 
-    // Daily bonus buttons
-    $$("[data-rr-daily]").forEach((btn) => {
+    // Daily bonus buttons (updates both calculator & spec calc buttons)
+    $("[data-rr-daily]").forEach((btn) => {
       btn.classList.toggle("is-active", Number(btn.dataset.rrDaily) === daily);
     });
 
-    // Mode buttons
+    // Mode buttons (updates both calculator & spec calc buttons)
     const isHideout = mode === "hideout";
-    $$("[data-rr-mode]").forEach((btn) => {
+    $("[data-rr-mode]").forEach((btn) => {
       const btnMode = btn.dataset.rrMode;
       let active = false;
       if (btnMode === "city-nofocus") active = mode === "royal" && !focus;
@@ -7848,13 +7862,18 @@
     const hoChevron = $("#return-rate-btn svg");
     if (hoChevron) hoChevron.style.transform = isHideout ? "rotate(180deg)" : "none";
 
+    const specHoPanel = $("#spec-rr-hideout-panel");
+    if (specHoPanel) specHoPanel.hidden = !isHideout;
+    const specHoChevron = $("#spec-return-rate-btn svg");
+    if (specHoChevron) specHoChevron.style.transform = isHideout ? "rotate(180deg)" : "none";
+
     // Hideout Quality pills
-    $$("[data-rr-quality]").forEach((btn) => {
+    $("[data-rr-quality]").forEach((btn) => {
       btn.classList.toggle("is-active", Number(btn.dataset.rrQuality) === quality);
     });
 
     // Hideout Power pills
-    $$("[data-rr-power]").forEach((btn) => {
+    $("[data-rr-power]").forEach((btn) => {
       btn.classList.toggle("is-active", Number(btn.dataset.rrPower) === power);
     });
 
@@ -7864,6 +7883,12 @@
       hoFocusBtn.textContent = focus ? "ON" : "OFF";
       hoFocusBtn.classList.toggle("is-active", focus);
       hoFocusBtn.dataset.rrHoFocus = String(focus);
+    }
+    const specHoFocusBtn = $("#spec-rr-ho-focus-btn");
+    if (specHoFocusBtn) {
+      specHoFocusBtn.textContent = focus ? "ON" : "OFF";
+      specHoFocusBtn.classList.toggle("is-active", focus);
+      specHoFocusBtn.dataset.rrHoFocus = String(focus);
     }
   }
 
@@ -10012,6 +10037,91 @@
       '</article>';
   }
 
+  function buildSpecReturnCardHtml() {
+    const rate = craftReturnRate();
+    const cr = state.craftReturn || {};
+    const daily = cr.dailyBonus || 0;
+    const mode = cr.mode || "royal";
+    const focus = Boolean(cr.focus);
+    const quality = cr.zoneQuality || 5;
+    const power = cr.powerLevel || 5;
+    const isHideout = mode === "hideout";
+
+    return (
+      '<section class="craft-card return-card" id="spec-return-card" aria-labelledby="spec-return-card-heading">' +
+        '<div class="rr-header">' +
+          '<div class="rr-title-wrap">' +
+            '<svg class="rr-wind-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+              '<path d="M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2"/>' +
+              '<path d="M9.6 4.6A2 2 0 1 1 11 8H2"/>' +
+              '<path d="M12.6 19.4A2 2 0 1 0 14 16H2"/>' +
+            '</svg>' +
+            '<span id="spec-return-card-heading" class="rr-title">RETURN RATE</span>' +
+          '</div>' +
+          '<div class="rr-badge">' +
+            '<span id="spec-craft-return-value" class="rr-badge-val">' + rate.toFixed(2) + '</span>' +
+            '<span class="rr-badge-pct">%</span>' +
+          '</div>' +
+        '</div>' +
+
+        '<div class="rr-controls">' +
+          '<div class="rr-mode-group" role="radiogroup" aria-label="Return rate location">' +
+            '<button type="button" class="rr-pill' + (mode === "royal" && !focus ? ' is-active' : '') + '" data-rr-mode="city-nofocus">CITY (NO FOCUS)</button>' +
+            '<button type="button" class="rr-pill' + (mode === "royal" && focus ? ' is-active' : '') + '" data-rr-mode="city-focus">CITY (USE FOCUS)</button>' +
+            '<button type="button" class="rr-pill rr-hideout-btn' + (isHideout ? ' is-active' : '') + '" id="spec-return-rate-btn" data-rr-mode="hideout" title="Toggle Hideout settings">' +
+              '<span>HIDEOUT</span>' +
+              '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"' + (isHideout ? ' style="transform: rotate(180deg);"' : '') + '><path d="m6 9 6 6 6-6"/></svg>' +
+            '</button>' +
+          '</div>' +
+
+          '<div class="rr-hideout-panel" id="spec-rr-hideout-panel"' + (isHideout ? '' : ' hidden') + '>' +
+            '<div class="rr-ho-row">' +
+              '<span class="rr-ho-label">QUALITY</span>' +
+              '<div class="rr-ho-pills" role="radiogroup" aria-label="Hideout Zone Quality">' +
+                [1, 2, 3, 4, 5, 6].map(function(q) {
+                  return '<button type="button" class="rr-ho-pill' + (quality === q ? ' is-active' : '') + '" data-rr-quality="' + q + '">Q' + q + '</button>';
+                }).join('') +
+              '</div>' +
+            '</div>' +
+            '<div class="rr-ho-row">' +
+              '<span class="rr-ho-label">POWER</span>' +
+              '<div class="rr-ho-pills" role="radiogroup" aria-label="Hideout Power Level">' +
+                [1, 2, 3, 4, 5, 6, 7, 8, 9].map(function(p) {
+                  return '<button type="button" class="rr-ho-pill' + (power === p ? ' is-active' : '') + '" data-rr-power="' + p + '">' + p + '</button>';
+                }).join('') +
+              '</div>' +
+            '</div>' +
+            '<div class="rr-ho-row">' +
+              '<span class="rr-ho-label">FOCUS</span>' +
+              '<div class="rr-ho-pills">' +
+                '<button type="button" class="rr-ho-pill rr-ho-focus-btn' + (focus ? ' is-active' : '') + '" id="spec-rr-ho-focus-btn" data-rr-ho-focus="' + focus + '">' + (focus ? 'ON' : 'OFF') + '</button>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+
+          '<div class="rr-bonus-group">' +
+            '<span class="rr-bonus-label">DAILY BONUS</span>' +
+            '<div class="rr-pills" role="radiogroup" aria-label="Daily Bonus">' +
+              '<button type="button" class="rr-pill' + (daily === 0 ? ' is-active' : '') + '" data-rr-daily="0">NONE</button>' +
+              '<button type="button" class="rr-pill' + (daily === 10 ? ' is-active' : '') + '" data-rr-daily="10">+10%</button>' +
+              '<button type="button" class="rr-pill' + (daily === 20 ? ' is-active' : '') + '" data-rr-daily="20">+20%</button>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+
+        '<div class="rr-slider-section">' +
+          '<input id="spec-craft-return-slider" class="rr-slider" type="range" min="0.01" max="62" step="0.01" value="' + rate + '" aria-label="Return rate">' +
+          '<div class="rr-ticks" aria-hidden="true">' +
+            '<span class="rr-tick" style="left: 0;">1%</span>' +
+            '<span class="rr-tick" style="left: 31.1%;">20%</span>' +
+            '<span class="rr-tick" style="left: 63.9%;">40%</span>' +
+            '<span class="rr-tick" style="right: 0;">62%</span>' +
+          '</div>' +
+        '</div>' +
+      '</section>'
+    );
+  }
+
   function buildSpecTiersGridHtml(item, fromVal, toVal, isPremium) {
     const availableTiers = Object.keys(item[3] || {})
       .map(Number)
@@ -10025,6 +10135,7 @@
     const totalFame = calculateSpecFameRequired(fromVal, toVal, item);
     const filter = state.specEnchantFilter || "all";
     const enchantsToShow = filter === "all" ? [0, 1, 2, 3, 4] : [Number(filter)];
+    const returnRate = craftReturnRate();
 
     let html = "";
     for (const tier of availableTiers) {
@@ -10045,8 +10156,15 @@
             const matCode = mat[0];
             const matQtyPer = Number(mat[1]) || 0;
             const totalMatQty = itemsNeeded * matQtyPer;
+            const isArtefact = /ARTEFACT/i.test(matCode);
+            const effectiveQty = (returnRate > 0 && !isArtefact)
+              ? Math.ceil(totalMatQty * (1 - returnRate / 100))
+              : totalMatQty;
             const label = formatMaterialLabel(matCode, ench);
-            matParts.push('<span><strong>' + fmt(totalMatQty) + '</strong> ' + esc(label) + '</span>');
+            const hint = (!isArtefact && returnRate > 0 && effectiveQty !== totalMatQty)
+              ? ' title="Reflects ' + returnRate.toFixed(2) + '% Return Rate (Raw: ' + fmt(totalMatQty) + ')"'
+              : '';
+            matParts.push('<span' + hint + '><strong>' + fmt(effectiveQty) + '</strong> ' + esc(label) + '</span>');
           }
           matsHtml = matParts.join('<span class="spec-mat-sep">·</span>');
         }
@@ -10107,6 +10225,7 @@
     // 2. Update summary card
     const totalFame = calculateSpecFameRequired(fromVal, toVal, item);
     const multDesc = getSpecNodeDescription(item);
+    const returnRate = craftReturnRate();
     const summaryCard = $("#spec-summary-card");
     if (summaryCard) {
       summaryCard.innerHTML =
@@ -10118,6 +10237,7 @@
           '<span class="spec-badge-pill">Levels ' + fromVal + ' → ' + toVal + ' (' + (toVal >= fromVal ? ('+' + (toVal - fromVal)) : '0') + ')</span>' +
           '<span class="spec-badge-pill gold">' + esc(multDesc) + '</span>' +
           '<span class="spec-badge-pill ' + (isPremium ? 'teal' : 'muted') + '">' + (isPremium ? 'Premium (1.5×)' : 'Non-Premium (1.0×)') + '</span>' +
+          '<span class="spec-badge-pill coral">Return Rate: ' + returnRate.toFixed(2) + '%</span>' +
         '</div>';
     }
 
@@ -10145,6 +10265,7 @@
     const totalFame = calculateSpecFameRequired(fromVal, toVal, item);
     const multDesc = getSpecNodeDescription(item);
 
+    const returnRate = craftReturnRate();
     section.innerHTML =
       '<div class="spec-calc-controls" id="spec-calc-controls">' +
         '<div class="spec-slider-group">' +
@@ -10192,6 +10313,8 @@
         '</div>' +
       '</div>' +
 
+      buildSpecReturnCardHtml() +
+
       '<div class="spec-summary-card" id="spec-summary-card">' +
         '<div class="spec-summary-left">' +
           '<span class="spec-summary-label">TOTAL FAME REQUIRED</span>' +
@@ -10201,6 +10324,7 @@
           '<span class="spec-badge-pill">Levels ' + fromVal + ' → ' + toVal + ' (' + (toVal >= fromVal ? ('+' + (toVal - fromVal)) : '0') + ')</span>' +
           '<span class="spec-badge-pill gold">' + esc(multDesc) + '</span>' +
           '<span class="spec-badge-pill ' + (isPremium ? 'teal' : 'muted') + '">' + (isPremium ? 'Premium (1.5×)' : 'Non-Premium (1.0×)') + '</span>' +
+          '<span class="spec-badge-pill coral">Return Rate: ' + returnRate.toFixed(2) + '%</span>' +
         '</div>' +
       '</div>' +
 
@@ -10226,6 +10350,7 @@
       '</div>';
 
     section.hidden = false;
+    updateReturnRateButton();
   }
 
   function selectSpecItem(key) {
@@ -10455,11 +10580,29 @@
           }
           scheduleSave();
           updateSpecOutputs(item);
+        } else if (e.target.id === "spec-craft-return-slider") {
+          const val = roundReturnRate(e.target.value);
+          state.craftReturn = state.craftReturn || {};
+          state.craftReturn.rate = val;
+          state.craftReturn.mode = "custom";
+          const value = $("#spec-craft-return-value");
+          if (value) value.textContent = val.toFixed(2);
+          const mainVal = $("#craft-return-value");
+          if (mainVal) mainVal.textContent = val.toFixed(2);
+          const mainSlider = $("#craft-return-slider");
+          if (mainSlider) mainSlider.value = String(val);
+          $("[data-rr-mode]").forEach((btn) => btn.classList.remove("is-active"));
+          updateSpecOutputs(item);
+          scheduleSave();
         }
       });
 
       specCalcSec.addEventListener("change", (e) => {
         const item = state.specSelectedItem ? CRAFT_BY_KEY.get(state.specSelectedItem) : null;
+        if (e.target.id === "spec-craft-return-slider") {
+          renderCraftPriceViews();
+          return;
+        }
         if (!item) return;
 
         if (e.target.id === "spec-premium-checkbox") {
@@ -10470,6 +10613,60 @@
       });
 
       specCalcSec.addEventListener("click", (e) => {
+        // Return Rate controls delegation
+        const dailyBtn = e.target.closest("[data-rr-daily]");
+        if (dailyBtn && e.target.closest("#spec-return-card")) {
+          state.craftReturn = state.craftReturn || {};
+          state.craftReturn.dailyBonus = Number(dailyBtn.dataset.rrDaily);
+          applyReturnPreset();
+          return;
+        }
+
+        const qualityBtn = e.target.closest("[data-rr-quality]");
+        if (qualityBtn && e.target.closest("#spec-return-card")) {
+          state.craftReturn = state.craftReturn || {};
+          state.craftReturn.zoneQuality = Number(qualityBtn.dataset.rrQuality);
+          applyReturnPreset();
+          return;
+        }
+
+        const powerBtn = e.target.closest("[data-rr-power]");
+        if (powerBtn && e.target.closest("#spec-return-card")) {
+          state.craftReturn = state.craftReturn || {};
+          state.craftReturn.powerLevel = Number(powerBtn.dataset.rrPower);
+          applyReturnPreset();
+          return;
+        }
+
+        const hoFocusBtn = e.target.closest("#spec-rr-ho-focus-btn");
+        if (hoFocusBtn) {
+          state.craftReturn = state.craftReturn || {};
+          state.craftReturn.focus = !state.craftReturn.focus;
+          applyReturnPreset();
+          return;
+        }
+
+        const modeBtn = e.target.closest("[data-rr-mode]");
+        if (modeBtn && e.target.closest("#spec-return-card")) {
+          state.craftReturn = state.craftReturn || {};
+          const btnMode = modeBtn.dataset.rrMode;
+          if (btnMode === "city-nofocus") {
+            state.craftReturn.mode = "royal";
+            state.craftReturn.focus = false;
+            applyReturnPreset();
+          } else if (btnMode === "city-focus") {
+            state.craftReturn.mode = "royal";
+            state.craftReturn.focus = true;
+            applyReturnPreset();
+          } else if (btnMode === "hideout") {
+            state.craftReturn.mode = "hideout";
+            if (state.craftReturn.zoneQuality == null) state.craftReturn.zoneQuality = 5;
+            if (state.craftReturn.powerLevel == null) state.craftReturn.powerLevel = 5;
+            applyReturnPreset();
+          }
+          return;
+        }
+
         const item = state.specSelectedItem ? CRAFT_BY_KEY.get(state.specSelectedItem) : null;
         if (!item) return;
 
