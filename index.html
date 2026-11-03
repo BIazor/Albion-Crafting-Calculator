@@ -5269,6 +5269,7 @@
   #panel-planner { background: transparent !important; }
   #panel-database { background: transparent !important; }
   #panel-spec { background: transparent !important; border: 0 !important; }
+  #panel-destiny { background: transparent !important; border: 0 !important; }
 
   .spec-picker-container {
     display: flex;
@@ -6348,6 +6349,71 @@
     .planner-session-craft .planner-craft-delete { justify-self: end; }
   }
 
+
+  .destiny-page { padding:24px 26px 40px; max-width:1280px; margin:0 auto; }
+  .destiny-heading { display:flex; justify-content:space-between; align-items:end; gap:16px; margin-bottom:20px; }
+  .destiny-heading h1 { margin:0 0 6px; color:var(--text); font-size:24px; }
+  .destiny-heading p { margin:0; color:var(--muted); font-size:12px; }
+  .destiny-picker { position:relative; width:min(100%,760px); margin:0 auto 22px; }
+  .destiny-search-label { display:block; margin:0 0 7px 3px; color:var(--muted); font-size:10px; font-weight:800; letter-spacing:.1em; }
+  .destiny-search-wrap { display:grid; grid-template-columns:18px minmax(0,1fr); align-items:center; gap:10px; height:46px; padding:0 15px; border:1px solid var(--border); border-radius:13px; background:#17191e; box-shadow:0 5px 16px rgba(0,0,0,.14); transition:border-color .15s,box-shadow .15s; }
+  .destiny-search-wrap:focus-within { border-color:var(--gold-dark); box-shadow:0 0 0 3px rgba(233,187,98,.1); }
+  .destiny-search-wrap svg { position:static; display:block; color:var(--muted); transform:none; pointer-events:none; }
+  .destiny-search, input.destiny-search[type="search"] { width:100%; height:44px; min-width:0; padding:0; border:0; border-radius:0; outline:none; background:transparent; color:var(--text); font:500 13px var(--font); box-shadow:none; }
+  .destiny-search::placeholder { color:var(--faint); }
+  .destiny-search:focus { border:0; box-shadow:none; }
+  .destiny-browser { position:absolute; z-index:30; top:calc(100% + 8px); right:0; left:0; max-height:min(68vh,600px); overflow:auto; padding:10px; border:1px solid var(--border); border-radius:16px; background:#20232a; box-shadow:0 18px 44px rgba(0,0,0,.42); }
+  .destiny-browser[hidden] { display:none; }
+  .destiny-browser-hint { padding:7px 9px 10px; color:var(--faint); font-size:10px; }
+  .destiny-browser-group + .destiny-browser-group { margin-top:4px; }
+  .destiny-browser-group-btn, .destiny-browser-sub-btn { display:flex; align-items:center; justify-content:space-between; width:100%; min-height:38px; padding:8px 10px; border:0; border-radius:9px; background:transparent; color:var(--text); font:700 12px var(--font); text-align:left; cursor:pointer; }
+  .destiny-browser-group-btn:hover, .destiny-browser-sub-btn:hover { background:rgba(255,255,255,.055); }
+  .destiny-browser-group-btn span:last-child { color:var(--faint); transition:transform .15s; }
+  .destiny-browser-group.is-open > .destiny-browser-group-btn span:last-child { transform:rotate(90deg); }
+  .destiny-browser-subgroups { margin:2px 0 6px 12px; padding-left:10px; border-left:1px solid var(--border-soft); }
+  .destiny-browser-sub-btn { min-height:34px; color:var(--muted); font-size:11px; }
+  .destiny-browser-nodes { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:5px; padding:5px 6px 8px; }
+  .destiny-browser-node { display:grid; grid-template-columns:34px minmax(0,1fr); align-items:center; gap:8px; min-width:0; min-height:48px; padding:6px 8px; border:1px solid transparent; border-radius:10px; background:#17191e; color:var(--text); text-align:left; cursor:pointer; }
+  .destiny-browser-node:hover, .destiny-browser-node:focus-visible { border-color:var(--border); background:#292d35; }
+  .destiny-browser-node .gear-icon { --gear-size:32px; }
+  .destiny-browser-node-copy { display:flex; flex-direction:column; gap:2px; min-width:0; }
+  .destiny-browser-node-copy strong { overflow:hidden; font-size:10px; font-weight:700; text-overflow:ellipsis; white-space:nowrap; }
+  .destiny-browser-node-copy small { color:var(--muted); font-size:9px; }
+  .destiny-browser-empty { padding:18px 10px; color:var(--muted); font-size:12px; text-align:center; }
+  .destiny-selected { width:min(100%,900px); margin:0 auto; }
+  .destiny-selected-empty { padding:30px 18px; border:1px dashed var(--border-soft); border-radius:16px; color:var(--muted); font-size:12px; text-align:center; }
+  .destiny-selected-card { overflow:hidden; border:1px solid var(--border); border-radius:18px; background:linear-gradient(145deg,#292d35,#20232a); box-shadow:0 10px 28px rgba(0,0,0,.22); }
+  .destiny-selected-head { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:13px 16px; border-bottom:1px solid var(--border-soft); }
+  .destiny-selected-head span { color:var(--gold-2); font-size:10px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; }
+  .destiny-change-btn { padding:7px 11px; border:1px solid var(--border-soft); border-radius:9px; background:#17191e; color:var(--text); font:700 10px var(--font); cursor:pointer; }
+  .destiny-change-btn:hover { border-color:var(--gold-dark); }
+  .destiny-selected-tree { display:grid; gap:10px; padding:14px 16px 16px; }
+  .destiny-selected-tree .destiny-item-nodes { gap:9px; padding-left:0; }
+  .destiny-selected-card > .destiny-node,
+  .destiny-selected-tree > .destiny-node,
+  .destiny-selected-tree .destiny-item-nodes > .destiny-node { border:1px solid rgba(255,255,255,.08); border-radius:16px; background:#17191e; box-shadow:0 4px 12px rgba(0,0,0,.16); }
+  .destiny-selected-tree > .destiny-node.is-base,
+  .destiny-selected-card > .destiny-node.is-base { border-color:rgba(233,187,98,.28); background:linear-gradient(135deg,rgba(233,187,98,.07),#17191e 58%); }
+  .destiny-node { display:grid; grid-template-columns:76px minmax(0,1fr) 96px; align-items:center; gap:16px; width:100%; min-height:104px; padding:16px 20px; border:0; background:#17191e; }
+  .destiny-node.is-base { background:rgba(12,14,18,.4); }
+  .destiny-node-icon { display:flex; align-items:center; justify-content:center; width:76px; height:76px; border:1px solid rgba(233,187,98,.24); border-radius:16px; background:rgba(233,187,98,.06); }
+  .destiny-node-icon .gear-icon { --gear-size:64px; }
+  .destiny-node-copy { display:flex; flex-direction:column; gap:4px; min-width:0; }
+  .destiny-node-copy strong { color:var(--text); font-size:18px; font-weight:800; line-height:1.25; overflow-wrap:anywhere; }
+  .destiny-node-copy small { color:var(--muted); font-size:11px; }
+  .destiny-level-input { width:96px; height:46px; padding:0 8px; border:1px solid var(--border-soft); border-radius:12px; outline:none; background:#22252b; color:var(--gold-2); font:800 17px var(--font); text-align:center; }
+  .destiny-level-input:focus { border-color:var(--gold); box-shadow:0 0 0 2px rgba(233,187,98,.12); }
+  @media(max-width:600px) {
+    .destiny-page { padding:16px 12px 28px; }
+    .destiny-heading { align-items:start; flex-direction:column; }
+    .destiny-node { grid-template-columns:58px minmax(0,1fr) 70px; gap:10px; min-height:82px; padding:12px; }
+    .destiny-node-icon { width:58px; height:58px; border-radius:13px; }
+    .destiny-node-icon .gear-icon { --gear-size:48px; }
+    .destiny-node-copy strong { font-size:14px; }
+    .destiny-level-input { width:70px; height:40px; font-size:15px; }
+    .destiny-browser-nodes { grid-template-columns:minmax(0,1fr); }
+  }
+
 </style>
 </head>
 <body>
@@ -6414,6 +6480,11 @@
         <button class="app-util-btn" type="button" data-tab="database">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="8" ry="3"></ellipse><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5"></path><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"></path></svg>
           Database
+        </button>
+
+        <button class="app-util-btn" type="button" data-tab="destiny">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="5"></circle><circle cx="12" cy="12" r="1"></circle></svg>
+          Destiny Board
         </button>
       </div>
     </div>
@@ -6600,6 +6671,10 @@
           </div>
         </section>
       </div>
+    </section>
+
+    <section class="panel" id="panel-destiny" role="tabpanel" aria-labelledby="tab-destiny" hidden>
+      <div class="destiny-page" id="destiny-page"></div>
     </section>
 
     <section class="panel" id="panel-help" role="tabpanel" aria-labelledby="tab-help" hidden>
@@ -6844,8 +6919,9 @@
 
   const CRAFT_ITEM_KEY = (item) => item[1] + "|" + item[0];
   const CRAFT_HAS_RECIPE = (item) => Object.values(item[3]).some((variant) => variant[1] && variant[1].length);
+  const CRAFT_EXCLUDED_ROYAL_ITEMS = new Set(["Royal Helmet", "Royal Hood", "Royal Cowl", "Royal Armor", "Royal Robe", "Royal Jacket", "Royal Boots", "Royal Sandals", "Royal Shoes"]);
   const CRAFT_ITEMS = CRAFT_DATA.items.filter(
-    (item) => CRAFT_HAS_RECIPE(item) && !(item[1] === "Capes" && / Crest$/.test(item[0]))
+    (item) => CRAFT_HAS_RECIPE(item) && !CRAFT_EXCLUDED_ROYAL_ITEMS.has(item[0]) && !(item[1] === "Capes" && item[0] !== "Cape")
   );
   const CRAFT_BY_KEY = new Map(CRAFT_ITEMS.map((entry) => [CRAFT_ITEM_KEY(entry), entry]));
   const CRAFT_GROUPS = [
@@ -7298,6 +7374,13 @@
       }
     }
 
+    if (src.specLevels && typeof src.specLevels === "object" && !Array.isArray(src.specLevels)) {
+      Object.entries(src.specLevels).slice(0, 1000).forEach(([key, value]) => {
+        const level = Number(value);
+        if (typeof key === "string" && key && Number.isInteger(level) && level >= 0 && level <= 100) base.specLevels[key] = level;
+      });
+    }
+
     const overrideSrc = src.craftPriceOverrides;
     if (overrideSrc && typeof overrideSrc === "object" && !Array.isArray(overrideSrc)) {
       Object.entries(overrideSrc).slice(0, 5000).forEach(([rawKey, value]) => {
@@ -7459,7 +7542,7 @@
     base.plannerActive = base.plannerSessions.some((s) => s.id === active) ? active : (base.plannerSessions[0] ? base.plannerSessions[0].id : "");
 
     if (src.ui && typeof src.ui === "object") {
-      if (["stock", "craft", "log", "help"].includes(src.ui.tab)) base.ui.tab = src.ui.tab;
+      if (["stock", "craft", "log", "help", "destiny"].includes(src.ui.tab)) base.ui.tab = src.ui.tab;
 
       const savedCraft = src.ui.craft;
       if (savedCraft && typeof savedCraft === "object" && !Array.isArray(savedCraft)) {
@@ -9845,7 +9928,7 @@
 
   function switchTab(name, options) {
     const opts = options || {};
-    if (!["craft", "database", "help", "planner", "spec"].includes(name)) name = "craft";
+    if (!["craft", "database", "help", "planner", "spec", "destiny"].includes(name)) name = "craft";
     state.ui.tab = name;
 
     $$(".app-nav-btn").forEach((btn) => {
@@ -9886,6 +9969,7 @@
           database: "Database · Items, City & Black Market Prices",
           planner: "Crafting Planner · Saved Queues",
           spec: "Spec Calculator",
+          destiny: "Destiny Board",
           help: "Settings & Albion Guide"
         };
         sectionTitleEl.textContent = titles[name] || name;
@@ -9896,6 +9980,7 @@
     if (name === "database") renderDatabase();
     if (name === "planner") renderPlannerPage();
     if (name === "spec") renderSpecPage();
+    if (name === "destiny") renderDestinyBoard();
     if (name === "help") updateStorageNote();
 
     try { history.replaceState(null, "", "#" + name); } catch (err) { /* file:// may block this */ }
@@ -10461,6 +10546,115 @@
     }
   }
 
+  const DESTINY_EXCLUDED_ITEMS = new Set(["Royal Helmet", "Royal Hood", "Royal Cowl", "Royal Armor", "Royal Robe", "Royal Jacket", "Royal Boots", "Royal Sandals", "Royal Shoes"]);
+  let destinySelectedNode = "";
+  let destinySelectedSubgroup = "";
+  let destinySearchQuery = "";
+  let destinyPickerOpen = false;
+  let destinyOpenGroup = "";
+
+  function destinyItemsForSubgroup(sub) {
+    return craftSubgroupItems(sub).filter((item) => {
+      if (DESTINY_EXCLUDED_ITEMS.has(item[0])) return false;
+      if (sub.name === "Capes" && item[0] !== "Cape") return false;
+      return true;
+    });
+  }
+
+  function destinyNodeOptions(sub) {
+    const items = destinyItemsForSubgroup(sub);
+    if (!items.length) return [];
+    return [{ key: "base:" + sub.name, name: sub.name + " (Base)", detail: "Base node · Level 0–100", item: items[0], isBase: true }]
+      .concat(items.map((item) => ({ key: CRAFT_ITEM_KEY(item), name: item[0], detail: "Item specialization · Level 0–100", item, isBase: false })));
+  }
+
+  function renderDestinyPickerNode(option) {
+    return '<button type="button" class="destiny-browser-node" data-destiny-node="' + esc(option.key) + '">' +
+      craftIconHtml(option.item, 4, 0) +
+      '<span class="destiny-browser-node-copy"><strong>' + esc(option.name) + '</strong><small>' + esc(option.detail) + '</small></span></button>';
+  }
+
+  function renderDestinyPicker() {
+    const browser = $("#destiny-browser");
+    if (!browser) return;
+    browser.hidden = !destinyPickerOpen;
+    if (!destinyPickerOpen) return;
+    const query = destinySearchQuery.trim().toLowerCase();
+    const sections = [];
+    CRAFT_GROUPS.forEach((group) => {
+      const subs = group.subgroups.map((sub) => {
+        const options = destinyNodeOptions(sub);
+        if (!options.length) return null;
+        const categoryMatch = !query || group.name.toLowerCase().includes(query) || sub.name.toLowerCase().includes(query);
+        const matching = categoryMatch ? options : options.filter((option) => option.name.toLowerCase().includes(query));
+        return matching.length ? { sub, options: matching } : null;
+      }).filter(Boolean);
+      if (!subs.length) return;
+      if (query) {
+        sections.push('<section class="destiny-browser-group is-open"><button type="button" class="destiny-browser-group-btn" data-destiny-group="' + esc(group.name) + '"><span>' + esc(group.name) + '</span><span>⌄</span></button>' +
+          '<div class="destiny-browser-subgroups">' + subs.map(({ sub, options }) => '<section><div class="destiny-browser-sub-btn">' + esc(sub.name) + '</div><div class="destiny-browser-nodes">' + options.map(renderDestinyPickerNode).join("") + '</div></section>').join("") + '</div></section>');
+        return;
+      }
+      const isOpen = destinyOpenGroup === group.name;
+      sections.push('<section class="destiny-browser-group' + (isOpen ? ' is-open' : '') + '"><button type="button" class="destiny-browser-group-btn" data-destiny-group="' + esc(group.name) + '"><span>' + esc(group.name) + '</span><span>›</span></button>' +
+        (isOpen ? '<div class="destiny-browser-subgroups">' + subs.map(({ sub }) =>
+          '<button type="button" class="destiny-browser-sub-btn" data-destiny-subgroup="' + esc(sub.name) + '"><span>' + esc(sub.name) + '</span><span>›</span></button>'
+        ).join("") + '</div>' : '') + '</section>');
+    });
+    browser.innerHTML = (query ? '<div class="destiny-browser-hint">Matching nodes</div>' : '<div class="destiny-browser-hint">Choose a category, then a type such as Swords or Battleaxes.</div>') +
+      (sections.length ? sections.join("") : '<div class="destiny-browser-empty">No nodes match that search.</div>');
+  }
+
+  function getDestinyNode(key) {
+    for (const group of CRAFT_GROUPS) {
+      for (const sub of group.subgroups) {
+        const options = destinyNodeOptions(sub);
+        const option = options.find((candidate) => candidate.key === key);
+        if (option) return { group, sub, option };
+      }
+    }
+    return null;
+  }
+
+  function renderDestinyBoard() {
+    const root = $("#destiny-page");
+    if (!root) return;
+    root.innerHTML = '<header class="destiny-heading"><div><h1>Destiny Board</h1><p>Browse a category and choose a type to view its full tree, or search for an individual node. Levels are saved on this device.</p></div></header>' +
+      '<section class="destiny-picker"><label class="destiny-search-label" for="destiny-search">FIND A NODE</label><div class="destiny-search-wrap"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg><input id="destiny-search" class="destiny-search" type="search" placeholder="Search an item or click to browse categories…" value="' + esc(destinySearchQuery) + '" autocomplete="off" aria-label="Search or browse Destiny Board nodes"></div><div class="destiny-browser" id="destiny-browser" hidden></div></section>' +
+      '<section class="destiny-selected" id="destiny-selected"></section>';
+    renderDestinyPicker();
+    const selectedRoot = $("#destiny-selected");
+    if (!selectedRoot) return;
+    if (destinySelectedSubgroup) {
+      let selectedGroup = null;
+      let selectedSub = null;
+      for (const group of CRAFT_GROUPS) {
+        const sub = group.subgroups.find((entry) => entry.name === destinySelectedSubgroup);
+        if (sub && destinyItemsForSubgroup(sub).length) { selectedGroup = group; selectedSub = sub; break; }
+      }
+      if (selectedGroup && selectedSub) {
+        const items = destinyItemsForSubgroup(selectedSub);
+        const renderTreeNode = (key, name, detail, item, isBase) => {
+          const level = Number(state.specLevels[key]) || 0;
+          return '<div class="destiny-node' + (isBase ? ' is-base' : '') + '"><span class="destiny-node-icon">' + craftIconHtml(item, 4, 0) + '</span><span class="destiny-node-copy"><strong>' + esc(name) + '</strong><small>' + esc(detail) + '</small></span><input class="destiny-level-input" type="number" min="0" max="100" step="1" value="' + level + '" data-destiny-level="' + esc(key) + '" aria-label="' + esc(name) + ' specialization level, 0 to 100"></div>';
+        };
+        selectedRoot.innerHTML = '<article class="destiny-selected-card"><header class="destiny-selected-head"><span>' + esc(selectedGroup.name + ' · ' + selectedSub.name) + '</span><button type="button" class="destiny-change-btn" id="destiny-change">Choose another type</button></header><div class="destiny-selected-tree">' +
+          renderTreeNode('base:' + selectedSub.name, selectedSub.name + ' (Base)', 'Base node · 0–100', items[0], true) +
+          '<div class="destiny-item-nodes">' + items.map((item) => renderTreeNode(CRAFT_ITEM_KEY(item), item[0], 'Item specialization · 0–100', item, false)).join("") + '</div></div></article>';
+        return;
+      }
+    }
+    const selected = getDestinyNode(destinySelectedNode);
+    if (!selected) {
+      selectedRoot.innerHTML = '<div class="destiny-selected-empty">Choose a category and type, or search for an individual node.</div>';
+      return;
+    }
+    const option = selected.option;
+    const level = Number(state.specLevels[option.key]) || 0;
+    selectedRoot.innerHTML = '<article class="destiny-selected-card"><header class="destiny-selected-head"><span>' + esc(selected.group.name + ' · ' + selected.sub.name) + '</span><button type="button" class="destiny-change-btn" id="destiny-change">Choose another node</button></header>' +
+      '<div class="destiny-node' + (option.isBase ? ' is-base' : '') + '"><span class="destiny-node-icon">' + craftIconHtml(option.item, 4, 0) + '</span><span class="destiny-node-copy"><strong>' + esc(option.name) + '</strong><small>' + esc(option.detail) + '</small></span><input class="destiny-level-input" type="number" min="0" max="100" step="1" value="' + level + '" data-destiny-level="' + esc(option.key) + '" aria-label="' + esc(option.name) + ' specialization level, 0 to 100"></div></article>';
+  }
+
   function bindEvents() {
     // Spec Calculator search and suggestions binding
     const specSearchInput = $("#spec-item-search");
@@ -10942,6 +11136,70 @@
           await fetchDbPrices([productId]);
           return;
         }
+      });
+    }
+
+    const destinyPage = $("#destiny-page");
+    if (destinyPage) {
+      destinyPage.addEventListener("focusin", (event) => {
+        if (event.target.id !== "destiny-search") return;
+        destinyPickerOpen = true;
+        renderDestinyPicker();
+      });
+      destinyPage.addEventListener("input", (event) => {
+        if (event.target.id === "destiny-search") {
+          destinySearchQuery = event.target.value;
+          destinyPickerOpen = true;
+          renderDestinyPicker();
+          return;
+        }
+        const input = event.target.closest("[data-destiny-level]");
+        if (!input) return;
+        const level = Math.max(0, Math.min(100, Math.floor(Number(input.value) || 0)));
+        input.value = String(level);
+        state.specLevels[input.dataset.destinyLevel] = level;
+        scheduleSave();
+      });
+      destinyPage.addEventListener("click", (event) => {
+        const groupButton = event.target.closest("[data-destiny-group]");
+        if (groupButton && !destinySearchQuery.trim()) {
+          event.stopPropagation();
+          const group = groupButton.dataset.destinyGroup;
+          destinyOpenGroup = destinyOpenGroup === group ? "" : group;
+          renderDestinyPicker();
+          return;
+        }
+        const subgroupButton = event.target.closest("[data-destiny-subgroup]");
+        if (subgroupButton) {
+          event.stopPropagation();
+          destinySelectedSubgroup = subgroupButton.dataset.destinySubgroup;
+          destinySelectedNode = "";
+          destinySearchQuery = "";
+          destinyPickerOpen = false;
+          renderDestinyBoard();
+          return;
+        }
+        const nodeButton = event.target.closest("[data-destiny-node]");
+        if (nodeButton) {
+          destinySelectedNode = nodeButton.dataset.destinyNode;
+          destinySelectedSubgroup = "";
+          destinySearchQuery = "";
+          destinyPickerOpen = false;
+          renderDestinyBoard();
+          return;
+        }
+        if (event.target.closest("#destiny-change")) {
+          destinyPickerOpen = true;
+          renderDestinyBoard();
+          const search = $("#destiny-search");
+          if (search) search.focus();
+        }
+      });
+      document.addEventListener("click", (event) => {
+        if (event.target.closest(".destiny-picker, #destiny-change")) return;
+        if (!destinyPickerOpen) return;
+        destinyPickerOpen = false;
+        renderDestinyPicker();
       });
     }
 
