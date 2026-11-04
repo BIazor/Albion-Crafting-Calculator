@@ -120,12 +120,12 @@
   .btn-lg { padding: 14px 24px; font-size: 14px; }
 
   /* ------------------------------------------------------------------- hero */
-  .hero { padding: 60px 0 0; }
+  .hero { padding: 46px 0 0; }
 
   .hero-copy { max-width: 760px; }
 
   .kicker {
-    margin: 0 0 22px;
+    margin: 0 0 15px;
     display: inline-flex;
     align-items: center;
     gap: 9px;
@@ -137,21 +137,21 @@
   .kicker::before { content: ""; width: 18px; height: 1px; background: var(--gold-dim); }
 
   h1 {
-    margin: 0 0 22px;
-    max-width: 20ch;
+    margin: 0 0 15px;
+    max-width: 30ch;
     font-family: var(--slab);
-    font-size: clamp(32px, 4.4vw, 52px);
+    font-size: clamp(29px, 3.5vw, 43px);
     font-weight: 700;
-    line-height: 1.1;
+    line-height: 1.08;
     letter-spacing: -0.012em;
   }
 
   .lede {
-    margin: 0 0 28px;
-    max-width: 52ch;
+    margin: 0 0 22px;
+    max-width: 62ch;
     color: var(--ink-2);
-    font-size: 16.5px;
-    line-height: 1.62;
+    font-size: 15.5px;
+    line-height: 1.6;
   }
 
   .hero-actions {
@@ -159,7 +159,7 @@
     flex-wrap: wrap;
     align-items: center;
     gap: 20px;
-    margin-bottom: 20px;
+    margin-bottom: 0;
   }
 
   .text-link {
@@ -173,11 +173,9 @@
 
   .text-link:hover { color: var(--gold); border-color: var(--gold); }
 
-  .fineprint { margin: 0; color: var(--ink-3); font-size: 12.5px; line-height: 1.5; }
-
   /* ------------------------------------------------------------------- tour */
   .tour {
-    margin: 44px 0 0;
+    margin: 26px 0 0;
     padding: 0;
   }
 
@@ -419,15 +417,13 @@
         <p class="kicker">Albion Online crafting maths, without the spreadsheet</p>
         <h1>Price the craft before you buy the materials.</h1>
         <p class="lede">
-          Pick the item, tell it what your hideout returns, and type the prices you see in game.
-          You get the materials you actually have to buy, the focus each craft burns, and the
-          margin left over — before a single bar leaves your stash.
+          Pick the item, set your hideout return rate and type the prices you see in game. You get
+          the materials you actually buy, the focus each craft burns, and the margin left over.
         </p>
         <div class="hero-actions">
           <a class="btn btn-solid btn-lg" href="calculator.html">Open the calculator</a>
           <a class="text-link" href="#how">See how the numbers work</a>
         </div>
-        <p class="fineprint">Free to use, no account, and every price you type stays in your browser.</p>
       </div>
 
       <figure class="tour">
@@ -450,7 +446,7 @@
           </video>
         </div>
         <figcaption>
-          <span><strong>Twenty seconds</strong> through the product: the catalogue, the craft panel, the end card.</span>
+          <span><strong>Twenty seconds</strong> through the product. Free, no account, and every price you type stays in your browser.</span>
           <button class="tour-btn" id="tour-toggle" type="button" aria-controls="tour-video" aria-pressed="false">Pause tour</button>
         </figcaption>
       </figure>
