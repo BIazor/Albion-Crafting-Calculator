@@ -6,7 +6,7 @@
 <meta name="color-scheme" content="dark">
 <title>Albion Crafting Calculator — plan profitable Albion Online crafts</title>
 <meta name="description" content="A free Albion Online crafting calculator: recipe material costs, hideout resource return rates, focus cost per craft, profit margins and a planner that tracks every session. No account needed.">
-<meta name="theme-color" content="#17191e">
+<meta name="theme-color" content="#12160f">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Albion Crafting Calculator">
@@ -15,456 +15,738 @@
 <meta name="twitter:card" content="summary">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Zilla+Slab:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #17191e;
-    --bg-deep: #0d0f13;
-    --panel: #242832;
-    --panel-2: #1d2027;
+    --ground: #12160f;
+    --sheet: #191d14;
+    --sheet-2: #1f2419;
+    --ink: #efe8d7;
+    --ink-2: #b5ae9b;
+    --ink-3: #837d6b;
+    --rule: rgba(233, 187, 98, 0.18);
+    --rule-soft: rgba(239, 232, 215, 0.08);
     --gold: #e9bb62;
-    --gold-2: #f2cb7c;
-    --gold-dark: #a96c36;
-    --green: #45c6b0;
+    --gold-dim: #b0813c;
+    --profit: #7fb98b;
     --discord: #5865f2;
-    --text: #f3efe8;
-    --muted: #c2b9ac;
-    --faint: #969087;
-    --border: rgba(211, 139, 79, 0.25);
-    --border-soft: rgba(211, 139, 79, 0.16);
-    --radius: 16px;
-    --font: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --slab: "Zilla Slab", Georgia, serif;
+    --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   }
 
   * { box-sizing: border-box; }
 
-  html { scroll-behavior: smooth; }
-
   body {
     margin: 0;
-    min-height: 100vh;
-    color: var(--text);
-    font-family: var(--font);
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16px;
     line-height: 1.6;
-    background:
-      radial-gradient(1000px 560px at 12% -8%, rgba(233, 187, 98, 0.13), transparent 68%),
-      radial-gradient(820px 480px at 92% 6%, rgba(69, 198, 176, 0.09), transparent 62%),
-      linear-gradient(180deg, #10131a 0%, var(--bg) 46%, var(--bg-deep) 100%);
-    background-attachment: fixed;
+    -webkit-font-smoothing: antialiased;
   }
 
-  a { color: var(--gold-2); }
+  a { color: var(--gold); }
 
-  :focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 6px; }
+  :focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 3px;
+  }
 
-  .wrap { width: min(1120px, 100%); margin: 0 auto; padding: 0 24px; }
+  .wrap {
+    width: min(1140px, 100%);
+    margin: 0 auto;
+    padding: 0 28px;
+  }
 
-  /* ---------------------------------------------------------------- header */
-  .site-head {
-    position: sticky;
-    top: 0;
-    z-index: 10;
+  /* ----------------------------------------------------------------- header */
+  .masthead {
+    border-bottom: 1px solid var(--rule-soft);
+  }
+
+  .masthead .wrap {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 20px;
-    padding: 14px 0;
-    border-bottom: 1px solid var(--border-soft);
-    background: rgba(16, 19, 26, 0.86);
-    backdrop-filter: blur(10px);
+    gap: 24px;
+    padding-top: 18px;
+    padding-bottom: 18px;
   }
 
-  .brand { display: flex; align-items: center; gap: 11px; text-decoration: none; }
-
-  .brand-mark {
-    display: inline-flex;
+  .wordmark {
+    display: flex;
     align-items: center;
-    justify-content: center;
-    flex: 0 0 auto;
-    width: 38px;
-    height: 38px;
-    border: 1px solid rgba(233, 187, 98, 0.45);
-    border-radius: 10px;
-    background: linear-gradient(135deg, rgba(233, 187, 98, 0.22), rgba(196, 119, 83, 0.16));
-    color: var(--gold-2);
-    box-shadow: 0 0 18px rgba(233, 187, 98, 0.18);
+    gap: 12px;
+    color: var(--ink);
+    text-decoration: none;
   }
 
-  .brand-copy { display: flex; flex-direction: column; line-height: 1.15; }
-  .brand-copy strong { color: var(--text); font-size: 15px; font-weight: 800; letter-spacing: 0.01em; }
-  .brand-copy small { color: var(--faint); font-size: 10px; font-weight: 700; letter-spacing: 0.08em; }
+  .wordmark svg { color: var(--gold); flex: 0 0 auto; }
 
-  .site-nav { display: flex; align-items: center; gap: 22px; }
-  .site-nav a.nav-link { color: var(--muted); font-size: 13px; font-weight: 600; text-decoration: none; }
-  .site-nav a.nav-link:hover { color: var(--text); }
+  .wordmark span {
+    font-family: var(--slab);
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+  }
 
-  /* ---------------------------------------------------------------- buttons */
+  .wordmark small {
+    color: var(--ink-3);
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+  }
+
+  .nav {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+  }
+
+  .nav a.nav-link {
+    color: var(--ink-2);
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+  }
+
+  .nav a.nav-link:hover { color: var(--ink); }
+
   .btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 9px;
-    padding: 12px 20px;
+    gap: 8px;
+    padding: 11px 18px;
     border: 1px solid transparent;
-    border-radius: 11px;
+    border-radius: 5px;
+    font-family: var(--sans);
     font-size: 13px;
-    font-weight: 800;
-    letter-spacing: 0.03em;
+    font-weight: 600;
+    letter-spacing: 0.01em;
     text-decoration: none;
     white-space: nowrap;
-    transition: transform 0.15s ease, filter 0.15s ease, border-color 0.15s ease;
+    transition: background-color 0.14s ease, border-color 0.14s ease, color 0.14s ease;
   }
 
-  .btn-primary {
-    background: linear-gradient(135deg, var(--gold-2) 0%, var(--gold-dark) 100%);
-    color: #1a1410;
-    box-shadow: 0 8px 24px rgba(233, 187, 98, 0.24);
+  .btn-solid {
+    background: var(--gold);
+    color: #1a1509;
   }
 
-  .btn-primary:hover { filter: brightness(1.07); transform: translateY(-1px); }
+  .btn-solid:hover { background: #f3cd82; }
 
-  .btn-ghost {
-    background: rgba(255, 255, 255, 0.03);
-    border-color: var(--border);
-    color: var(--text);
+  .btn-quiet {
+    border-color: var(--rule);
+    color: var(--ink);
+    background: transparent;
   }
 
-  .btn-ghost:hover { border-color: var(--gold); transform: translateY(-1px); }
+  .btn-quiet:hover { border-color: var(--gold); color: var(--gold); }
 
-  .btn-lg { padding: 15px 28px; font-size: 14px; }
+  .btn-lg { padding: 14px 24px; font-size: 14px; }
 
-  /* ---------------------------------------------------------------- hero */
-  .hero { padding: 76px 0 56px; max-width: 780px; }
+  /* ------------------------------------------------------------------- hero */
+  .hero { padding: 64px 0 20px; }
 
-  .eyebrow {
-    display: inline-block;
-    margin: 0 0 20px;
-    padding: 6px 13px;
-    border: 1px solid var(--border);
-    border-radius: 999px;
-    background: rgba(233, 187, 98, 0.08);
-    color: var(--gold-2);
-    font-size: 10.5px;
-    font-weight: 800;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
+  .hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
+    gap: 56px;
+    align-items: start;
   }
 
-  .hero h1 {
-    margin: 0 0 18px;
-    font-size: clamp(30px, 5.2vw, 48px);
-    font-weight: 900;
-    letter-spacing: -0.02em;
-    line-height: 1.12;
-  }
-
-  .hero h1 em {
-    font-style: normal;
-    background: linear-gradient(135deg, var(--gold-2) 20%, var(--gold-dark) 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-
-  .lede { margin: 0 0 30px; max-width: 62ch; color: var(--muted); font-size: 16px; }
-
-  .cta-row { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 26px; }
-
-  .chips { display: flex; flex-wrap: wrap; gap: 10px; margin: 0; padding: 0; list-style: none; }
-
-  .chips li {
+  .kicker {
+    margin: 0 0 22px;
     display: inline-flex;
     align-items: center;
-    gap: 7px;
-    padding: 6px 12px;
-    border: 1px solid rgba(211, 139, 79, 0.18);
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.025);
-    color: var(--faint);
+    gap: 9px;
+    color: var(--ink-3);
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  .kicker::before {
+    content: "";
+    width: 18px;
+    height: 1px;
+    background: var(--gold-dim);
+  }
+
+  h1 {
+    margin: 0 0 22px;
+    max-width: 19ch;
+    font-family: var(--slab);
+    font-size: clamp(32px, 4.4vw, 52px);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.012em;
+  }
+
+  .lede {
+    margin: 0 0 28px;
+    max-width: 48ch;
+    color: var(--ink-2);
+    font-size: 16.5px;
+    line-height: 1.62;
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+
+  .text-link {
+    color: var(--ink);
+    font-size: 13.5px;
+    font-weight: 500;
+    text-decoration: none;
+    border-bottom: 1px solid var(--gold-dim);
+    padding-bottom: 2px;
+  }
+
+  .text-link:hover { color: var(--gold); border-color: var(--gold); }
+
+  .fineprint {
+    margin: 0;
+    color: var(--ink-3);
+    font-size: 12.5px;
+    line-height: 1.5;
+  }
+
+  /* ------------------------------------------------------------------ sheet */
+  .sheet {
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    background: var(--sheet);
+    box-shadow: inset 0 1px 0 rgba(233, 187, 98, 0.14);
+  }
+
+  .sheet-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 18px 14px;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .sheet-label {
+    margin: 0 0 4px;
+    color: var(--ink-3);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+  }
+
+  .sheet-item {
+    margin: 0;
+    font-family: var(--slab);
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 1.25;
+  }
+
+  .tier {
+    flex: 0 0 auto;
+    padding: 3px 8px;
+    border: 1px solid var(--gold-dim);
+    border-radius: 3px;
+    color: var(--gold);
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+
+  .segments {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 12px 18px;
+    border-bottom: 1px solid var(--rule-soft);
+  }
+
+  .segments span {
+    min-width: 30px;
+    padding: 4px 7px;
+    border: 1px solid var(--rule-soft);
+    border-radius: 3px;
+    color: var(--ink-3);
     font-size: 11.5px;
     font-weight: 600;
+    text-align: center;
   }
 
-  .chips li::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--green); }
-
-  /* ---------------------------------------------------------------- sections */
-  section { scroll-margin-top: 84px; }
-
-  .section { padding: 30px 0 64px; }
-
-  .section-head { margin: 0 0 28px; max-width: 640px; }
-
-  .section-head h2 {
-    margin: 0 0 10px;
-    font-size: clamp(21px, 3.2vw, 27px);
-    font-weight: 800;
-    letter-spacing: -0.01em;
+  .segments span.is-on {
+    border-color: var(--gold-dim);
+    background: rgba(233, 187, 98, 0.09);
+    color: var(--gold);
   }
 
-  .section-head p { margin: 0; color: var(--muted); font-size: 14.5px; }
+  .rows { margin: 0; padding: 0; list-style: none; }
 
-  .grid {
+  .row {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(272px, 1fr));
-    gap: 16px;
-  }
-
-  .card {
-    padding: 22px;
-    border: 1px solid var(--border-soft);
-    border-radius: var(--radius);
-    background: linear-gradient(180deg, var(--panel-2) 0%, rgba(29, 32, 39, 0.72) 100%);
-    box-shadow: 0 10px 26px rgba(2, 6, 23, 0.28);
-    transition: border-color 0.16s ease, transform 0.16s ease;
-  }
-
-  .card:hover { border-color: rgba(233, 187, 98, 0.42); transform: translateY(-2px); }
-
-  .card-icon {
-    display: inline-flex;
+    grid-template-columns: minmax(0, 1fr) 44px 92px;
     align-items: center;
-    justify-content: center;
-    width: 38px;
-    height: 38px;
-    margin-bottom: 14px;
-    border: 1px solid rgba(233, 187, 98, 0.28);
-    border-radius: 10px;
-    background: rgba(233, 187, 98, 0.08);
-    color: var(--gold-2);
+    gap: 10px;
+    padding: 11px 18px;
+    border-bottom: 1px solid var(--rule-soft);
+    font-size: 13.5px;
   }
 
-  .card h3 { margin: 0 0 8px; font-size: 14.5px; font-weight: 800; letter-spacing: 0.01em; }
-  .card p { margin: 0; color: var(--muted); font-size: 13.5px; line-height: 1.62; }
+  .row-head {
+    color: var(--ink-3);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
 
-  .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; margin: 0; padding: 0; list-style: none; counter-reset: step; }
+  .row .material { color: var(--ink); }
+
+  .row .material em {
+    display: inline-block;
+    margin-right: 8px;
+    padding: 1px 5px;
+    border: 1px solid var(--rule-soft);
+    border-radius: 2px;
+    color: var(--ink-3);
+    font-size: 10.5px;
+    font-style: normal;
+    font-weight: 600;
+    vertical-align: 1px;
+  }
+
+  .num {
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+    color: var(--ink-2);
+  }
+
+  .price {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 2px;
+    color: var(--ink-3);
+    font-variant-numeric: tabular-nums;
+    font-size: 13px;
+  }
+
+  .caret {
+    display: inline-block;
+    width: 1px;
+    height: 13px;
+    background: var(--gold);
+    animation: blink 1.15s steps(1, end) infinite;
+  }
+
+  @keyframes blink {
+    0%, 49% { opacity: 1; }
+    50%, 100% { opacity: 0; }
+  }
+
+  .row-total {
+    grid-template-columns: minmax(0, 1fr) auto;
+    border-bottom: 0;
+    padding-top: 14px;
+    padding-bottom: 16px;
+  }
+
+  .row-total .label { color: var(--ink-2); font-size: 12.5px; }
+
+  .row-total .value {
+    font-family: var(--slab);
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--ink-3);
+  }
+
+  .sheet-foot {
+    padding: 11px 18px 13px;
+    border-top: 1px solid var(--rule);
+    color: var(--ink-3);
+    font-size: 11.5px;
+    line-height: 1.5;
+  }
+
+  .sheet-caption {
+    margin: 12px 0 0;
+    color: var(--ink-3);
+    font-size: 11.5px;
+    text-align: right;
+  }
+
+  /* --------------------------------------------------------------- sections */
+  section { scroll-margin-top: 24px; }
+
+  .band {
+    padding: 56px 0;
+    border-top: 1px solid var(--rule-soft);
+  }
+
+  .band-head {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr);
+    gap: 40px;
+    align-items: baseline;
+    margin-bottom: 34px;
+  }
+
+  h2 {
+    margin: 0;
+    font-family: var(--slab);
+    font-size: clamp(22px, 2.6vw, 29px);
+    font-weight: 600;
+    letter-spacing: -0.008em;
+    line-height: 1.2;
+  }
+
+  .band-head p {
+    margin: 0;
+    color: var(--ink-2);
+    font-size: 15px;
+    max-width: 58ch;
+  }
+
+  .ledger { margin: 0; }
+
+  .ledger div {
+    display: grid;
+    grid-template-columns: minmax(0, 0.72fr) minmax(0, 1.6fr);
+    gap: 40px;
+    padding: 18px 0;
+    border-top: 1px solid var(--rule-soft);
+  }
+
+  .ledger div:last-child { border-bottom: 1px solid var(--rule-soft); }
+
+  .ledger dt {
+    font-family: var(--slab);
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .ledger dd {
+    margin: 0;
+    color: var(--ink-2);
+    font-size: 14.5px;
+    line-height: 1.62;
+    max-width: 62ch;
+  }
+
+  .steps {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: step;
+  }
 
   .steps li {
-    padding: 20px;
-    border: 1px solid var(--border-soft);
-    border-radius: var(--radius);
-    background: rgba(36, 40, 50, 0.55);
+    display: grid;
+    grid-template-columns: 74px minmax(0, 1fr);
+    gap: 20px;
+    padding: 22px 0;
+    border-top: 1px solid var(--rule-soft);
   }
+
+  .steps li:last-child { border-bottom: 1px solid var(--rule-soft); }
 
   .steps li::before {
     counter-increment: step;
     content: counter(step);
+    font-family: var(--slab);
+    font-size: 30px;
+    font-weight: 500;
+    line-height: 1;
+    color: var(--gold-dim);
+  }
+
+  .steps strong {
+    display: block;
+    margin-bottom: 5px;
+    font-family: var(--slab);
+    font-size: 17px;
+    font-weight: 600;
+  }
+
+  .steps span {
+    display: block;
+    color: var(--ink-2);
+    font-size: 14.5px;
+    line-height: 1.6;
+    max-width: 62ch;
+  }
+
+  /* ----------------------------------------------------------------- closing */
+  .closing {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 28px;
+    padding: 44px 0 52px;
+    border-top: 1px solid var(--rule-soft);
+  }
+
+  .closing h2 { margin-bottom: 6px; }
+
+  .closing p { margin: 0; color: var(--ink-3); font-size: 13.5px; }
+
+  .closing-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .discord {
     display: inline-flex;
     align-items: center;
-    justify-content: center;
-    width: 26px;
-    height: 26px;
-    margin-bottom: 12px;
-    border-radius: 8px;
-    background: rgba(233, 187, 98, 0.12);
-    color: var(--gold-2);
-    font-size: 12px;
-    font-weight: 800;
+    gap: 10px;
+    padding: 11px 18px;
+    border: 1px solid rgba(88, 101, 242, 0.5);
+    border-radius: 5px;
+    background: rgba(88, 101, 242, 0.12);
+    color: #dfe2ff;
+    text-decoration: none;
+    transition: background-color 0.14s ease, border-color 0.14s ease;
   }
 
-  .steps strong { display: block; margin-bottom: 6px; font-size: 13.5px; font-weight: 800; }
-  .steps span { color: var(--muted); font-size: 13px; }
-
-  .closing {
-    margin: 10px 0 72px;
-    padding: 40px 32px;
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    background:
-      radial-gradient(600px 220px at 50% 0%, rgba(233, 187, 98, 0.14), transparent 70%),
-      linear-gradient(180deg, rgba(36, 40, 50, 0.85), rgba(23, 25, 30, 0.85));
-    text-align: center;
+  .discord:hover {
+    background: rgba(88, 101, 242, 0.22);
+    border-color: rgba(88, 101, 242, 0.8);
   }
 
-  .closing h2 { margin: 0 0 10px; font-size: clamp(21px, 3.2vw, 26px); font-weight: 800; }
-  .closing p { margin: 0 auto 24px; max-width: 52ch; color: var(--muted); font-size: 14px; }
+  .discord svg { flex: 0 0 auto; color: #9aa3ff; }
 
-  /* ---------------------------------------------------------------- discord */
-  .discord-cta { margin: 0 0 64px; text-align: center; }
+  .discord span { display: flex; flex-direction: column; gap: 1px; }
 
-  .btn-discord {
-    max-width: 100%;
-    padding: 14px 24px;
-    gap: 12px;
-    border-color: rgba(88, 101, 242, 0.55);
-    background: linear-gradient(135deg, var(--discord) 0%, #4149d6 100%);
-    color: #fff;
-    line-height: 1.4;
-    text-align: left;
-    white-space: normal;
-    box-shadow: 0 8px 24px rgba(88, 101, 242, 0.26);
-  }
+  .discord strong { font-size: 13px; font-weight: 600; }
 
-  .btn-discord:hover { filter: brightness(1.08); transform: translateY(-1px); }
-  .btn-discord svg { flex: 0 0 auto; }
-  .btn-discord .discord-label { display: flex; flex-direction: column; gap: 1px; }
-  .btn-discord .discord-label strong { font-size: 13.5px; font-weight: 800; letter-spacing: 0.01em; }
-  .btn-discord .discord-label span { color: rgba(255, 255, 255, 0.85); font-size: 12.5px; font-weight: 600; }
+  .discord small { color: #a9b0d6; font-size: 11.5px; }
 
-  /* ---------------------------------------------------------------- footer */
-  .site-foot {
-    padding: 26px 0 40px;
-    border-top: 1px solid var(--border-soft);
-    color: var(--faint);
+  /* ------------------------------------------------------------------ footer */
+  footer {
+    border-top: 1px solid var(--rule);
+    padding: 22px 0 34px;
+    color: var(--ink-3);
     font-size: 12px;
   }
 
-  .site-foot .wrap { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
-  .site-foot p { margin: 0; }
-  .site-foot a { color: var(--muted); text-decoration: none; }
-  .site-foot a:hover { color: var(--gold-2); }
-  .foot-links { display: flex; gap: 18px; }
+  footer .wrap {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 14px;
+  }
 
-  @media (max-width: 720px) {
-    .site-nav .nav-link { display: none; }
-    .hero { padding: 52px 0 40px; }
-    .closing { padding: 30px 20px; }
+  footer p { margin: 0; }
+
+  footer a {
+    color: var(--ink-2);
+    text-decoration: none;
+  }
+
+  footer a:hover { color: var(--gold); }
+
+  @media (max-width: 940px) {
+    .hero-grid { grid-template-columns: minmax(0, 1fr); gap: 40px; }
+    .hero { padding-top: 48px; }
+    h1 { max-width: 24ch; }
+    .band-head { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+    .ledger div { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+    .sheet-caption { text-align: left; }
+  }
+
+  @media (max-width: 620px) {
+    .wrap { padding: 0 18px; }
+    .nav a.nav-link { display: none; }
+    .steps li { grid-template-columns: 48px minmax(0, 1fr); gap: 14px; }
+    .steps li::before { font-size: 24px; }
+    .closing { padding-bottom: 40px; }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    html { scroll-behavior: auto; }
-    .btn, .card { transition: none; }
+    .caret { animation: none; opacity: 1; }
+    .btn, .discord { transition: none; }
   }
 </style>
 </head>
 <body>
 
-<header class="site-head">
-  <div class="wrap" style="display:flex;align-items:center;justify-content:space-between;gap:20px;">
-    <a class="brand" href="./">
-      <span class="brand-mark" aria-hidden="true">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m14.5 3 6 6-3 3-6-6 3-3Z"></path><path d="m3 21 6-6"></path><path d="m13.5 10.5 2 2"></path><path d="m4 4 4 1 1 4"></path><path d="m20 20-4-1-1-4"></path></svg>
-      </span>
-      <span class="brand-copy">
-        <strong>Albion Crafting Calculator</strong>
-        <small>by Blazor</small>
-      </span>
+<header class="masthead">
+  <div class="wrap">
+    <a class="wordmark" href="./">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m14.5 3 6 6-3 3-6-6 3-3Z"></path><path d="m3 21 6-6"></path><path d="m13.5 10.5 2 2"></path><path d="m4 4 4 1 1 4"></path><path d="m20 20-4-1-1-4"></path></svg>
+      <span>Albion Crafting Calculator <small>by Blazor</small></span>
     </a>
-    <nav class="site-nav" aria-label="Main">
-      <a class="nav-link" href="#features">Features</a>
+    <nav class="nav" aria-label="Main">
+      <a class="nav-link" href="#covers">What it covers</a>
       <a class="nav-link" href="#how">How it works</a>
-      <a class="btn btn-primary" href="calculator.html">Open calculator</a>
+      <a class="btn btn-solid" href="calculator.html">Open the calculator</a>
     </nav>
   </div>
 </header>
 
-<main class="wrap">
+<main>
 
   <section class="hero">
-    <p class="eyebrow">Free &middot; No account &middot; Runs in your browser</p>
-    <h1>Know the real cost of<br><em>every Albion craft</em></h1>
-    <p class="lede">
-      Pick an item, tier and enchantment and the calculator works out the materials, the hideout
-      return rate, the focus each craft will burn and the profit you walk away with. Queue the
-      good ones into a planner that remembers everything.
-    </p>
-    <div class="cta-row">
-      <a class="btn btn-primary btn-lg" href="calculator.html">Open the calculator</a>
-      <a class="btn btn-ghost btn-lg" href="#features">See what's inside</a>
-    </div>
-    <ul class="chips">
-      <li>270 craftable items</li>
-      <li>Tiers 4&ndash;8, enchantments .0&ndash;.3</li>
-      <li>Five colour themes</li>
-      <li>Saved locally, never uploaded</li>
-    </ul>
-  </section>
+    <div class="wrap hero-grid">
+      <div>
+        <p class="kicker">Albion Online crafting maths, without the spreadsheet</p>
+        <h1>Price the craft before you buy the materials.</h1>
+        <p class="lede">
+          Pick the item, tell it what your hideout returns, and type the prices you see in game.
+          You get the materials you actually have to buy, the focus each craft burns, and the
+          margin left over — before a single bar leaves your stash.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-solid btn-lg" href="calculator.html">Open the calculator</a>
+          <a class="text-link" href="#how">See how the numbers work</a>
+        </div>
+        <p class="fineprint">Free to use, no account, and every price you type stays in your browser.</p>
+      </div>
 
-  <section class="section" id="features">
-    <div class="section-head">
-      <h2>Everything you need to price a craft</h2>
-      <p>No spreadsheets, no manual maths. Every number the calculator shows is derived from the recipe you selected.</p>
-    </div>
-    <div class="grid">
-      <article class="card">
-        <span class="card-icon" aria-hidden="true">
-          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h16M4 17h10"></path></svg>
-        </span>
-        <h3>Full recipe breakdown</h3>
-        <p>Every refined material, artefact and royal ingredient for the tier and enchantment you pick, with the exact tier frame shown on each icon.</p>
-      </article>
-      <article class="card">
-        <span class="card-icon" aria-hidden="true">
-          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"></path><path d="M3 4v5h5"></path></svg>
-        </span>
-        <h3>Honest return rates</h3>
-        <p>Hideout bonus from power level and zone quality, plus focus and daily bonuses, applied to the net materials you actually buy.</p>
-      </article>
-      <article class="card">
-        <span class="card-icon" aria-hidden="true">
-          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v4M12 17v4M5 12H3M21 12h-2"></path><circle cx="12" cy="12" r="4"></circle></svg>
-        </span>
-        <h3>Focus cost per craft</h3>
-        <p>Your Destiny Board specialisation levels feed the efficiency formula, so you see focus per item, per craft and per planner session.</p>
-      </article>
-      <article class="card">
-        <span class="card-icon" aria-hidden="true">
-          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3 17 5-6 4 3 5-7 4 4"></path><path d="M3 21h18"></path></svg>
-        </span>
-        <h3>Profit and margin</h3>
-        <p>Enter market or Black Market prices and get investment, sell value, profit margin and a ranked best-to-craft list per tier.</p>
-      </article>
-      <article class="card">
-        <span class="card-icon" aria-hidden="true">
-          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"></rect><path d="M3 9h18M8 14h8"></path></svg>
-        </span>
-        <h3>Planner sessions</h3>
-        <p>Group crafts into sessions with quantities, journals, transport cost and a running focus total, so a crafting night is planned in one place.</p>
-      </article>
-      <article class="card">
-        <span class="card-icon" aria-hidden="true">
-          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path></svg>
-        </span>
-        <h3>Your data stays yours</h3>
-        <p>Everything is saved in your browser with localStorage. No account, no server, no tracking &mdash; close the tab and your sessions are still there.</p>
-      </article>
+      <div>
+        <div class="sheet" aria-label="Preview of the craft panel">
+          <div class="sheet-head">
+            <div>
+              <p class="sheet-label">Craft panel</p>
+              <p class="sheet-item">Master's Dual Swords</p>
+            </div>
+            <span class="tier">T6.0</span>
+          </div>
+
+          <div class="segments" aria-hidden="true">
+            <span>T4</span><span>T5</span><span class="is-on">T6</span><span>T7</span><span>T8</span>
+            <span class="is-on">.0</span><span>.1</span><span>.2</span><span>.3</span>
+          </div>
+
+          <div class="row row-head" aria-hidden="true">
+            <span>Material</span><span class="num">Qty</span><span class="num">Unit price</span>
+          </div>
+
+          <ul class="rows">
+            <li class="row">
+              <span class="material"><em>T6</em>Bar</span>
+              <span class="num">20</span>
+              <span class="price">0<span class="caret" aria-hidden="true"></span></span>
+            </li>
+            <li class="row">
+              <span class="material"><em>T6</em>Leather</span>
+              <span class="num">12</span>
+              <span class="price">0<span class="caret" aria-hidden="true"></span></span>
+            </li>
+            <li class="row row-total">
+              <span class="label">Sales tax applied to the sell price</span>
+              <span class="value">6.5%</span>
+            </li>
+          </ul>
+
+          <p class="sheet-foot">Your prices, your return rate, your margin — nothing is uploaded.</p>
+        </div>
+        <p class="sheet-caption">A craft from the catalogue, priced by you.</p>
+      </div>
     </div>
   </section>
 
-  <section class="section" id="how">
-    <div class="section-head">
-      <h2>Three steps from recipe to profit</h2>
-      <p>The whole workflow lives on one screen, and the numbers update as you type.</p>
+  <section class="band" id="covers">
+    <div class="wrap">
+      <div class="band-head">
+        <h2>What it accounts for</h2>
+        <p>Every figure on the calculator comes from the recipe you selected, the return rate you set and the prices you entered — nothing is guessed.</p>
+      </div>
+
+      <dl class="ledger">
+        <div>
+          <dt>Recipe and return rate</dt>
+          <dd>All the ingredients for the tier and enchantment you pick, with hideout power level, zone quality and the daily bonus folded into the materials you really have to buy.</dd>
+        </div>
+        <div>
+          <dt>Focus per craft</dt>
+          <dd>Your Destiny Board specialisation feeds the efficiency formula, so focus is shown per item, per craft and across a whole session.</dd>
+        </div>
+        <div>
+          <dt>Prices you enter</dt>
+          <dd>Type the buy and sell prices you see in game. The calculator applies the sales tax you choose and returns your investment, sell value, margin and a ranked best-to-craft list.</dd>
+        </div>
+        <div>
+          <dt>Planner sessions</dt>
+          <dd>Queue the crafts worth running, set quantities and journals, and the planner keeps materials, transport and focus in one running total.</dd>
+        </div>
+        <div>
+          <dt>Local by default</dt>
+          <dd>Everything is stored in your browser. No account, no server, no tracking: close the tab and your sessions are still there when you come back.</dd>
+        </div>
+      </dl>
     </div>
-    <ol class="steps">
-      <li>
-        <strong>Choose what you're crafting</strong>
-        <span>Set the tier and enchantment, then pick an item from the sidebar. Icons update to the real in-game artwork.</span>
-      </li>
-      <li>
-        <strong>Plug in return rate and prices</strong>
-        <span>Set your hideout, focus and daily bonus, then fill in material and sell prices for the tier you're working.</span>
-      </li>
-      <li>
-        <strong>Send it to the planner</strong>
-        <span>Queue anything profitable into a session and the planner totals the materials, journals, focus and profit in one go.</span>
-      </li>
-    </ol>
   </section>
 
-  <section class="closing">
-    <h2>Ready to plan your next crafting night?</h2>
-    <p>Opens instantly, remembers your setup, and costs nothing.</p>
-    <a class="btn btn-primary btn-lg" href="calculator.html">Open the calculator</a>
+  <section class="band" id="how">
+    <div class="wrap">
+      <div class="band-head">
+        <h2>From recipe to profit</h2>
+        <p>The whole workflow fits on one screen: the numbers change as you type, so you can see what a price does to the margin before you commit.</p>
+      </div>
+
+      <ol class="steps">
+        <li>
+          <div>
+            <strong>Pick the item</strong>
+            <span>Set the tier and enchantment, then choose from the catalogue. The recipe and its material list follow your selection.</span>
+          </div>
+        </li>
+        <li>
+          <div>
+            <strong>Enter your prices and return rate</strong>
+            <span>Metals, leather, planks and cloth get the prices you pay; the sell price goes on the other side. Hideout settings and focus decide how much of it you get back.</span>
+          </div>
+        </li>
+        <li>
+          <div>
+            <strong>Keep what is worth crafting</strong>
+            <span>Send profitable crafts into a session and the planner totals the materials, journals and focus for the whole night.</span>
+          </div>
+        </li>
+      </ol>
+    </div>
   </section>
 
-  <p class="discord-cta">
-    <a class="btn btn-discord" href="https://discord.gg/zzwVFKNQze" target="_blank" rel="noopener noreferrer">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.317 4.3698a19.7913 19.7913 0 0 0-4.8851-1.5152.0741.0741 0 0 0-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 0 0-.0785-.037 19.7363 19.7363 0 0 0-4.8852 1.515.0699.0699 0 0 0-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 0 0 .0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 0 0 .0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 0 0-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 0 1-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 0 1 .0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 0 1 .0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 0 1-.0066.1276 12.2986 12.2986 0 0 1-1.873.8914.0766.0766 0 0 0-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 0 0 .0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 0 0 .0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 0 0-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg>
-      <span class="discord-label">
-        <strong>Have a question or a suggestion?</strong>
-        <span>Send it in the Discord</span>
-      </span>
-    </a>
-  </p>
+  <section class="wrap">
+    <div class="closing">
+      <div>
+        <h2>Ready to price your next craft?</h2>
+        <p>Opens instantly, remembers your setup, costs nothing.</p>
+      </div>
+      <div class="closing-actions">
+        <a class="btn btn-solid btn-lg" href="calculator.html">Open the calculator</a>
+        <a class="discord" href="https://discord.gg/zzwVFKNQze" target="_blank" rel="noopener noreferrer">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.317 4.3698a19.7913 19.7913 0 0 0-4.8851-1.5152.0741.0741 0 0 0-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 0 0-.0785-.037 19.7363 19.7363 0 0 0-4.8852 1.515.0699.0699 0 0 0-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 0 0 .0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 0 0 .0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 0 0-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 0 1-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 0 1 .0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 0 1 .0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 0 1-.0066.1276 12.2986 12.2986 0 0 1-1.873.8914.0766.0766 0 0 0-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 0 0 .0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 0 0 .0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 0 0-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg>
+          <span>
+            <strong>Have a question or a suggestion?</strong>
+            <small>Send it in the Discord</small>
+          </span>
+        </a>
+      </div>
+    </div>
+  </section>
 
 </main>
 
-<footer class="site-foot">
+<footer>
   <div class="wrap">
     <p>Albion Crafting Calculator &middot; built by Blazor &middot; unofficial fan tool, not affiliated with Sandbox Interactive.</p>
-    <div class="foot-links">
-      <a href="calculator.html">Calculator</a>
-    </div>
+    <p><a href="calculator.html">Calculator</a></p>
   </div>
 </footer>
 
