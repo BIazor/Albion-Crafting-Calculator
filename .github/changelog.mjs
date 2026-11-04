@@ -5,7 +5,6 @@ import fs from 'node:fs';
 import { execSync } from 'node:child_process';
 
 const webhook = process.env.DISCORD_WEBHOOK_URL;
-const repo = process.env.GITHUB_REPOSITORY || 'BIazor/Albion-Crafting-Calculator';
 const siteUrl = 'https://albioncrafting.vercel.app';
 const siteName = 'Albion Crafting Calculator';
 
@@ -76,10 +75,6 @@ if (description.length > MAX_DESCRIPTION) {
   description = `${description.slice(0, MAX_DESCRIPTION).trimEnd()}\n…`;
 }
 
-const compareUrl = event.compare
-  || (event.after ? `https://github.com/${repo}/compare/${String(event.before || '').slice(0, 12)}...${String(event.after).slice(0, 12)}` : '')
-  || `https://github.com/${repo}/commits/main`;
-
 const count = entries.length;
 const payload = {
   username: `${siteName} changelog`,
@@ -87,7 +82,6 @@ const payload = {
   embeds: [
     {
       title: count === 1 ? '1 new change on main' : `${count} new changes on main`,
-      url: compareUrl,
       description,
       color: 0x5865f2,
       timestamp: new Date().toISOString(),
