@@ -2,7 +2,7 @@
 
 A free, browser-only crafting calculator for **Albion Online**, with a landing page in front of it.
 
-Live at <https://albion-crafting-calculator-eight.vercel.app/> (custom domain `albion-crafting.is-a.dev` pending DNS registration).
+Live at <https://albioncrafting.vercel.app/>:
 
 ## What's in the repo
 
