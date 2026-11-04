@@ -21,13 +21,13 @@ Plain HTML, CSS and JavaScript with no framework, no bundler and no runtime depe
 
 ## Hosting
 
-The site is pure static files, so any free static host works — GitHub Pages is deliberately not used. The recommended host is **Vercel Hobby**, which is free forever for personal, non-commercial projects:
+The site is live at <https://albioncrafting.vercel.app/> on Vercel's free Hobby plan, and it is deployed straight from this repository: every push to `main` runs `.github/workflows/vercel.yml`, which publishes the repository root to the `albioncrafting` project.
 
-1. Import this repository at [vercel.com/new](https://vercel.com/new).
-2. Framework preset: **Other**. Build command: none. Output directory: repository root.
-3. Every push to `main` then deploys automatically; pull requests get their own preview URL.
+The workflow needs one repository secret, `VERCEL_TOKEN` (create it at <https://vercel.com/account/tokens> and paste it under Settings &rarr; Secrets and variables &rarr; Actions). The Vercel team and project IDs are already pinned in the workflow file, so no other configuration is needed. Until the secret exists the deploy step is skipped with a notice instead of failing.
 
-Cloudflare Pages and Netlify work the same way with identical settings (`/` as the publish directory, no build step), so the site stays portable.
+The site is pure static files, so the host is not a lock-in: Cloudflare Pages or Netlify would serve the same repository with no build step.
+
+GitHub Pages is no longer used by this project.
 
 ## Data privacy
 

@@ -1,0 +1,41 @@
+name: Deploy to Vercel
+
+# Publishes the site to https://albioncrafting.vercel.app/ on every push to main.
+# Requires one repository secret: VERCEL_TOKEN (Vercel -> Account Settings -> Tokens).
+# Until that secret exists the deploy step is skipped, so pushes stay green.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: vercel-production
+  cancel-in-progress: true
+
+env:
+  VERCEL_ORG_ID: team_5LEgcn64JLPrNC6JD513qHwD
+  VERCEL_PROJECT_ID: prj_Rk4pxVXgfrkKDYxhcaOjhxV6jXed
+  VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+
+jobs:
+  deploy:
+    name: Publish to production
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Deploy to Vercel
+        if: ${{ env.VERCEL_TOKEN != '' }}
+        run: npx --yes vercel@latest deploy --prod --yes --token="$VERCEL_TOKEN"
+
+      - name: Explain the skipped deploy
+        if: ${{ env.VERCEL_TOKEN == '' }}
+        run: |
+          echo "::notice title=Deploy skipped::Add a repository secret named VERCEL_TOKEN (Settings -> Secrets and variables -> Actions) to publish pushes to main automatically."
