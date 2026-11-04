@@ -20,7 +20,6 @@
   :root {
     --ground: #12160f;
     --sheet: #191d14;
-    --sheet-2: #1f2419;
     --ink: #efe8d7;
     --ink-2: #b5ae9b;
     --ink-3: #837d6b;
@@ -28,7 +27,6 @@
     --rule-soft: rgba(239, 232, 215, 0.08);
     --gold: #e9bb62;
     --gold-dim: #b0813c;
-    --profit: #7fb98b;
     --discord: #5865f2;
     --slab: "Zilla Slab", Georgia, serif;
     --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -48,21 +46,12 @@
 
   a { color: var(--gold); }
 
-  :focus-visible {
-    outline: 2px solid var(--gold);
-    outline-offset: 3px;
-  }
+  :focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
 
-  .wrap {
-    width: min(1140px, 100%);
-    margin: 0 auto;
-    padding: 0 28px;
-  }
+  .wrap { width: min(1140px, 100%); margin: 0 auto; padding: 0 28px; }
 
   /* ----------------------------------------------------------------- header */
-  .masthead {
-    border-bottom: 1px solid var(--rule-soft);
-  }
+  .masthead { border-bottom: 1px solid var(--rule-soft); }
 
   .masthead .wrap {
     display: flex;
@@ -98,11 +87,7 @@
     letter-spacing: 0.06em;
   }
 
-  .nav {
-    display: flex;
-    align-items: center;
-    gap: 22px;
-  }
+  .nav { display: flex; align-items: center; gap: 22px; }
 
   .nav a.nav-link {
     color: var(--ink-2);
@@ -130,32 +115,14 @@
     transition: background-color 0.14s ease, border-color 0.14s ease, color 0.14s ease;
   }
 
-  .btn-solid {
-    background: var(--gold);
-    color: #1a1509;
-  }
-
+  .btn-solid { background: var(--gold); color: #1a1509; }
   .btn-solid:hover { background: #f3cd82; }
-
-  .btn-quiet {
-    border-color: var(--rule);
-    color: var(--ink);
-    background: transparent;
-  }
-
-  .btn-quiet:hover { border-color: var(--gold); color: var(--gold); }
-
   .btn-lg { padding: 14px 24px; font-size: 14px; }
 
   /* ------------------------------------------------------------------- hero */
-  .hero { padding: 64px 0 20px; }
+  .hero { padding: 60px 0 0; }
 
-  .hero-grid {
-    display: grid;
-    grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
-    gap: 56px;
-    align-items: start;
-  }
+  .hero-copy { max-width: 760px; }
 
   .kicker {
     margin: 0 0 22px;
@@ -167,16 +134,11 @@
     font-weight: 500;
   }
 
-  .kicker::before {
-    content: "";
-    width: 18px;
-    height: 1px;
-    background: var(--gold-dim);
-  }
+  .kicker::before { content: ""; width: 18px; height: 1px; background: var(--gold-dim); }
 
   h1 {
     margin: 0 0 22px;
-    max-width: 19ch;
+    max-width: 20ch;
     font-family: var(--slab);
     font-size: clamp(32px, 4.4vw, 52px);
     font-weight: 700;
@@ -186,7 +148,7 @@
 
   .lede {
     margin: 0 0 28px;
-    max-width: 48ch;
+    max-width: 52ch;
     color: var(--ink-2);
     font-size: 16.5px;
     line-height: 1.62;
@@ -211,186 +173,63 @@
 
   .text-link:hover { color: var(--gold); border-color: var(--gold); }
 
-  .fineprint {
-    margin: 0;
+  .fineprint { margin: 0; color: var(--ink-3); font-size: 12.5px; line-height: 1.5; }
+
+  /* ------------------------------------------------------------------- tour */
+  .tour {
+    margin: 44px 0 0;
+    padding: 0;
+  }
+
+  .tour-frame {
+    position: relative;
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    background: #0d1009;
+    overflow: hidden;
+  }
+
+  .tour-media {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #0d1009;
+  }
+
+  .tour figcaption {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 13px 2px 0;
     color: var(--ink-3);
     font-size: 12.5px;
     line-height: 1.5;
   }
 
-  /* ------------------------------------------------------------------ sheet */
-  .sheet {
+  .tour figcaption strong { color: var(--ink-2); font-weight: 600; }
+
+  .tour-btn {
+    flex: 0 0 auto;
+    padding: 6px 12px;
     border: 1px solid var(--rule);
     border-radius: 4px;
-    background: var(--sheet);
-    box-shadow: inset 0 1px 0 rgba(233, 187, 98, 0.14);
-  }
-
-  .sheet-head {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 16px;
-    padding: 16px 18px 14px;
-    border-bottom: 1px solid var(--rule);
-  }
-
-  .sheet-label {
-    margin: 0 0 4px;
-    color: var(--ink-3);
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.04em;
-  }
-
-  .sheet-item {
-    margin: 0;
-    font-family: var(--slab);
-    font-size: 17px;
+    background: transparent;
+    color: var(--ink);
+    font-family: inherit;
+    font-size: 12.5px;
     font-weight: 600;
-    line-height: 1.25;
+    cursor: pointer;
+    transition: border-color 0.14s ease, color 0.14s ease;
   }
 
-  .tier {
-    flex: 0 0 auto;
-    padding: 3px 8px;
-    border: 1px solid var(--gold-dim);
-    border-radius: 3px;
-    color: var(--gold);
-    font-family: var(--sans);
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-  }
-
-  .segments {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    padding: 12px 18px;
-    border-bottom: 1px solid var(--rule-soft);
-  }
-
-  .segments span {
-    min-width: 30px;
-    padding: 4px 7px;
-    border: 1px solid var(--rule-soft);
-    border-radius: 3px;
-    color: var(--ink-3);
-    font-size: 11.5px;
-    font-weight: 600;
-    text-align: center;
-  }
-
-  .segments span.is-on {
-    border-color: var(--gold-dim);
-    background: rgba(233, 187, 98, 0.09);
-    color: var(--gold);
-  }
-
-  .rows { margin: 0; padding: 0; list-style: none; }
-
-  .row {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) 44px 92px;
-    align-items: center;
-    gap: 10px;
-    padding: 11px 18px;
-    border-bottom: 1px solid var(--rule-soft);
-    font-size: 13.5px;
-  }
-
-  .row-head {
-    color: var(--ink-3);
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.04em;
-    padding-top: 10px;
-    padding-bottom: 10px;
-  }
-
-  .row .material { color: var(--ink); }
-
-  .row .material em {
-    display: inline-block;
-    margin-right: 8px;
-    padding: 1px 5px;
-    border: 1px solid var(--rule-soft);
-    border-radius: 2px;
-    color: var(--ink-3);
-    font-size: 10.5px;
-    font-style: normal;
-    font-weight: 600;
-    vertical-align: 1px;
-  }
-
-  .num {
-    font-variant-numeric: tabular-nums;
-    text-align: right;
-    color: var(--ink-2);
-  }
-
-  .price {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 2px;
-    color: var(--ink-3);
-    font-variant-numeric: tabular-nums;
-    font-size: 13px;
-  }
-
-  .caret {
-    display: inline-block;
-    width: 1px;
-    height: 13px;
-    background: var(--gold);
-    animation: blink 1.15s steps(1, end) infinite;
-  }
-
-  @keyframes blink {
-    0%, 49% { opacity: 1; }
-    50%, 100% { opacity: 0; }
-  }
-
-  .row-total {
-    grid-template-columns: minmax(0, 1fr) auto;
-    border-bottom: 0;
-    padding-top: 14px;
-    padding-bottom: 16px;
-  }
-
-  .row-total .label { color: var(--ink-2); font-size: 12.5px; }
-
-  .row-total .value {
-    font-family: var(--slab);
-    font-size: 20px;
-    font-weight: 600;
-    color: var(--ink-3);
-  }
-
-  .sheet-foot {
-    padding: 11px 18px 13px;
-    border-top: 1px solid var(--rule);
-    color: var(--ink-3);
-    font-size: 11.5px;
-    line-height: 1.5;
-  }
-
-  .sheet-caption {
-    margin: 12px 0 0;
-    color: var(--ink-3);
-    font-size: 11.5px;
-    text-align: right;
-  }
+  .tour-btn:hover { border-color: var(--gold); color: var(--gold); }
 
   /* --------------------------------------------------------------- sections */
   section { scroll-margin-top: 24px; }
 
-  .band {
-    padding: 56px 0;
-    border-top: 1px solid var(--rule-soft);
-  }
+  .band { padding: 56px 0; border-top: 1px solid var(--rule-soft); margin-top: 56px; }
 
   .band-head {
     display: grid;
@@ -409,12 +248,7 @@
     line-height: 1.2;
   }
 
-  .band-head p {
-    margin: 0;
-    color: var(--ink-2);
-    font-size: 15px;
-    max-width: 58ch;
-  }
+  .band-head p { margin: 0; color: var(--ink-2); font-size: 15px; max-width: 58ch; }
 
   .ledger { margin: 0; }
 
@@ -443,12 +277,7 @@
     max-width: 62ch;
   }
 
-  .steps {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    counter-reset: step;
-  }
+  .steps { margin: 0; padding: 0; list-style: none; counter-reset: step; }
 
   .steps li {
     display: grid;
@@ -495,18 +324,13 @@
     gap: 28px;
     padding: 44px 0 52px;
     border-top: 1px solid var(--rule-soft);
+    margin-top: 56px;
   }
 
   .closing h2 { margin-bottom: 6px; }
-
   .closing p { margin: 0; color: var(--ink-3); font-size: 13.5px; }
 
-  .closing-actions {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 14px;
-  }
+  .closing-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; }
 
   .discord {
     display: inline-flex;
@@ -521,17 +345,12 @@
     transition: background-color 0.14s ease, border-color 0.14s ease;
   }
 
-  .discord:hover {
-    background: rgba(88, 101, 242, 0.22);
-    border-color: rgba(88, 101, 242, 0.8);
-  }
+  .discord:hover { background: rgba(88, 101, 242, 0.22); border-color: rgba(88, 101, 242, 0.8); }
 
   .discord svg { flex: 0 0 auto; color: #9aa3ff; }
 
   .discord span { display: flex; flex-direction: column; gap: 1px; }
-
   .discord strong { font-size: 13px; font-weight: 600; }
-
   .discord small { color: #a9b0d6; font-size: 11.5px; }
 
   /* ------------------------------------------------------------------ footer */
@@ -551,21 +370,15 @@
   }
 
   footer p { margin: 0; }
-
-  footer a {
-    color: var(--ink-2);
-    text-decoration: none;
-  }
-
+  footer a { color: var(--ink-2); text-decoration: none; }
   footer a:hover { color: var(--gold); }
 
   @media (max-width: 940px) {
-    .hero-grid { grid-template-columns: minmax(0, 1fr); gap: 40px; }
     .hero { padding-top: 48px; }
     h1 { max-width: 24ch; }
     .band-head { grid-template-columns: minmax(0, 1fr); gap: 14px; }
     .ledger div { grid-template-columns: minmax(0, 1fr); gap: 8px; }
-    .sheet-caption { text-align: left; }
+    .tour { margin-top: 32px; }
   }
 
   @media (max-width: 620px) {
@@ -574,11 +387,11 @@
     .steps li { grid-template-columns: 48px minmax(0, 1fr); gap: 14px; }
     .steps li::before { font-size: 24px; }
     .closing { padding-bottom: 40px; }
+    .tour figcaption { font-size: 12px; }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .caret { animation: none; opacity: 1; }
-    .btn, .discord { transition: none; }
+    .btn, .tour-btn, .discord { transition: none; }
   }
 </style>
 </head>
@@ -601,8 +414,8 @@
 <main>
 
   <section class="hero">
-    <div class="wrap hero-grid">
-      <div>
+    <div class="wrap">
+      <div class="hero-copy">
         <p class="kicker">Albion Online crafting maths, without the spreadsheet</p>
         <h1>Price the craft before you buy the materials.</h1>
         <p class="lede">
@@ -617,46 +430,30 @@
         <p class="fineprint">Free to use, no account, and every price you type stays in your browser.</p>
       </div>
 
-      <div>
-        <div class="sheet" aria-label="Preview of the craft panel">
-          <div class="sheet-head">
-            <div>
-              <p class="sheet-label">Craft panel</p>
-              <p class="sheet-item">Master's Dual Swords</p>
-            </div>
-            <span class="tier">T6.0</span>
-          </div>
-
-          <div class="segments" aria-hidden="true">
-            <span>T4</span><span>T5</span><span class="is-on">T6</span><span>T7</span><span>T8</span>
-            <span class="is-on">.0</span><span>.1</span><span>.2</span><span>.3</span>
-          </div>
-
-          <div class="row row-head" aria-hidden="true">
-            <span>Material</span><span class="num">Qty</span><span class="num">Unit price</span>
-          </div>
-
-          <ul class="rows">
-            <li class="row">
-              <span class="material"><em>T6</em>Bar</span>
-              <span class="num">20</span>
-              <span class="price">0<span class="caret" aria-hidden="true"></span></span>
-            </li>
-            <li class="row">
-              <span class="material"><em>T6</em>Leather</span>
-              <span class="num">12</span>
-              <span class="price">0<span class="caret" aria-hidden="true"></span></span>
-            </li>
-            <li class="row row-total">
-              <span class="label">Sales tax applied to the sell price</span>
-              <span class="value">6.5%</span>
-            </li>
-          </ul>
-
-          <p class="sheet-foot">Your prices, your return rate, your margin — nothing is uploaded.</p>
+      <figure class="tour">
+        <div class="tour-frame">
+          <video
+            id="tour-video"
+            class="tour-media"
+            poster="assets/product-tour-poster.jpg"
+            width="1920"
+            height="1080"
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="metadata"
+            aria-label="A twenty second tour of the calculator: the landing page, the craft panel with its materials and return rate, and the end card with the site address."
+          >
+            <source src="assets/product-tour.mp4" type="video/mp4">
+            Your browser can't play this video. <a href="calculator.html">Open the calculator</a> instead.
+          </video>
         </div>
-        <p class="sheet-caption">A craft from the catalogue, priced by you.</p>
-      </div>
+        <figcaption>
+          <span><strong>Twenty seconds</strong> through the product: the catalogue, the craft panel, the end card.</span>
+          <button class="tour-btn" id="tour-toggle" type="button" aria-controls="tour-video" aria-pressed="false">Pause tour</button>
+        </figcaption>
+      </figure>
     </div>
   </section>
 
@@ -749,6 +546,35 @@
     <p><a href="calculator.html">Calculator</a></p>
   </div>
 </footer>
+
+<script>
+  (function () {
+    var video = document.getElementById('tour-video');
+    var toggle = document.getElementById('tour-toggle');
+    if (!video || !toggle) return;
+
+    function sync() {
+      var paused = video.paused;
+      toggle.textContent = paused ? 'Play tour' : 'Pause tour';
+      toggle.setAttribute('aria-pressed', String(!paused));
+    }
+
+    toggle.addEventListener('click', function () {
+      if (video.paused) { video.play(); } else { video.pause(); }
+    });
+
+    video.addEventListener('play', sync);
+    video.addEventListener('pause', sync);
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      video.autoplay = false;
+      video.removeAttribute('autoplay');
+      video.pause();
+    }
+
+    sync();
+  })();
+</script>
 
 </body>
 </html>
