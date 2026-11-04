@@ -1,0 +1,42 @@
+name: Post changelog to Discord
+
+# Sends the commits from each push to main into the Discord channel that owns
+# the webhook. Requires one repository secret: DISCORD_WEBHOOK_URL
+# (channel -> Edit Channel -> Integrations -> Webhooks -> New Webhook -> Copy URL).
+# Until that secret exists the post is skipped, so pushes stay green.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: discord-changelog
+  cancel-in-progress: false
+
+env:
+  DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+
+jobs:
+  changelog:
+    name: Announce changes in #changelog
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Post the changelog
+        if: ${{ env.DISCORD_WEBHOOK_URL != '' }}
+        run: node .github/changelog.mjs
+
+      - name: Explain the skipped post
+        if: ${{ env.DISCORD_WEBHOOK_URL == '' }}
+        run: |
+          echo "::notice title=Changelog skipped::Add a repository secret named DISCORD_WEBHOOK_URL (channel settings -> Integrations -> Webhooks) to post changelog entries automatically."
