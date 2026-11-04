@@ -6217,12 +6217,13 @@
     text-transform: uppercase;
   }
   .planner-session-card-head strong { color: var(--text); font-size: 15px; }
+  .planner-session-card-head .planner-session-focus-total { margin-left:auto; padding:6px 10px; border:1px solid rgba(233,187,98,.22); border-radius:999px; background:rgba(233,187,98,.07); color:var(--gold-2); font-size:10px; font-weight:800; letter-spacing:.04em; }
   .planner-session-card-head small { color: var(--faint); font-size: 11px; }
   .planner-active-session-title { margin: 0 0 -4px; color: var(--text); font-size: 18px; font-weight: 800; letter-spacing: .02em; }
   .planner-session-crafts { display: flex; flex-direction: column; gap: 14px; padding-top: 16px; }
   .planner-session-craft {
     display: grid;
-    grid-template-columns: minmax(180px, 1.15fr) 78px minmax(220px, 1.5fr) minmax(165px, 1fr) 86px 120px 28px;
+    grid-template-columns: minmax(180px, 1.15fr) 78px minmax(220px, 1.5fr) minmax(165px, 1fr) 86px 112px 112px 28px;
     align-items: center;
     gap: 16px;
     min-width: 0;
@@ -6257,6 +6258,13 @@
   .planner-journal-need img { width: 24px; height: 24px; object-fit: contain; }
   .planner-journal-need b { color: var(--gold); font-size: 12px; white-space: nowrap; }
   .planner-craft-return strong { color: var(--green); }
+  .planner-craft-focus strong { color: var(--gold-2); }
+  .planner-craft-focus small { color: var(--muted); font-size:9px; line-height:1.3; }
+  /* Pin the trailing cells so the row stays aligned when the FOCUS cell is absent */
+  .planner-session-craft .planner-craft-focus { grid-column: 5; }
+  .planner-session-craft .planner-craft-return { grid-column: 6; }
+  .planner-session-craft .planner-craft-profit { grid-column: 7; }
+  .planner-session-craft .planner-craft-delete { grid-column: 8; }
   .planner-craft-profit strong.is-positive { color: var(--green); }
   .planner-craft-profit strong.is-negative { color: var(--red); }
   .planner-craft-profit strong.is-unpriced { color: var(--faint); }
@@ -6344,7 +6352,7 @@
   .planner-summary-metric.is-sell-value .planner-summary-icon { color: var(--gold); }
   .planner-summary-metric.is-sell-value .planner-summary-copy strong { color: var(--gold); }
   @media (max-width: 1180px) {
-    .planner-session-craft { grid-template-columns: minmax(180px, 1.1fr) 76px minmax(220px, 1.5fr) minmax(150px, 1fr) 80px 110px 24px; gap: 10px; padding: 12px; }
+    .planner-session-craft { grid-template-columns: minmax(180px, 1.1fr) 76px minmax(220px, 1.5fr) minmax(150px, 1fr) 80px 104px 104px 24px; gap: 10px; padding: 12px; }
   }
   @media (max-width: 900px) {
     .planner-session-card { padding: 14px; }
@@ -6356,9 +6364,9 @@
     .planner-summary-copy small { font-size: 9px; }
     .planner-summary-copy strong { font-size: 17px; }
     .planner-session-craft { grid-template-columns: minmax(0, 1fr) 76px; gap: 14px; }
-    .planner-craft-requirements, .planner-craft-journals { grid-column: 1 / -1; }
-    .planner-craft-return, .planner-craft-profit { grid-row: auto; }
-    .planner-session-craft .planner-craft-delete { justify-self: end; }
+    .planner-craft-requirements, .planner-craft-journals, .planner-craft-focus { grid-column: 1 / -1; }
+    .planner-session-craft .planner-craft-return, .planner-session-craft .planner-craft-profit { grid-column: auto; grid-row: auto; }
+    .planner-session-craft .planner-craft-delete { grid-column: auto; justify-self: end; }
   }
 
 
@@ -9673,6 +9681,48 @@
     renderPlannerLifetime();
   }
 
+  function craftFocusNodeBonuses(item) {
+    const subgroup = craftSubgroupForItem(item);
+    const isArtifact = Boolean(item && item[3] && Object.values(item[3]).some((recipe) =>
+      (recipe[1] || []).some(([id]) => /ARTEFACT/i.test(id))
+    ));
+    let shared = isArtifact ? 15 : 30;
+    let unique = 250;
+    if (item[1] === "Bags" && item[0] === "Bag") { unique = 340; shared = 0; }
+    else if (item[1] === "Bags" && item[0] === "Satchel of Insight") { unique = 310; shared = 30; }
+    else if (item[1] === "Capes") { unique = 370; shared = 0; }
+    else if ((item[1] === "Shields" && item[0] === "Shield") || (item[1] === "Tomes" && item[0] === "Tome of Spells") || (item[1] === "Torches" && item[0] === "Torch")) { shared = 90; }
+    return { mastery: subgroup ? 30 : 0, own: unique + shared, shared };
+  }
+
+  function getCraftFocusEfficiency(item) {
+    const subgroup = craftSubgroupForItem(item);
+    if (!subgroup) return 0;
+    const levelOf = (key) => Math.max(0, Math.min(100, Number(state.specLevels && state.specLevels[key]) || 0));
+    let efficiency = levelOf("base:" + subgroup.name) * craftFocusNodeBonuses(item).mastery;
+    const targetKey = CRAFT_ITEM_KEY(item);
+    for (const sibling of craftSubgroupItems(subgroup)) {
+      const level = levelOf(CRAFT_ITEM_KEY(sibling));
+      if (!level) continue;
+      const bonuses = craftFocusNodeBonuses(sibling);
+      efficiency += level * (CRAFT_ITEM_KEY(sibling) === targetKey ? bonuses.own : bonuses.shared);
+    }
+    return efficiency;
+  }
+
+  function craftFocusCostPerItem(item, tier, enchant) {
+    const currentTier = Number(tier);
+    const effectiveTier = currentTier + Math.max(0, Math.min(4, Number(enchant) || 0));
+    const recipe = item && item[3] && item[3][currentTier];
+    const baseRecipe = item && item[3] && (item[3][effectiveTier] || item[3][8]);
+    let baseFocusCost = Number(baseRecipe && baseRecipe[4]);
+    if (!(baseFocusCost > 0)) baseFocusCost = Number(recipe && recipe[4]);
+    if (!(baseFocusCost > 0)) return 0;
+    if (effectiveTier > 8) baseFocusCost *= Math.pow(1.75, effectiveTier - 8);
+    const efficiency = getCraftFocusEfficiency(item);
+    return baseFocusCost * Math.pow(0.5, efficiency / 10000);
+  }
+
   function renderPlannerPage() {
     const page = $("#planner-page");
     if (!page) return;
@@ -9687,6 +9737,9 @@
     const taxRate = state.ui.craft && state.ui.craft.taxMode === "none" ? 0.105 : 0.065;
     let totalInvestment = 0;
     let totalProfit = 0;
+    const useFocus = Boolean(state.craftReturn && state.craftReturn.focus);
+    let sessionFocusTotal = 0;
+    let hasFocusCrafts = false;
     let allSessionMaterialsPriced = true;
     let allSessionProfitsPriced = true;
     const cards = (active.entries || []).map((entry) => {
@@ -9696,6 +9749,11 @@
       if (!recipe) return "";
       const qty = Math.max(1, Number(entry.qty) || 1);
       const returnRate = Math.max(0, Number(entry.returnRate) || 0);
+      const entryUsesFocus = Boolean(entry.focus);
+      const showEntryFocus = useFocus && entryUsesFocus;
+      const focusPerItem = showEntryFocus ? craftFocusCostPerItem(item, entry.tier, entry.enchant) : 0;
+      const entryFocusTotal = focusPerItem * qty;
+      if (showEntryFocus) { sessionFocusTotal += entryFocusTotal; hasFocusCrafts = true; }
       const isBm = entry.marketTarget === "bm";
       const marketLabel = isBm ? "BLACK MARKET" : "CITY";
       const requirements = [];
@@ -9751,12 +9809,13 @@
       const tierLabel = entry.tier + "." + (Number(entry.enchant) || 0);
 
       return '<article class="planner-session-craft' + (entry.done ? ' is-done' : '') + '">' +
-        '<div class="planner-craft-identity"><span class="planner-craft-image">' + craftIconHtml(item, entry.tier, entry.enchant) + '</span><strong>' + esc(item[0]) + ' ' + tierLabel + '</strong><button type="button" class="planner-craft-market-toggle" data-planner-entry-market="' + esc(entry.id) + '" title="Change market destination">' + marketLabel + '</button></div>' +
+        '<div class="planner-craft-identity"><span class="planner-craft-image">' + craftIconHtml(item, entry.tier, entry.enchant) + '</span><strong>' + esc(item[0]) + ' ' + tierLabel + '</strong>' + '<button type="button" class="planner-focus-toggle' + (entryUsesFocus ? ' is-active' : '') + '" data-planner-focus="' + esc(entry.id) + '" title="Toggle Focus for this craft" aria-label="' + (entryUsesFocus ? 'Disable' : 'Enable') + ' Focus for ' + esc(item[0]) + '" aria-pressed="' + entryUsesFocus + '"><span class="planner-focus-switch" aria-hidden="true"></span><span>FOCUS</span></button>' + '<button type="button" class="planner-craft-market-toggle" data-planner-entry-market="' + esc(entry.id) + '" title="Change market destination">' + marketLabel + '</button></div>' +
         '<label class="planner-craft-stat planner-craft-quantity"><span>QTY</span><input type="number" min="1" max="1000000" step="1" value="' + qty + '" data-planner-entry-qty="' + esc(entry.id) + '" aria-label="Quantity for ' + esc(item[0]) + '"></label>' +
         '<div class="planner-craft-stat planner-craft-requirements"><span>MATERIALS NEEDED</span><div class="planner-requirements-list">' + (requirements.join("") || '<span class="planner-requirement-chip"><span>No materials</span></span>') + '</div></div>' +
         '<div class="planner-craft-stat planner-craft-journals"><span>JOURNALS NEEDED</span><div class="planner-journal-need">' + (journalsNeeded
           ? '<img src="https://render.albiononline.com/v1/item/' + encodeURIComponent(emptyJournalIcon) + '.png" alt="" aria-hidden="true"><b>' + fmt(journalsNeeded) + '×</b><span>' + esc(journalType.name) + '</span>'
           : '<span>—</span>') + '</div></div>' +
+        (showEntryFocus ? '<div class="planner-craft-stat planner-craft-focus"><span>FOCUS REQUIRED</span><strong>' + fmt(entryFocusTotal) + '</strong><small>' + fmt(focusPerItem) + ' each · ' + fmt(qty) + ' crafts</small></div>' : '') +
         '<label class="planner-craft-stat planner-craft-return"><span>RETURN RATE</span><span class="planner-return-input-wrap"><input class="planner-return-input" type="number" min="0" max="100" step="0.1" value="' + returnRate.toFixed(1) + '" data-planner-entry-return="' + esc(entry.id) + '" aria-label="Return rate for ' + esc(item[0]) + '"><i>%</i></span></label>' +
         '<div class="planner-craft-stat planner-craft-profit"><span>PROFIT</span><strong class="' + (profitReady ? profitClass : 'is-unpriced') + '">' + (profitReady ? ((profit > 0 ? '+' : '') + fmtMoney(Math.round(profit))) : '—') + '</strong></div>' +
         '<button type="button" class="planner-craft-delete" data-planner-remove="' + esc(entry.id) + '" aria-label="Remove ' + esc(item[0]) + ' from planner" title="Remove craft">' + ICON_TRASH + '</button>' +
@@ -9838,7 +9897,7 @@
     page.innerHTML =
       '<h2 class="planner-active-session-title">' + esc(active.name) + '</h2>' +
       '<section class="planner-session-card" aria-label="Items in ' + esc(active.name) + '">' +
-        '<header class="planner-session-card-head"><div><span>ITEMS</span></div></header>' +
+        '<header class="planner-session-card-head"><div><span>ITEMS</span></div>' + (useFocus && hasFocusCrafts ? '<strong class="planner-session-focus-total">SESSION FOCUS REQUIRED · ' + fmt(sessionFocusTotal) + '</strong>' : '') + '</header>' +
         '<div class="planner-session-crafts">' + (cards || '<div class="planner-session-empty">This session has no planned crafts yet.</div>') + '</div>' +
       '</section>' +
       '<section class="planner-materials-session-card" aria-label="Materials needed for ' + esc(active.name) + '">' +
@@ -10148,7 +10207,7 @@
       qty,
       returnRate: plannerDialogRate(),
       marketTarget: state.ui.craft && state.ui.craft.marketTarget === "bm" ? "bm" : "city",
-      focus: false,
+      focus: Boolean(state.craftReturn && state.craftReturn.focus),
       done: false
     });
     state.plannerActive = target.id;
