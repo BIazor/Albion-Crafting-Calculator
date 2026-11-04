@@ -17,7 +17,7 @@
     } catch (err) { /* storage blocked: keep the default theme */ }
   })();
 </script>
-<title>CraftIQ — Albion Online</title>
+<title>Albion Crafting Calculator — by Blazor</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -160,9 +160,9 @@
   .brand-copy strong {
     overflow: hidden;
     font-family: var(--serif);
-    font-size: 17px;
+    font-size: 14px;
     font-weight: 600;
-    letter-spacing: .02em;
+    letter-spacing: .01em;
     text-overflow: ellipsis;
     white-space: nowrap;
     background: linear-gradient(135deg, var(--s-light) 40%, var(--brand-to) 100%);
@@ -172,10 +172,9 @@
 
   .brand-copy span {
     color: var(--faint);
-    font-size: 8.5px;
+    font-size: 9px;
     font-weight: 700;
-    letter-spacing: .18em;
-    text-transform: uppercase;
+    letter-spacing: .06em;
   }
 
   .app-nav {
@@ -6798,7 +6797,10 @@
   }
 
   .brand-copy strong {
-    background: linear-gradient(135deg, var(--brand-from) 40%, var(--brand-to) 100%);
+    /* background-image (not the shorthand) so background-clip: text survives */
+    background-image: linear-gradient(135deg, var(--brand-from) 40%, var(--brand-to) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
   }
 
   /* ---------------------------------------------------------------------- */
@@ -7024,8 +7026,8 @@
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m14.5 3 6 6-3 3-6-6 3-3Z"></path><path d="m3 21 6-6"></path><path d="m13.5 10.5 2 2"></path><path d="m4 4 4 1 1 4"></path><path d="m20 20-4-1-1-4"></path></svg>
         </span>
         <div class="brand-copy">
-          <strong>CraftIQ</strong>
-          <span>v1.0</span>
+          <strong>Albion Crafting Calculator</strong>
+          <span>by Blazor</span>
         </div>
       </div>
     </div>
