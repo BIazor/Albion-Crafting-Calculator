@@ -1,6 +1,6 @@
 # Albion Crafting Calculator
 
-A free, browser-only crafting calculator for **Albion Online**, with a landing page in front of it.
+A free, browser-only crafting calculator for **Albion Online**. The site root opens the calculator; there is no separate landing page.
 
 Live at <https://albioncrafting.vercel.app/>:
 
@@ -8,12 +8,12 @@ Live at <https://albioncrafting.vercel.app/>:
 
 | File | Purpose |
 | --- | --- |
-| `index.html` | Landing page: hero, feature overview, calls to action |
+| `index.html` | Root redirect to the calculator (opens the craft page, preserving a hash) |
 | `calculator.html` | The calculator app itself — one self-contained file |
 | `favicon.svg` | Site icon (browsers and tabs) |
 | `404.html` | Styled "page not found" page |
 
-`index.html` is the entry point; nothing else needs a build step.
+`index.html` redirects to `calculator.html`, which is the app; nothing else needs a build step.
 
 ## Stack
 
