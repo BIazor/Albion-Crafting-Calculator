@@ -102,11 +102,19 @@ if (!webhook) {
   process.exit(0);
 }
 
-const response = await fetch(webhook, {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify(payload),
-});
+let response;
+try {
+  response = await fetch(webhook, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+} catch (error) {
+  // A rejected fetch (DNS, offline, blocked port) should fail the run with a readable reason.
+  console.error(`Could not reach Discord: ${error.message}`);
+  console.error('Check that DISCORD_WEBHOOK_URL is a complete https://discord.com/api/webhooks/... URL.');
+  process.exit(1);
+}
 
 if (!response.ok) {
   const body = await response.text().catch(() => '');
