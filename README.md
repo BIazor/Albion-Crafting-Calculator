@@ -8,12 +8,14 @@ Live at <https://albioncrafting.vercel.app/>:
 
 | File | Purpose |
 | --- | --- |
-| `index.html` | Landing page with the calculator and refining-calculator buttons and the Discord invite |
-| `calculator.html` | The calculator app itself — one self-contained file |
+| `index.html` | Landing page linking to the crafting, refining and potion calculators |
+| `calculator.html` | Crafting calculator and planner — one self-contained file |
+| `refining.html` | Refining calculator and planner with separate saved sessions |
+| `potions.html` | Potion crafting calculator and planner with separate saved sessions |
 | `favicon.svg` | Site icon (browsers and tabs) |
 | `404.html` | Styled "page not found" page |
 
-`index.html` is the landing page and links to `calculator.html`, which is the app; nothing else needs a build step.
+`index.html` links to focused crafting, refining and potion pages. Each page stores its planner sessions separately in the browser.
 
 ## Stack
 

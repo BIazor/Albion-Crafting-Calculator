@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-page-mode="craft">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7225,10 +7225,10 @@
 
     <div class="app-sidebar-content">
       <div class="app-nav" role="tablist" aria-label="Calculator, planner, potions and refining">
-        <button class="app-nav-btn active" type="button" role="tab" aria-selected="true" data-view="calculator">Calculator</button>
-        <button class="app-nav-btn" type="button" role="tab" aria-selected="false" data-view="planner">Planner</button>
-        <button class="app-nav-btn" type="button" role="tab" aria-selected="false" data-view="potions">Potions</button>
-        <button class="app-nav-btn" type="button" role="tab" aria-selected="false" data-view="refining">Refining</button>
+        <button class="app-nav-btn active" type="button" role="tab" aria-selected="true" data-view="calculator" data-page-entry="craft">Calculator</button>
+        <button class="app-nav-btn" type="button" role="tab" aria-selected="false" data-view="planner" data-page-entry="craft,potions">Planner</button>
+        <button class="app-nav-btn" type="button" role="tab" aria-selected="false" data-view="potions" data-page-entry="potions">Potions</button>
+        <button class="app-nav-btn" type="button" role="tab" aria-selected="false" data-view="refining" data-page-entry="refining">Refining</button>
       </div>
 
       <div class="app-sidebar-body">
@@ -7766,7 +7766,8 @@
 (() => {
   "use strict";
 
-  const STORAGE_KEY = "albion-hideout-tracker.v2";
+  const PAGE_MODE = document.documentElement.dataset.pageMode || "craft";
+  const STORAGE_KEY = PAGE_MODE === "craft" ? "albion-hideout-tracker.v2" : "albion-hideout-tracker.v2." + PAGE_MODE;
   const APP_VERSION = 7;
 
   const TYPE_ORDER = ["Wood", "Ore", "Hide", "Fiber", "Custom"];
@@ -7912,6 +7913,12 @@
   let refineEnchant = 0;
   let refineQty = 1;
   let refineSearch = "";
+  const REFINE_PLAN_KEY = "albion-hideout-tracker.refining-plan.v1";
+  let refiningPlan = [];
+  try {
+    const savedPlan = JSON.parse(localStorage.getItem(REFINE_PLAN_KEY) || "[]");
+    if (Array.isArray(savedPlan)) refiningPlan = savedPlan.filter((entry) => entry && typeof entry === "object").slice(0, 200);
+  } catch (err) { refiningPlan = []; }
 
   const refineGroup = () => REFINE_GROUPS.find((group) => group.key === refineType) || REFINE_GROUPS[0];
 
@@ -8138,6 +8145,7 @@
         '<div class="potion-tax"><button type="button" class="' + (taxMode === "premium" ? "is-active" : "") + '" data-refine-tax="premium">PREMIUM TAX · 6.5%</button><button type="button" class="' + (taxMode === "none" ? "is-active" : "") + '" data-refine-tax="none">NO PREMIUM TAX · 10.5%</button></div></section>' +
         refineReturnCardHtml(econ.rate) +
         '<section class="craft-card potion-best refine-margins"><span class="craft-label">MARGIN BY TIER · ' + esc(selection.group.type.toUpperCase()) + '</span><p class="refine-margin-note">Every tier and enchant of ' + esc(selection.group.type.toLowerCase()) + ' refining, priced from your saved price book. A dash means a price is missing. Click any cell to open it.</p>' + refineMarginGridHtml(selection.group, selection.tier, selection.enchant, econ.rate, econ.tax) + '</section>' +
+        '<section class="craft-card potion-best refining-planner"><header><h2>REFINING PLANNER</h2><button class="potion-fetch" type="button" data-refine-plan-add>Add this batch</button></header><p class="refine-margin-note">Queue refining batches for this session. Your plan is saved in this browser.</p><div class="planner-page-list">' + (refiningPlan.length ? refiningPlan.map((entry, index) => '<article class="planner-craft-row"><strong>' + esc(entry.type) + ' · ' + esc(refineTierLabel(entry.tier, entry.enchant)) + ' ' + esc(entry.name) + '</strong><span>×' + fmt(entry.qty) + '</span><button type="button" class="btn ghost small" data-refine-plan-remove="' + index + '" aria-label="Remove ' + esc(entry.name) + ' from refining planner">Remove</button></article>').join("") : '<p class="planner-empty-note">No batches planned yet.</p>') + '</div></section>' +
       '</div>' +
       '<aside class="craft-card potion-rail refine-rail"><div class="potion-rail-title"><div><strong>' + esc(selection.outputName) + '</strong><small>REFINING · ' + tierLabel + ' · CITY SELL</small></div></div><div class="potion-hero"><span class="tier-badge craft-item-tier">' + tierLabel + '</span>' + heroImg + '</div><div class="craft-item-stats"><div class="craft-stat-line investment"><span>Investment</span><strong>' + fmt(econ.investment) + '</strong></div><div class="craft-stat-line"><span>Saved by return</span><strong>' + fmt(econ.saved) + '</strong></div><div class="craft-stat-line"><span>Revenue after tax</span><strong>' + (econ.sell > 0 ? fmt(econ.netRevenue) : "—") + '</strong></div><div class="craft-stat-line"><span>Net profit</span><strong class="' + profitClass + '">' + profitText + '</strong></div><div class="craft-stat-line"><span>Margin</span><strong class="' + marginClass + '">' + marginText + '</strong></div><span class="craft-margin-track"><span class="craft-margin-fill ' + marginClass + '" style="width:' + marginWidth.toFixed(2) + '%"></span></span></div></aside></div>';
     renderRefineOptions();
@@ -8200,6 +8208,24 @@
       showToast(value > 0 ? "Price saved." : "Price cleared.");
     });
     workspace.addEventListener("click", async (event) => {
+      const addBatch = event.target.closest("[data-refine-plan-add]");
+      if (addBatch) {
+        const current = refineSelection();
+        const product = current.group.refined[current.tier - 2];
+        refiningPlan.push({ type: current.group.type, name: product, tier: current.tier, enchant: current.enchant, qty: current.qty });
+        refiningPlan = refiningPlan.slice(-200);
+        try { localStorage.setItem(REFINE_PLAN_KEY, JSON.stringify(refiningPlan)); } catch (err) { showToast("Could not save the refining plan."); }
+        renderRefining();
+        showToast(product + " added to the refining planner.");
+        return;
+      }
+      const removeBatch = event.target.closest("[data-refine-plan-remove]");
+      if (removeBatch) {
+        refiningPlan.splice(Number(removeBatch.dataset.refinePlanRemove), 1);
+        try { localStorage.setItem(REFINE_PLAN_KEY, JSON.stringify(refiningPlan)); } catch (err) { /* queue remains available in memory */ }
+        renderRefining();
+        return;
+      }
       const cell = event.target.closest("[data-refine-cell-tier]");
       if (cell) {
         refineTier = Number(cell.dataset.refineCellTier) || 4;
@@ -11444,9 +11470,12 @@
 
   function switchTab(name, options) {
     const opts = options || {};
-    if (!["craft", "database", "help", "planner", "spec", "destiny", "potions", "refining"].includes(name)) name = "craft";
+    const modeTab = PAGE_MODE === "craft" ? "craft" : PAGE_MODE;
+    if (name !== "planner" && name !== modeTab && !["database", "help", "spec", "destiny"].includes(name)) name = modeTab;
+    if (!["craft", "database", "help", "planner", "spec", "destiny", "potions", "refining"].includes(name)) name = modeTab;
     state.ui.tab = name;
 
+    $$("[data-page-entry]").forEach((btn) => { btn.hidden = !btn.dataset.pageEntry.split(",").includes(PAGE_MODE); });
     $$(".app-nav-btn").forEach((btn) => {
       const active = (btn.dataset.view === "calculator" && name === "craft") ||
         (btn.dataset.view === "planner" && name === "planner") ||
@@ -13359,9 +13388,8 @@
 
     const hashTab = location.hash.replace("#", "");
     const appTabs = ["craft", "database", "help", "planner", "potions", "refining"];
-    const initialTab = appTabs.includes(hashTab)
-      ? hashTab
-      : (appTabs.includes(state.ui.tab) ? state.ui.tab : "craft");
+    const modeTab = PAGE_MODE === "craft" ? "craft" : PAGE_MODE;
+    const initialTab = hashTab === "planner" ? "planner" : modeTab;
     switchTab(initialTab, { scroll: false });
 
     if (!storageOK) {
