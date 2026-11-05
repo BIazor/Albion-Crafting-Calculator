@@ -3138,18 +3138,42 @@
   .rr-slider {
     -webkit-appearance: none;
     appearance: none;
+    display: block;
     width: 100%;
-    height: 4px;
+    height: 14px;
     border-radius: 2px;
-    background: var(--s-4);
+    background: transparent;
     outline: none;
     cursor: pointer;
     margin: 0;
   }
 
+  .rr-slider::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 6px;
+    border: 1px solid var(--line, #394854);
+    border-radius: 4px;
+    background: var(--s-5, #2b303a);
+  }
+
+  .rr-slider::-moz-range-track {
+    width: 100%;
+    height: 6px;
+    border: 1px solid var(--line, #394854);
+    border-radius: 4px;
+    background: var(--s-5, #2b303a);
+  }
+
+  .rr-slider::-moz-range-progress {
+    height: 6px;
+    border-radius: 4px;
+    background: var(--accent-2, #ff6b6b);
+  }
+
   .rr-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
+    margin-top: -4px;
     width: 14px;
     height: 14px;
     border-radius: 50%;
@@ -5332,6 +5356,7 @@
   .app-topbar { background-color: var(--s-3); }
   .app-content { background-color: transparent; }
   #panel-craft { background: transparent !important; }
+  #panel-potions { background: transparent !important; }
   #panel-planner { background: transparent !important; }
   #panel-database { background: transparent !important; }
   #panel-spec { background: transparent !important; border: 0 !important; }
@@ -7077,6 +7102,110 @@
   html[data-theme="aurora"] .planner-add-btn {
     color: #ffffff;
   }
+
+  .potion-workspace { width:100%; max-width:none; margin:0 auto; padding:20px 0 36px; border:0; border-radius:0; background:transparent; box-shadow:none; }
+  .potion-topbar { display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:0 0 18px; }
+  .potion-topbar .craft-topgroup { display:flex;align-items:center;gap:12px;min-height:48px;padding:7px 12px;border:1px solid var(--border);border-radius:12px;background:var(--s-1); }
+  .potion-topbar .segmented { display:flex;gap:4px; }
+  .potion-topbar .seg-btn { min-width:38px; }
+  .potion-topbar .potion-yield-value { color:var(--text);font-size:13px;font-weight:800;white-space:nowrap; }
+  .potion-quantity-control,.potion-focus { display:flex;align-items:center;gap:10px;padding:8px 12px;border:1px solid var(--border);border-radius:12px;background:var(--s-1);color:var(--text-muted);font-size:10px;font-weight:800;letter-spacing:.05em; }
+  .potion-quantity-control input { width:100px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:var(--surface-2);color:var(--text);font-size:13px; }
+  .potion-focus { min-height:48px;flex-wrap:wrap; }
+  .potion-focus small { width:100%;padding-left:24px;color:var(--text);font-size:10px;letter-spacing:0; }
+  .potion-dashboard { display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:16px;align-items:start; }
+  .potion-main { display:grid;gap:16px;min-width:0; }
+  .potion-material-card { padding:24px; }
+  .potion-material-card header { margin-bottom:18px; }
+  .potion-material-card header h2 { font-family:var(--font-display);font-size:14px;letter-spacing:.08em; }
+  .potion-fetch { min-height:34px;padding:0 20px;border:0;border-radius:24px;background:var(--danger,#f45151);color:#fff;font-size:11px;font-weight:900;letter-spacing:.04em;cursor:pointer;box-shadow:0 5px 15px rgba(240,70,75,.22); }
+  .potion-materials { grid-template-columns:minmax(0,600px);gap:12px; }
+  .potion-material { background:var(--s-0);border-color:var(--border);border-radius:13px;padding:14px 18px; }
+  .potion-pricing { display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:14px; }
+  .potion-price-card { position:relative;display:flex;flex-direction:column;gap:10px;padding:14px 18px;border:1px solid var(--border);border-radius:13px;color:var(--text-muted);font-size:11px;font-weight:900;letter-spacing:.04em; }
+  .potion-price-card.is-selected { border:2px solid var(--danger,#f45151);box-shadow:0 0 15px rgba(240,70,75,.14); }
+  .potion-market-pick { align-self:flex-start;padding:0;border:0;background:transparent;color:inherit;font:inherit;letter-spacing:inherit;cursor:pointer; }
+  .potion-price-card input { width:100%;padding:9px 11px;border:1px solid var(--border);border-radius:9px;background:var(--s-0);color:var(--text);font-size:13px; }
+  .potion-tax { display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px; }
+  .potion-tax button { height:46px;border:1px solid var(--border);border-radius:11px;background:transparent;color:var(--text-muted);font-size:11px;font-weight:900;cursor:pointer; }
+  .potion-tax button.is-active { border-color:transparent;background:linear-gradient(100deg,#ef4038,#ff6669);color:white;box-shadow:0 6px 15px rgba(240,70,75,.2); }
+  .potion-return { min-height:240px; }
+  .potion-best { padding:18px 22px; }
+  .potion-best .craft-label strong { margin-left:6px;color:var(--gold); }
+  .potion-best p { margin:20px 0 4px;color:var(--text);font-size:13px;line-height:1.6; }
+  .potion-best p strong { color:var(--gold); }
+  .potion-rail { position:sticky;top:16px;overflow:hidden;padding:0; }
+  .potion-rail-title { padding:16px;border-bottom:1px solid var(--border); }
+  .potion-rail-title strong { display:block;overflow:hidden;font-size:18px;text-overflow:ellipsis;white-space:nowrap; }
+  .potion-rail-title small { display:block;margin-top:4px;color:var(--text-muted);font-size:9px;font-weight:800;letter-spacing:.08em; }
+  .potion-hero { position:relative;display:grid;place-items:center;min-height:260px;padding:22px;background:var(--s-0);border-bottom:1px solid var(--border); }
+  .potion-hero img { width:190px;height:190px;object-fit:contain;filter:drop-shadow(0 0 12px rgba(240,196,70,.32)); }
+  .potion-hero .tier-badge { position:absolute;top:14px;left:14px; }
+  .potion-rail .craft-item-stats { padding:16px; }
+  .potion-note { display:block;line-height:1.5; }
+  @media(max-width:900px) { .potion-dashboard { grid-template-columns:1fr; } .potion-rail { position:static; } }
+  @media(max-width:560px) { .potion-workspace { padding:14px 0 28px; } .potion-topbar { gap:8px; } .potion-quantity-control { width:100%;justify-content:space-between; } .potion-pricing,.potion-tax { grid-template-columns:1fr; } .potion-materials { grid-template-columns:1fr; } .potion-material { padding:14px; } }
+  .potion-head { display:flex; align-items:center; justify-content:space-between; gap:20px; padding:20px 0 24px; }
+  .potion-head h1 { margin:6px 0; font-family:var(--font-display); font-size:30px; }
+  .potion-head p,.potion-note { color:var(--text-muted); font-size:12px; }
+  .potion-head img { width:76px;height:76px;object-fit:contain; }
+  .potion-controls { display:grid;grid-template-columns:repeat(4,minmax(130px,1fr));gap:12px;margin-bottom:18px; }
+  .potion-controls>label,.potion-sale { display:flex;flex-direction:column;gap:7px;color:var(--text-muted);font-size:11px; }
+  .potion-controls input:not([type=checkbox]),.potion-sale input,.potion-material input { width:100%;padding:10px 11px;background:var(--surface-2);border:1px solid var(--border);border-radius:8px;color:var(--text); }
+  .potion-check,.potion-rate { min-height:60px;padding:10px 12px;border:1px solid var(--border);border-radius:9px;background:var(--surface); }
+  .potion-check { display:grid!important;grid-template-columns:18px 1fr;align-content:center;align-items:center; }
+  .potion-check small { grid-column:2;color:var(--text-muted); }
+  .potion-rate { display:flex;flex-direction:column;gap:3px;color:var(--text-muted);font-size:11px; }
+  .potion-rate strong { color:var(--gold);font-size:16px; }
+  .potion-columns { display:grid;grid-template-columns:minmax(0,1.45fr) minmax(280px,.8fr);gap:16px;align-items:start; }
+  .potion-material-card,.potion-summary { padding:18px; }
+  .potion-material-card header { display:flex;justify-content:space-between;align-items:center;margin-bottom:8px; }
+  .potion-material-card h2 { margin:0;font-size:16px; }
+  .potion-materials { display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px; }
+  .potion-material { min-width:0;background:var(--s-0);border:1px solid rgba(var(--overlay-rgb),.07);border-radius:12px;padding:14px 18px;box-sizing:border-box; }
+  .potion-material .craft-box-head { margin-bottom:12px; }
+  .potion-material .craft-box-body { gap:14px; }
+  .potion-material .craft-box-icon { flex:0 0 48px; }
+  .potion-material .craft-bubble-input { font-variant-numeric:tabular-nums; }
+  .potion-material .gear-render-img { display:block;width:46px;height:46px;object-fit:contain; }
+  .potion-stat { display:flex;justify-content:space-between;gap:14px;padding:12px 0;border-bottom:1px solid var(--border-soft);font-size:12px; }
+  .potion-stat span { color:var(--text-muted); }
+  .potion-sale { margin-top:14px; }
+  .potion-profit { display:flex;justify-content:space-between;padding:16px 0;margin-top:8px;font-size:14px; }
+  .potion-profit strong { font-size:20px; }
+  .potion-profit.positive strong { color:var(--success,#5ec58b); }
+  .potion-profit.negative strong { color:var(--danger,#ef7272); }
+  /* Refining */
+  .refine-group { margin: 2px 0 6px; }
+  .refine-group-head { display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 10px 6px;color:var(--muted);font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase; }
+  .refine-group-head small { color:var(--faint);font-size:9px;font-weight:700;letter-spacing:.04em; }
+  .refine-side-item { display:flex;align-items:center;justify-content:space-between;gap:10px; }
+  .refine-tier-tag { color:var(--gold);font-size:9px;font-weight:800;letter-spacing:.04em; }
+  .refine-side-item.selected .refine-tier-tag { color:inherit; }
+  .refine-head h1 small { display:inline-block;margin-left:8px;color:var(--gold);font-size:16px;letter-spacing:.02em;vertical-align:middle; }
+  .refine-materials { grid-template-columns:repeat(auto-fit,minmax(230px,1fr));max-width:660px; }
+  .refine-sub { color:var(--faint);font-size:9px;font-weight:700;letter-spacing:.03em; }
+  .refine-rule { margin:14px 0 0;color:var(--text-muted);font-size:11.5px;line-height:1.6; }
+  .refine-pricing { grid-template-columns:minmax(0,320px); }
+  .refine-pricing .potion-market-pick { cursor:default; }
+  .refine-margins { padding:18px 22px; }
+  .refine-margin-note { margin:10px 0 0;color:var(--text-muted);font-size:11.5px;line-height:1.6; }
+  .refine-margin-wrap { margin-top:14px;overflow-x:auto; }
+  .refine-margin-grid { display:grid;grid-template-columns:repeat(6,minmax(54px,1fr));gap:6px;min-width:420px; }
+  .refine-margin-head,.refine-margin-tier { display:flex;align-items:center;justify-content:center;min-height:24px;color:var(--faint);font-size:9px;font-weight:800;letter-spacing:.06em; }
+  .refine-margin-tier { color:var(--gold);font-size:10px; }
+  .refine-margin-cell { display:flex;align-items:center;justify-content:center;min-height:34px;padding:0 4px;border:1px solid var(--border);border-radius:8px;background:transparent;color:var(--text);font-size:11px;font-weight:800;font-variant-numeric:tabular-nums;cursor:pointer; }
+  .refine-margin-cell:hover { background:rgba(var(--overlay-rgb),.05); }
+  .refine-margin-cell.is-positive { color:var(--success,#5ec58b); }
+  .refine-margin-cell.is-negative { color:var(--danger,#ef7272); }
+  .refine-margin-cell.is-missing { color:var(--faint); }
+  .refine-margin-cell.is-empty { border-color:transparent;color:transparent;background:transparent;cursor:default; }
+  .refine-margin-cell.is-active { border-color:var(--gold);box-shadow:0 0 0 1px var(--gold) inset; }
+  @media(max-width:560px) { .refine-margins { padding:14px; } }
+  #sidebar-potions .craft-option { width:100%; }
+  @media(max-width:900px) { .potion-columns { grid-template-columns:1fr; } .potion-controls { grid-template-columns:repeat(2,minmax(130px,1fr)); } }
+  @media(max-width:560px) { .potion-workspace { padding:16px; } .potion-materials { grid-template-columns:1fr; } .potion-material { padding:14px; } }
+
 </style>
 </head>
 <body>
@@ -7095,9 +7224,11 @@
     </div>
 
     <div class="app-sidebar-content">
-      <div class="app-nav" role="tablist" aria-label="Calculator and planner">
+      <div class="app-nav" role="tablist" aria-label="Calculator, planner, potions and refining">
         <button class="app-nav-btn active" type="button" role="tab" aria-selected="true" data-view="calculator">Calculator</button>
         <button class="app-nav-btn" type="button" role="tab" aria-selected="false" data-view="planner">Planner</button>
+        <button class="app-nav-btn" type="button" role="tab" aria-selected="false" data-view="potions">Potions</button>
+        <button class="app-nav-btn" type="button" role="tab" aria-selected="false" data-view="refining">Refining</button>
       </div>
 
       <div class="app-sidebar-body">
@@ -7113,6 +7244,17 @@
           </div>
           <div class="craft-sidebar-list" id="craft-option-grid" role="listbox" aria-label="Craftable items"></div>
           <div class="craft-picker-empty" id="craft-picker-empty" hidden>No items match that search.</div>
+        </div>
+
+        <div class="craft-sidebar-pane" id="sidebar-potions" hidden>
+          <div class="craft-sidebar-head"><span class="craft-label">Choose potion to craft</span></div>
+          <div class="craft-sidebar-search"><div class="search"><input id="potion-search" type="search" placeholder="Search potions…" autocomplete="off" aria-label="Search potions"></div></div>
+          <div class="craft-sidebar-list" id="potion-option-list" role="listbox" aria-label="Craftable potions"></div>
+        </div>
+        <div class="craft-sidebar-pane" id="sidebar-refining" hidden>
+          <div class="craft-sidebar-head"><span class="craft-label">Choose material to refine</span></div>
+          <div class="craft-sidebar-search"><div class="search"><input id="refine-search" type="search" placeholder="Search materials…" autocomplete="off" aria-label="Search refinable materials"></div></div>
+          <div class="craft-sidebar-list" id="refine-option-list" role="listbox" aria-label="Refinable materials"></div>
         </div>
 
         <div class="craft-sidebar-pane planner-pane" id="sidebar-planner" hidden>
@@ -7300,6 +7442,14 @@
 
     <section class="panel" id="panel-planner" role="tabpanel" aria-labelledby="tab-planner" hidden>
       <div class="planner-page" id="planner-page"></div>
+    </section>
+
+    <section class="panel" id="panel-refining" role="tabpanel" aria-label="Refining" hidden>
+      <div class="potion-workspace" id="refining-workspace"></div>
+    </section>
+
+    <section class="panel" id="panel-potions" role="tabpanel" aria-label="Potion crafting" hidden>
+      <div class="potion-workspace" id="potion-workspace"></div>
     </section>
 
     <section class="panel" id="panel-database" role="tabpanel" aria-labelledby="tab-database" hidden>
@@ -7642,6 +7792,505 @@
     return '<span class="gear-icon artefact-icon" aria-hidden="true">' + imgTag + '</span>';
   }
 
+  const POTION_RECIPES = [{"name":"Acid Potion","id":"T5_POTION_ACID","tier":5,"batch":10,"focus":30.0,"materials":[{"name":"Dragon Teasel","id":"T5_TEASEL","qty":48.0,"tier":"T5"},{"name":"Crenellated Burdock","id":"T4_BURDOCK","qty":24.0,"tier":"T4"},{"name":"Goats Milk","id":"T4_MILK","qty":12.0,"tier":"T4"},{"name":"Fine Spirit Paws","id":"T5_ALCHEMY_RARE_DIREBEAR","qty":1.0,"tier":"T5"}]},{"name":"Berserk Potion","id":"T6_POTION_BERSERK","tier":6,"batch":10,"focus":30.0,"materials":[{"name":"Elusive Foxglove","id":"T6_FOXGLOVE","qty":48.0,"tier":"T6"},{"name":"Arcane Agaric","id":"T2_AGARIC","qty":24.0,"tier":"T2"},{"name":"Fine Werewolf Fangs","id":"T5_ALCHEMY_RARE_WEREWOLF","qty":1.0,"tier":"T5"},{"name":"Potato Schnapps","id":"T6_ALCOHOL","qty":12.0,"tier":"T6"}]},{"name":"Calming Potion","id":"T5_POTION_MOB_RESET","tier":5,"batch":10,"focus":30.0,"materials":[{"name":"Dragon Teasel","id":"T5_TEASEL","qty":48.0,"tier":"T5"},{"name":"Crenellated Burdock","id":"T4_BURDOCK","qty":24.0,"tier":"T4"},{"name":"Arcane Agaric","id":"T2_AGARIC","qty":12.0,"tier":"T2"},{"name":"Fine Shadow Claws","id":"T5_ALCHEMY_RARE_PANTHER","qty":1.0,"tier":"T5"}]},{"name":"Cleansing Potion","id":"T5_POTION_CLEANSE2","tier":5,"batch":10,"focus":30.0,"materials":[{"name":"Dragon Teasel","id":"T5_TEASEL","qty":48.0,"tier":"T5"},{"name":"Brightleaf Comfrey","id":"T3_COMFREY","qty":24.0,"tier":"T3"},{"name":"Goats Butter","id":"T4_BUTTER","qty":12.0,"tier":"T4"},{"name":"Fine Sylvian Root","id":"T5_ALCHEMY_RARE_ENT","qty":1.0,"tier":"T5"}]},{"name":"Energy Potion","id":"T4_POTION_ENERGY","tier":4,"batch":5,"focus":30.0,"materials":[{"name":"Crenellated Burdock","id":"T4_BURDOCK","qty":24.0,"tier":"T4"},{"name":"Goats Milk","id":"T4_MILK","qty":6.0,"tier":"T4"}]},{"name":"Gathering Potion","id":"T6_POTION_GATHER","tier":6,"batch":10,"focus":30.0,"materials":[{"name":"Sheeps Butter","id":"T6_BUTTER","qty":48.0,"tier":"T6"},{"name":"Elusive Foxglove","id":"T6_FOXGLOVE","qty":24.0,"tier":"T6"},{"name":"Dragon Teasel","id":"T5_TEASEL","qty":12.0,"tier":"T5"},{"name":"Fine Runestone Tooth","id":"T5_ALCHEMY_RARE_ELEMENTAL","qty":1.0,"tier":"T5"}]},{"name":"Gigantify Potion","id":"T5_POTION_REVIVE","tier":5,"batch":5,"focus":30.0,"materials":[{"name":"Dragon Teasel","id":"T5_TEASEL","qty":24.0,"tier":"T5"},{"name":"Crenellated Burdock","id":"T4_BURDOCK","qty":12.0,"tier":"T4"},{"name":"Goose Eggs","id":"T5_EGG","qty":6.0,"tier":"T5"}]},{"name":"Healing Potion","id":"T4_POTION_HEAL","tier":4,"batch":5,"focus":30.0,"materials":[{"name":"Crenellated Burdock","id":"T4_BURDOCK","qty":24.0,"tier":"T4"},{"name":"Hen Eggs","id":"T3_EGG","qty":6.0,"tier":"T3"}]},{"name":"Hellfire Potion","id":"T6_POTION_LAVA","tier":6,"batch":10,"focus":30.0,"materials":[{"name":"Sheeps Milk","id":"T6_MILK","qty":48.0,"tier":"T6"},{"name":"Elusive Foxglove","id":"T6_FOXGLOVE","qty":24.0,"tier":"T6"},{"name":"Hen Eggs","id":"T3_EGG","qty":12.0,"tier":"T3"},{"name":"Fine Imps Horn","id":"T5_ALCHEMY_RARE_IMP","qty":1.0,"tier":"T5"}]},{"name":"Invisibility Potion","id":"T8_POTION_CLEANSE","tier":8,"batch":5,"focus":45.0,"materials":[{"name":"Ghoul Yarrow","id":"T8_YARROW","qty":72.0,"tier":"T8"},{"name":"Firetouched Mullein","id":"T7_MULLEIN","qty":36.0,"tier":"T7"},{"name":"Dragon Teasel","id":"T5_TEASEL","qty":36.0,"tier":"T5"},{"name":"Cows Milk","id":"T8_MILK","qty":18.0,"tier":"T8"},{"name":"Pumpkin Moonshine","id":"T8_ALCOHOL","qty":18.0,"tier":"T8"}]},{"name":"Major Acid Potion","id":"T7_POTION_ACID","tier":7,"batch":10,"focus":90.0,"materials":[{"name":"Firetouched Mullein","id":"T7_MULLEIN","qty":144.0,"tier":"T7"},{"name":"Elusive Foxglove","id":"T6_FOXGLOVE","qty":72.0,"tier":"T6"},{"name":"Potato Schnapps","id":"T6_ALCOHOL","qty":72.0,"tier":"T6"},{"name":"Sheeps Milk","id":"T6_MILK","qty":36.0,"tier":"T6"},{"name":"Excellent Spirit Paws","id":"T7_ALCHEMY_RARE_DIREBEAR","qty":1.0,"tier":"T7"},{"name":"Corn Hooch","id":"T7_ALCOHOL","qty":36.0,"tier":"T7"}]},{"name":"Major Berserk Potion","id":"T8_POTION_BERSERK","tier":8,"batch":10,"focus":90.0,"materials":[{"name":"Ghoul Yarrow","id":"T8_YARROW","qty":144.0,"tier":"T8"},{"name":"Brightleaf Comfrey","id":"T3_COMFREY","qty":72.0,"tier":"T3"},{"name":"Potato Schnapps","id":"T6_ALCOHOL","qty":72.0,"tier":"T6"},{"name":"Corn Hooch","id":"T7_ALCOHOL","qty":36.0,"tier":"T7"},{"name":"Excellent Werewolf Fangs","id":"T7_ALCHEMY_RARE_WEREWOLF","qty":1.0,"tier":"T7"},{"name":"Pumpkin Moonshine","id":"T8_ALCOHOL","qty":36.0,"tier":"T8"}]},{"name":"Major Calming Potion","id":"T7_POTION_MOB_RESET","tier":7,"batch":10,"focus":90.0,"materials":[{"name":"Firetouched Mullein","id":"T7_MULLEIN","qty":144.0,"tier":"T7"},{"name":"Elusive Foxglove","id":"T6_FOXGLOVE","qty":72.0,"tier":"T6"},{"name":"Brightleaf Comfrey","id":"T3_COMFREY","qty":72.0,"tier":"T3"},{"name":"Arcane Agaric","id":"T2_AGARIC","qty":36.0,"tier":"T2"},{"name":"Excellent Shadow Claws","id":"T7_ALCHEMY_RARE_PANTHER","qty":1.0,"tier":"T7"},{"name":"Corn Hooch","id":"T7_ALCOHOL","qty":36.0,"tier":"T7"}]},{"name":"Major Cleansing Potion","id":"T7_POTION_CLEANSE2","tier":7,"batch":10,"focus":90.0,"materials":[{"name":"Firetouched Mullein","id":"T7_MULLEIN","qty":144.0,"tier":"T7"},{"name":"Crenellated Burdock","id":"T4_BURDOCK","qty":72.0,"tier":"T4"},{"name":"Brightleaf Comfrey","id":"T3_COMFREY","qty":72.0,"tier":"T3"},{"name":"Sheep's Butter","id":"T6_BUTTER","qty":36.0,"tier":"T6"},{"name":"Excellent Sylvian Root","id":"T7_ALCHEMY_RARE_ENT","qty":1.0,"tier":"T7"},{"name":"Corn Hooch","id":"T7_ALCOHOL","qty":36.0,"tier":"T7"}]},{"name":"Major Energy Potion","id":"T6_POTION_ENERGY","tier":6,"batch":5,"focus":45.0,"materials":[{"name":"Elusive Foxglove","id":"T6_FOXGLOVE","qty":72.0,"tier":"T6"},{"name":"Sheeps Milk","id":"T6_MILK","qty":18.0,"tier":"T6"},{"name":"Potato Schnapps","id":"T6_ALCOHOL","qty":18.0,"tier":"T6"}]},{"name":"Major Gathering Potion","id":"T8_POTION_GATHER","tier":8,"batch":10,"focus":90.0,"materials":[{"name":"Cows Butter","id":"T8_BUTTER","qty":144.0,"tier":"T8"},{"name":"Ghoul Yarrow","id":"T8_YARROW","qty":72.0,"tier":"T8"},{"name":"Firetouched Mullein","id":"T7_MULLEIN","qty":72.0,"tier":"T7"},{"name":"Elusive Foxglove","id":"T6_FOXGLOVE","qty":36.0,"tier":"T6"},{"name":"Excellent Runestone Tooth","id":"T7_ALCHEMY_RARE_ELEMENTAL","qty":1.0,"tier":"T7"},{"name":"Pumpkin Moonshine","id":"T8_ALCOHOL","qty":36.0,"tier":"T8"}]},{"name":"Major Gigantify Potion","id":"T7_POTION_REVIVE","tier":7,"batch":5,"focus":45.0,"materials":[{"name":"Firetouched Mullein","id":"T7_MULLEIN","qty":72.0,"tier":"T7"},{"name":"Elusive Foxglove","id":"T6_FOXGLOVE","qty":36.0,"tier":"T6"},{"name":"Goose Eggs","id":"T5_EGG","qty":18.0,"tier":"T5"},{"name":"Corn Hooch","id":"T7_ALCOHOL","qty":18.0,"tier":"T7"}]},{"name":"Major Healing Potion","id":"T6_POTION_HEAL","tier":6,"batch":5,"focus":45.0,"materials":[{"name":"Elusive Foxglove","id":"T6_FOXGLOVE","qty":72.0,"tier":"T6"},{"name":"Goose Eggs","id":"T5_EGG","qty":18.0,"tier":"T5"},{"name":"Potato Schnapps","id":"T6_ALCOHOL","qty":18.0,"tier":"T6"}]},{"name":"Major Hellfire Potion","id":"T8_POTION_LAVA","tier":8,"batch":10,"focus":90.0,"materials":[{"name":"Cows Milk","id":"T8_MILK","qty":144.0,"tier":"T8"},{"name":"Ghoul Yarrow","id":"T8_YARROW","qty":72.0,"tier":"T8"},{"name":"Firetouched Mullein","id":"T7_MULLEIN","qty":72.0,"tier":"T7"},{"name":"Goose Eggs","id":"T5_EGG","qty":36.0,"tier":"T5"},{"name":"Excellent Imps Horn","id":"T7_ALCHEMY_RARE_IMP","qty":1.0,"tier":"T7"},{"name":"Pumpkin Moonshine","id":"T8_ALCOHOL","qty":36.0,"tier":"T8"}]},{"name":"Major Poison Potion","id":"T8_POTION_COOLDOWN","tier":8,"batch":5,"focus":45.0,"materials":[{"name":"Ghoul Yarrow","id":"T8_YARROW","qty":72.0,"tier":"T8"},{"name":"Firetouched Mullein","id":"T7_MULLEIN","qty":36.0,"tier":"T7"},{"name":"Dragon Teasel","id":"T5_TEASEL","qty":36.0,"tier":"T5"},{"name":"Cows Milk","id":"T8_MILK","qty":18.0,"tier":"T8"},{"name":"Pumpkin Moonshine","id":"T8_ALCOHOL","qty":18.0,"tier":"T8"}]},{"name":"Major Resistance Potion","id":"T7_POTION_STONESKIN","tier":7,"batch":5,"focus":45.0,"materials":[{"name":"Firetouched Mullein","id":"T7_MULLEIN","qty":72.0,"tier":"T7"},{"name":"Elusive Foxglove","id":"T6_FOXGLOVE","qty":36.0,"tier":"T6"},{"name":"Crenellated Burdock","id":"T4_BURDOCK","qty":36.0,"tier":"T4"},{"name":"Sheeps Milk","id":"T6_MILK","qty":18.0,"tier":"T6"},{"name":"Corn Hooch","id":"T7_ALCOHOL","qty":18.0,"tier":"T7"}]},{"name":"Major Sticky Potion","id":"T7_POTION_SLOWFIELD","tier":7,"batch":5,"focus":45.0,"materials":[{"name":"Firetouched Mullein","id":"T7_MULLEIN","qty":72.0,"tier":"T7"},{"name":"Elusive Foxglove","id":"T6_FOXGLOVE","qty":36.0,"tier":"T6"},{"name":"Crenellated Burdock","id":"T4_BURDOCK","qty":36.0,"tier":"T4"},{"name":"Goose Eggs","id":"T5_EGG","qty":18.0,"tier":"T5"},{"name":"Corn Hooch","id":"T7_ALCOHOL","qty":18.0,"tier":"T7"}]},{"name":"Major Tornado in a Bottle","id":"T8_POTION_TORNADO","tier":8,"batch":10,"focus":90.0,"materials":[{"name":"Ghoul Yarrow","id":"T8_YARROW","qty":144.0,"tier":"T8"},{"name":"Firetouched Mullein","id":"T7_MULLEIN","qty":72.0,"tier":"T7"},{"name":"Corn Hooch","id":"T7_ALCOHOL","qty":72.0,"tier":"T7"},{"name":"Goose Eggs","id":"T5_EGG","qty":36.0,"tier":"T5"},{"name":"Excellent Dawnfeather","id":"T7_ALCHEMY_RARE_EAGLE","qty":1.0,"tier":"T7"},{"name":"Pumpkin Moonshine","id":"T8_ALCOHOL","qty":36.0,"tier":"T8"}]},{"name":"Minor Acid Potion","id":"T3_POTION_ACID","tier":3,"batch":10,"focus":10.0,"materials":[{"name":"Brightleaf Comfrey","id":"T3_COMFREY","qty":16.0,"tier":"T3"},{"name":"Rugged Spirit Paws","id":"T3_ALCHEMY_RARE_DIREBEAR","qty":1.0,"tier":"T3"}]},{"name":"Minor Berserk Potion","id":"T4_POTION_BERSERK","tier":4,"batch":10,"focus":10.0,"materials":[{"name":"Crenellated Burdock","id":"T4_BURDOCK","qty":16.0,"tier":"T4"},{"name":"Rugged Werewolf Fangs","id":"T3_ALCHEMY_RARE_WEREWOLF","qty":1.0,"tier":"T3"}]},{"name":"Minor Calming Potion","id":"T3_POTION_MOB_RESET","tier":3,"batch":10,"focus":10.0,"materials":[{"name":"Brightleaf Comfrey","id":"T3_COMFREY","qty":16.0,"tier":"T3"},{"name":"Rugged Shadow Claws","id":"T3_ALCHEMY_RARE_PANTHER","qty":1.0,"tier":"T3"}]},{"name":"Minor Cleansing Potion","id":"T3_POTION_CLEANSE2","tier":3,"batch":10,"focus":10.0,"materials":[{"name":"Brightleaf Comfrey","id":"T3_COMFREY","qty":16.0,"tier":"T3"},{"name":"Rugged Sylvian Root","id":"T3_ALCHEMY_RARE_ENT","qty":1.0,"tier":"T3"}]},{"name":"Minor Energy Potion","id":"T2_POTION_ENERGY","tier":2,"batch":5,"focus":5.0,"materials":[{"name":"Arcane Agaric","id":"T2_AGARIC","qty":8.0,"tier":"T2"}]},{"name":"Minor Gathering Potion","id":"T4_POTION_GATHER","tier":4,"batch":10,"focus":10.0,"materials":[{"name":"Goats Butter","id":"T4_BUTTER","qty":16.0,"tier":"T4"},{"name":"Rugged Runestone Tooth","id":"T3_ALCHEMY_RARE_ELEMENTAL","qty":1.0,"tier":"T3"}]},{"name":"Minor Gigantify Potion","id":"T3_POTION_REVIVE","tier":3,"batch":5,"focus":5.0,"materials":[{"name":"Brightleaf Comfrey","id":"T3_COMFREY","qty":8.0,"tier":"T3"}]},{"name":"Minor Healing Potion","id":"T2_POTION_HEAL","tier":2,"batch":5,"focus":5.0,"materials":[{"name":"Arcane Agaric","id":"T2_AGARIC","qty":8.0,"tier":"T2"}]},{"name":"Minor Hellfire Potion","id":"T4_POTION_LAVA","tier":4,"batch":10,"focus":10.0,"materials":[{"name":"Goats Milk","id":"T4_MILK","qty":16.0,"tier":"T4"},{"name":"Rugged Imps Horn","id":"T3_ALCHEMY_RARE_IMP","qty":1.0,"tier":"T3"}]},{"name":"Minor Poison Potion","id":"T4_POTION_COOLDOWN","tier":4,"batch":5,"focus":5.0,"materials":[{"name":"Crenellated Burdock","id":"T4_BURDOCK","qty":8.0,"tier":"T4"},{"name":"Brightleaf Comfrey","id":"T3_COMFREY","qty":4.0,"tier":"T3"}]},{"name":"Minor Resistance Potion","id":"T3_POTION_STONESKIN","tier":3,"batch":5,"focus":5.0,"materials":[{"name":"Brightleaf Comfrey","id":"T3_COMFREY","qty":8.0,"tier":"T3"}]},{"name":"Minor Sticky Potion","id":"T3_POTION_SLOWFIELD","tier":3,"batch":5,"focus":5.0,"materials":[{"name":"Brightleaf Comfrey","id":"T3_COMFREY","qty":8.0,"tier":"T3"}]},{"name":"Minor Tornado in a Bottle","id":"T4_POTION_TORNADO","tier":4,"batch":10,"focus":10.0,"materials":[{"name":"Crenellated Burdock","id":"T4_BURDOCK","qty":16.0,"tier":"T4"},{"name":"Rugged Dawnfeather","id":"T3_ALCHEMY_RARE_EAGLE","qty":1.0,"tier":"T3"}]},{"name":"Poison Potion","id":"T6_POTION_COOLDOWN","tier":6,"batch":5,"focus":15.0,"materials":[{"name":"Elusive Foxglove","id":"T6_FOXGLOVE","qty":24.0,"tier":"T6"},{"name":"Dragon Teasel","id":"T5_TEASEL","qty":12.0,"tier":"T5"},{"name":"Brightleaf Comfrey","id":"T3_COMFREY","qty":12.0,"tier":"T3"},{"name":"Sheeps Milk","id":"T6_MILK","qty":6.0,"tier":"T6"}]},{"name":"Resistance Potion","id":"T5_POTION_STONESKIN","tier":5,"batch":5,"focus":15.0,"materials":[{"name":"Dragon Teasel","id":"T5_TEASEL","qty":24.0,"tier":"T5"},{"name":"Crenellated Burdock","id":"T4_BURDOCK","qty":12.0,"tier":"T4"},{"name":"Goats Milk","id":"T4_MILK","qty":6.0,"tier":"T4"}]},{"name":"Sticky Potion","id":"T5_POTION_SLOWFIELD","tier":5,"batch":5,"focus":15.0,"materials":[{"name":"Dragon Teasel","id":"T5_TEASEL","qty":24.0,"tier":"T5"},{"name":"Crenellated Burdock","id":"T4_BURDOCK","qty":12.0,"tier":"T4"},{"name":"Goose Eggs","id":"T5_EGG","qty":6.0,"tier":"T5"}]},{"name":"Tornado in a Bottle","id":"T6_POTION_TORNADO","tier":6,"batch":10,"focus":30.0,"materials":[{"name":"Elusive Foxglove","id":"T6_FOXGLOVE","qty":48.0,"tier":"T6"},{"name":"Dragon Teasel","id":"T5_TEASEL","qty":24.0,"tier":"T5"},{"name":"Hen Eggs","id":"T3_EGG","qty":12.0,"tier":"T3"},{"name":"Fine Dawnfeather","id":"T5_ALCHEMY_RARE_EAGLE","qty":1.0,"tier":"T5"}]}];
+  let potionSelectedId = POTION_RECIPES.find((item) => item.name === "Healing Potion")?.id || POTION_RECIPES[0].id;
+  let potionEnchant = 0;
+  let potionQuantity = 100;
+  let potionFocus = true;
+  let potionSearch = "";
+  let potionMarketTarget = "city";
+
+  function potionMaterialId(material) {
+    if (material.id) return material.id;
+    const names = CRAFT_DATA.resourceNames || {};
+    const target = material.name.toLowerCase().replace(/[^a-z0-9]/g, "");
+    const candidates = Object.entries(names).filter(([, value]) => String(value).toLowerCase().replace(/[^a-z0-9]/g, "") === target);
+    const preferred = candidates.find(([id]) => id.startsWith(material.tier + "_")) || candidates[0];
+    return preferred ? preferred[0] : "";
+  }
+
+  function potionFamilyName(item) { return item.name.replace(/^(Minor|Major)\s+/i, "").trim(); }
+  function potionRecipe() { return POTION_RECIPES.find((item) => item.id === potionSelectedId) || POTION_RECIPES[0]; }
+  function potionOutputId(recipe = potionRecipe(), enchant = potionEnchant) { return recipe.id + (enchant ? "@" + enchant : ""); }
+  const POTION_ARCANE_EXTRACTS = [null, { name: "Basic Arcane Extract", id: "T1_ALCHEMY_EXTRACT_LEVEL1" }, { name: "Refined Arcane Extract", id: "T1_ALCHEMY_EXTRACT_LEVEL2" }, { name: "Pure Arcane Extract", id: "T1_ALCHEMY_EXTRACT_LEVEL3" }];
+  function potionExtractPerItem(recipe) {
+    if (recipe.tier <= 3 || /^Minor\s/i.test(recipe.name)) return 1;
+    return recipe.tier <= 5 ? 3 : 9;
+  }
+  function potionExtractBatchQuantity(recipe) { return potionExtractPerItem(recipe) * recipe.batch; }
+  function potionMaterialIsSpecial(id) { return /(?:ARTEFACT|ALCHEMY_RARE)/i.test(String(id || "")); }
+  const POTION_ENCHANT_VALUES = {
+    T5_POTION_ACID:[294,361,494,895], T6_POTION_BERSERK:[298,365,498,898], T5_POTION_MOB_RESET:[294,361,494,895], T5_POTION_CLEANSE2:[298,365,498,898], T4_POTION_ENERGY:[210,277,411,811], T6_POTION_GATHER:[310,376,510,910], T5_POTION_REVIVE:[294,361,494,895], T4_POTION_HEAL:[210,277,411,811], T6_POTION_LAVA:[294,361,494,895], T8_POTION_CLEANSE:[1272,1472,1873,3073], T7_POTION_ACID:[1296,1496,1896,3097], T8_POTION_BERSERK:[1307,1507,1908,3108], T7_POTION_MOB_RESET:[1272,1472,1873,3073], T7_POTION_CLEANSE2:[1283,1484,1884,3085], T6_POTION_ENERGY:[768,968,1369,2570], T8_POTION_GATHER:[1319,1520,1920,3121], T7_POTION_REVIVE:[1020,1220,1620,2821], T6_POTION_HEAL:[768,968,1369,2570], T8_POTION_LAVA:[1272,1472,1873,3073], T8_POTION_COOLDOWN:[1272,1472,1873,3073], T7_POTION_STONESKIN:[1272,1472,1873,3073], T7_POTION_SLOWFIELD:[1272,1472,1873,3073], T8_POTION_TORNADO:[1296,1496,1896,3097], T3_POTION_ACID:[56,78,123,256], T4_POTION_BERSERK:[56,78,123,256], T3_POTION_MOB_RESET:[56,78,123,256], T3_POTION_CLEANSE2:[56,78,123,256], T2_POTION_ENERGY:[56,78,123,256], T4_POTION_GATHER:[61,84,128,262], T3_POTION_REVIVE:[56,78,123,256], T2_POTION_HEAL:[56,78,123,256], T4_POTION_LAVA:[56,78,123,256], T4_POTION_COOLDOWN:[84,106,151,284], T3_POTION_STONESKIN:[56,78,123,256], T3_POTION_SLOWFIELD:[56,78,123,256], T4_POTION_TORNADO:[56,78,123,256], T6_POTION_COOLDOWN:[378,445,578,979], T5_POTION_STONESKIN:[294,361,494,895], T5_POTION_SLOWFIELD:[294,361,494,895], T6_POTION_TORNADO:[294,361,494,895]
+  };
+  function potionFocusPerBatch(recipe, enchant = potionEnchant) {
+    if (!enchant) return recipe.focus;
+    const values = POTION_ENCHANT_VALUES[recipe.id];
+    return values ? recipe.focus * values[enchant] / values[0] : recipe.focus;
+  }
+  function potionFamilyRecipes(item = potionRecipe()) { const family = potionFamilyName(item); return POTION_RECIPES.filter((recipe) => potionFamilyName(recipe) === family).sort((a, b) => a.tier - b.tier); }
+  function potionReturnRate() {
+    const settings = state.craftReturn || {};
+    const mode = settings.mode === "hideout" ? "hideout" : (settings.mode === "royal" ? "royal" : "custom");
+    const rate = mode === "custom" ? craftReturnRate() : getCalculatedReturnRate(mode, potionFocus, settings.dailyBonus || 0);
+    return rate / 100;
+  }
+  function renderPotionList() {
+    const list = $("#potion-option-list"); if (!list) return;
+    const filtered = POTION_RECIPES.filter((item) => potionFamilyName(item).toLowerCase().includes(potionSearch.toLowerCase()) || item.name.toLowerCase().includes(potionSearch.toLowerCase()));
+    const families = [...new Set(filtered.map(potionFamilyName))].sort((a, b) => a.localeCompare(b));
+    list.innerHTML = families.map((family) => {
+      const variants = POTION_RECIPES.filter((item) => potionFamilyName(item) === family).sort((a, b) => a.tier - b.tier);
+      const selected = variants.some((item) => item.id === potionSelectedId);
+      const familyIcon = variants[0];
+      return '<button type="button" class="craft-option ' + (selected ? 'selected' : '') + '" role="option" aria-selected="' + selected + '" data-potion-family="' + esc(family) + '"><span class="gear-icon"><img class="gear-render-img" src="https://render.albiononline.com/v1/item/' + encodeURIComponent(potionOutputId(familyIcon, 0)) + '.png" alt="" loading="lazy" onerror="this.remove()"></span><span class="craft-option-copy"><span class="craft-option-name">' + esc(family) + '</span><span class="craft-option-meta">' + variants.map((item) => 'T' + item.tier).join(' · ') + ' · ' + variants.length + ' tier' + (variants.length === 1 ? '' : 's') + '</span></span></button>';
+    }).join("");
+  }
+
+  function renderPotions() {
+    const root = $("#potion-workspace"); if (!root) return;
+    const recipe = potionRecipe();
+    const outputId = potionOutputId(recipe);
+    const batches = 1;
+    const actualOutput = recipe.batch;
+    const returnRate = potionReturnRate();
+    const recipeMaterials = recipe.materials.slice();
+    if (potionEnchant) {
+      const extract = POTION_ARCANE_EXTRACTS[potionEnchant];
+      recipeMaterials.push({ name: extract.name, id: extract.id, qty: potionExtractBatchQuantity(recipe), tier: "T1" });
+      POTION_MATERIAL_NAMES.set(extract.id, extract.name);
+    }
+    const materials = recipeMaterials.map((mat) => {
+      const id = potionMaterialId(mat); const needed = mat.qty * batches;
+      const effective = potionMaterialIsSpecial(id) ? needed : Math.ceil(needed * (1 - returnRate));
+      const cost = (Number(state.craftPriceOverrides[id]) || 0) * effective;
+      return { ...mat, id, needed, effective, cost, price: Number(state.craftPriceOverrides[id]) || 0 };
+    });
+    const materialCost = materials.reduce((sum, mat) => sum + mat.cost, 0);
+    const focusCost = potionFocus ? potionFocusPerBatch(recipe) * batches : 0;
+    const salePrice = Number(state.craftPriceOverrides[outputId + (potionMarketTarget === "bm" ? "@bm" : "")]) || 0;
+    const revenue = salePrice * actualOutput;
+    const salesTaxRate = state.ui.craft && state.ui.craft.taxMode === "none" ? 0.105 : 0.065;
+    const salesTax = revenue * salesTaxRate;
+    const netRevenue = revenue - salesTax;
+    const totalCost = materialCost;
+    const profit = netRevenue - totalCost;
+    const marginPct = totalCost > 0 && salePrice ? profit / totalCost * 100 : null;
+    const marginClass = marginPct !== null && marginPct < 0 ? "is-negative" : "";
+    const settings = state.craftReturn || {};
+    const mode = settings.mode === "hideout" ? "hideout" : (potionFocus ? "city-focus" : "city-nofocus");
+    const daily = Number(settings.dailyBonus) || 0;
+    const activeMode = (value) => (value === "city-focus" ? mode === "city-focus" : mode === value) ? " is-active" : "";
+    const activeDaily = (value) => daily === value ? " is-active" : "";
+    const materialHtml = materials.map((mat) => '<article class="potion-material craft-box-bubble material-bubble"><div class="craft-box-head"><span class="craft-box-label" title="' + esc(mat.name) + '">' + esc(mat.name) + '</span><span class="craft-count-pill" title="' + esc(mat.tier) + (potionMaterialIsSpecial(mat.id) ? ' · special ingredient; not returned' : ' · ' + fmt(mat.effective) + ' required after returns, rounded up (gross ' + fmt(mat.needed) + ')') + '">x' + fmt(mat.effective) + '</span></div><div class="craft-box-body"><span class="craft-box-icon">' + craftIngredientIconHtml({ id: mat.id, tier: Number(String(mat.tier).replace(/^T/, "")) || recipe.tier, enchant: 0 }) + '</span><input class="craft-bubble-input" type="number" min="0" step="0.01" value="' + (mat.price || '') + '" placeholder="0" data-potion-price="' + esc(mat.id) + '" aria-label="' + esc(mat.name) + ' unit price"></div></article>').join("");
+    const returnSettings = craftReturnSettings();
+    const rrMode = returnSettings.mode === "hideout" ? "hideout" : (returnSettings.mode === "custom" ? "custom" : (potionFocus ? "city-focus" : "city-nofocus"));
+    const rrActive = (value) => rrMode === value ? " is-active" : "";
+    const rrDaily = (value) => returnSettings.dailyBonus === value ? " is-active" : "";
+    const rrQuality = (value) => returnSettings.zoneQuality === value ? " is-active" : "";
+    const rrPower = (value) => returnSettings.powerLevel === value ? " is-active" : "";
+    const returnCardHtml =
+      '<section class="craft-card return-card potion-return"><div class="rr-header"><div class="rr-title-wrap"><svg class="rr-wind-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2"/><path d="M9.6 4.6A2 2 0 1 1 11 8H2"/><path d="M12.6 19.4A2 2 0 1 0 14 16H2"/></svg><span class="rr-title">RETURN RATE</span></div><div class="rr-badge"><span class="rr-badge-val">' + (returnRate * 100).toFixed(2) + '</span><span class="rr-badge-pct">%</span></div></div>' +
+      '<div class="rr-controls"><div class="rr-mode-group" role="radiogroup" aria-label="Potion return rate location"><button type="button" class="rr-pill' + rrActive('city-nofocus') + '" data-potion-mode="city-nofocus">CITY (NO FOCUS)</button><button type="button" class="rr-pill' + rrActive('city-focus') + '" data-potion-mode="city-focus">CITY (USE FOCUS)</button><button type="button" class="rr-pill rr-hideout-btn" data-potion-mode="hideout" title="Toggle Hideout settings"><span>HIDEOUT</span><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button></div>' +
+      '<div class="rr-hideout-panel" id="potion-rr-hideout-panel"' + (rrMode === 'hideout' ? '' : ' hidden') + '><div class="rr-ho-row"><span class="rr-ho-label">QUALITY</span><div class="rr-ho-pills" role="radiogroup" aria-label="Hideout zone quality">' + [1,2,3,4,5,6].map((n) => '<button type="button" class="rr-ho-pill' + rrQuality(n) + '" data-potion-quality="' + n + '">Q' + n + '</button>').join('') + '</div></div><div class="rr-ho-row"><span class="rr-ho-label">POWER</span><div class="rr-ho-pills" role="radiogroup" aria-label="Hideout power level">' + Array.from({length:9},(_,i)=>i+1).map((n) => '<button type="button" class="rr-ho-pill' + rrPower(n) + '" data-potion-power="' + n + '">' + n + '</button>').join('') + '</div></div><div class="rr-ho-row"><span class="rr-ho-label">FOCUS</span><div class="rr-ho-pills"><button type="button" class="rr-ho-pill rr-ho-focus-btn' + (potionFocus ? ' is-active' : '') + '" data-potion-hideout-focus="true">' + (potionFocus ? 'ON' : 'OFF') + '</button></div></div></div>' +
+      '<div class="rr-bonus-group"><span class="rr-bonus-label">DAILY BONUS</span><div class="rr-pills" role="radiogroup" aria-label="Daily bonus"><button type="button" class="rr-pill' + rrDaily(0) + '" data-potion-daily="0">NONE</button><button type="button" class="rr-pill' + rrDaily(10) + '" data-potion-daily="10">+10%</button><button type="button" class="rr-pill' + rrDaily(20) + '" data-potion-daily="20">+20%</button></div></div></div>' +
+      '<div class="rr-slider-section"><input id="potion-return-slider" class="rr-slider" type="range" min="0.01" max="62" step="0.01" value="' + (returnRate * 100).toFixed(2) + '" aria-label="Potion return rate"><div class="rr-ticks" aria-hidden="true"><span class="rr-tick" style="left:0">1%</span><span class="rr-tick" style="left:31.1%">20%</span><span class="rr-tick" style="left:63.9%">40%</span><span class="rr-tick" style="right:0">62%</span></div></div></section>';
+    root.innerHTML =
+      '<div class="potion-head"><div><span class="craft-label">ALCHEMY WORKSTATION</span><h1>' + esc(recipe.name + (potionEnchant ? ' .' + potionEnchant : '')) + '</h1></div></div>' +
+      '<div class="potion-topbar"><div class="craft-topgroup"><span class="craft-label">TIER</span><div class="segmented">' + potionFamilyRecipes(recipe).map((variant) => '<button class="seg-btn' + (variant.id === recipe.id ? ' is-active' : '') + '" type="button" data-potion-tier="' + esc(variant.id) + '" aria-pressed="' + (variant.id === recipe.id) + '">' + variant.tier + '</button>').join('') + '</div></div><div class="craft-topgroup"><span class="craft-label">ENCHANT</span><div class="segmented">' + [0,1,2,3].map((level) => '<button class="seg-btn' + (potionEnchant === level ? ' is-active' : '') + '" type="button" data-potion-enchant="' + level + '" aria-pressed="' + (potionEnchant === level) + '">' + (level ? '.' + level : '.0') + '</button>').join('') + '</div></div><div class="craft-topgroup potion-yield"><span class="craft-label">PER CRAFT</span><strong class="potion-yield-value">' + fmt(recipe.batch) + ' potions</strong></div></div>' +
+      '<div class="potion-dashboard"><div class="potion-main"><section class="craft-card potion-material-card"><header><h2>⚡ CRAFTING · ' + esc(recipe.name + (potionEnchant ? ' .' + potionEnchant : '')).toUpperCase() + '</h2><button class="potion-fetch" type="button" id="potion-fetch-prices">＋ GET PRICES</button></header><div class="potion-materials">' + materialHtml + '</div><div class="potion-pricing"><label class="potion-price-card' + (potionMarketTarget === 'city' ? ' is-selected' : '') + '"><button type="button" class="potion-market-pick" data-potion-market="city">SELL PRICE</button><input type="number" min="0" step="0.01" value="' + (salePrice || '') + '" placeholder="0" data-potion-price="' + esc(outputId) + '"></label><label class="potion-price-card' + (potionMarketTarget === 'bm' ? ' is-selected' : '') + '"><button type="button" class="potion-market-pick" data-potion-market="bm">BLACK MARKET</button><input type="number" min="0" step="0.01" value="' + (Number(state.craftPriceOverrides[outputId + "@bm"]) || '') + '" placeholder="0" data-potion-price="' + esc(outputId + '@bm') + '"></label></div><div class="potion-tax"><button type="button" class="' + (salesTaxRate === .065 ? 'is-active' : '') + '" data-potion-tax="premium">PREMIUM TAX · 6.5%</button><button type="button" class="' + (salesTaxRate === .105 ? 'is-active' : '') + '" data-potion-tax="none">NO PREMIUM TAX · 10.5%</button></div></section>' +
+      returnCardHtml +
+      '<section class="craft-card potion-best"><span class="craft-label">🏆 PROFIT · ONE CRAFT BATCH <strong>' + esc(recipe.name + (potionEnchant ? ' .' + potionEnchant : '')).toUpperCase() + '</strong></span><p><strong>' + (salePrice ? fmt(profit) + ' estimated profit' : 'Enter ingredient and sell prices to calculate profit.') + '</strong> Based on one batch of ' + fmt(actualOutput) + ' potions. ' + (salePrice ? 'Net sales ' + fmtPotionSilver(netRevenue) + ' (' + fmt(actualOutput) + ' × ' + fmtPotionSilver(salePrice) + ' less ' + fmtPotionSilver(salesTax) + ' tax) − ' + fmtPotionSilver(materialCost) + ' ingredient cost. Material requirements round up to whole items after returns.' : '') + '</p></section></div>' +
+      '<aside class="craft-card potion-rail"><div class="potion-rail-title"><div><strong>' + esc(recipe.name + (potionEnchant ? ' .' + potionEnchant : '')) + '</strong><small>POTIONS · T' + recipe.tier + (potionEnchant ? '.' + potionEnchant : '.0') + ' · ' + (potionMarketTarget === 'bm' ? 'BLACK MARKET' : 'CITY SELL') + '</small></div></div><div class="potion-hero"><span class="tier-badge craft-item-tier">T' + recipe.tier + (potionEnchant ? '.' + potionEnchant : '.0') + '</span><img src="https://render.albiononline.com/v1/item/' + encodeURIComponent(outputId) + '.png" alt="' + esc(recipe.name + (potionEnchant ? ' .' + potionEnchant : '')) + '" loading="lazy" onerror="this.remove()"></div><div class="craft-item-stats"><div class="craft-stat-line investment"><span>Investment</span><strong>' + fmt(materialCost) + '</strong></div><div class="craft-stat-line"><span>Net profit</span><strong class="' + (profit >= 0 ? 'is-positive' : 'is-negative') + '">' + (salePrice ? (profit >= 0 ? '+' : '') + fmt(profit) : '—') + '</strong></div><div class="craft-stat-line"><span>Margin</span><strong class="' + marginClass + '">' + (marginPct !== null ? marginPct.toFixed(2) + '%' : '—') + '</strong></div><span class="craft-margin-track"><span class="craft-margin-fill ' + marginClass + '" style="width:' + (marginPct !== null ? Math.min(100, Math.abs(marginPct)).toFixed(2) : 0) + '%"></span></span></div></aside></div>';
+    renderPotionList();
+  }
+
+  /* ---------------------------------------------------------------------- */
+  /* Refining                                                               */
+  /* ---------------------------------------------------------------------- */
+  let refineType = "wood";
+  let refineTier = 4;
+  let refineEnchant = 0;
+  let refineQty = 1;
+  let refineSearch = "";
+
+  const refineGroup = () => REFINE_GROUPS.find((group) => group.key === refineType) || REFINE_GROUPS[0];
+
+  function refineId(baseId, enchant) {
+    return enchant ? baseId + "_LEVEL" + enchant + "@" + enchant : baseId;
+  }
+
+  function refineTierLabel(tier, enchant) {
+    return "T" + tier + "." + (tier >= 4 ? (Number(enchant) || 0) : 0);
+  }
+
+  // Refining can legitimately use a 0% custom rate, so do not fall back to the
+  // 24.81% crafting default when the custom value is zero.
+  function refineReturnRate() {
+    const settings = state.craftReturn || {};
+    if (settings.mode === "custom") {
+      const value = Number(settings.rate);
+      return Number.isFinite(value) ? Math.min(100, Math.max(0, value)) : 24.81;
+    }
+    return craftReturnRate();
+  }
+
+  function refineSelection() {
+    const group = refineGroup();
+    let tier = Number(refineTier);
+    if (!Number.isInteger(tier) || tier < 2 || tier > 8) tier = 4;
+    let enchant = Number(refineEnchant) || 0;
+    if (tier < 4) enchant = 0;
+    if (enchant < 0 || enchant > 4) enchant = 0;
+    refineTier = tier;
+    refineEnchant = enchant;
+    refineQty = Math.max(1, Math.floor(Number(refineQty) || 1));
+    return { group, tier, enchant, qty: refineQty };
+  }
+
+  // Albion refining: T2 takes one raw resource; T3 and above take two raw plus
+  // one refined material of the previous tier. Enchantment carries across the
+  // raw input and the lower-tier refined input; T4 enchanted uses T3.0 because
+  // T3 has no enchanted refined material.
+  function refineRecipe(group, tier, enchant) {
+    const level = Number(enchant) || 0;
+    const outputBaseId = "T" + tier + "_" + group.code;
+    const rows = [];
+    const rawBaseId = "T" + tier + "_" + group.rawCode;
+    rows.push({
+      role: "raw",
+      id: refineId(rawBaseId, level),
+      name: group.raw[tier - 2],
+      tier,
+      enchant: level,
+      count: tier === 2 ? 1 : 2
+    });
+    if (tier > 2) {
+      const previousTier = tier - 1;
+      const previousEnchant = tier === 4 ? 0 : level;
+      const previousBaseId = "T" + previousTier + "_" + group.code;
+      rows.push({
+        role: "refined",
+        id: refineId(previousBaseId, previousEnchant),
+        name: group.refined[previousTier - 2],
+        tier: previousTier,
+        enchant: previousEnchant,
+        count: 1
+      });
+    }
+    return {
+      group,
+      tier,
+      enchant: level,
+      outputBaseId,
+      outputId: refineId(outputBaseId, level),
+      outputName: group.refined[tier - 2],
+      rows
+    };
+  }
+
+  function refineEconomics(selection, qty, returnRate, taxRate) {
+    const rate = returnRate === undefined ? refineReturnRate() / 100 : returnRate;
+    const tax = taxRate === undefined
+      ? (state.ui.craft && state.ui.craft.taxMode === "none" ? 0.105 : 0.065)
+      : taxRate;
+    const rows = selection.rows.map((row) => {
+      const price = craftPriceInfo(row.id).value;
+      const need = row.count * qty;
+      const effective = need * (1 - rate);
+      return { ...row, price, need, effective, cost: price * effective };
+    });
+    const gross = rows.reduce((sum, row) => sum + row.price * row.need, 0);
+    const investment = rows.reduce((sum, row) => sum + row.cost, 0);
+    const saved = gross - investment;
+    const sell = craftPriceInfo(selection.outputId).value;
+    const priced = rows.every((row) => row.price > 0) && sell > 0;
+    const revenue = sell * qty;
+    const netRevenue = revenue * (1 - tax);
+    const profit = priced ? netRevenue - investment : null;
+    const margin = profit !== null && investment > 0 ? (profit / investment) * 100 : null;
+    return { rows, gross, investment, saved, sell, priced, revenue, netRevenue, profit, margin, rate, tax };
+  }
+
+  function renderRefineOptions() {
+    const list = $("#refine-option-list");
+    if (!list) return;
+    const query = refineSearch.trim().toLowerCase();
+    const groupsHtml = REFINE_GROUPS.map((group) => {
+      const rows = [];
+      for (let tier = 2; tier <= 8; tier += 1) {
+        const name = group.refined[tier - 2];
+        const haystack = (group.type + " " + name + " T" + tier + " " + group.raw[tier - 2]).toLowerCase();
+        if (query && !haystack.includes(query)) continue;
+        const selected = group.key === refineType && tier === refineTier;
+        rows.push(
+          '<button type="button" class="craft-side-item refine-side-item' + (selected ? " selected" : "") + '" data-refine-type="' + esc(group.key) + '" data-refine-tier="' + tier + '" role="option" aria-selected="' + selected + '">' +
+            '<span>' + esc(name) + '</span>' +
+            '<span class="refine-tier-tag">T' + tier + '</span>' +
+          '</button>'
+        );
+      }
+      if (!rows.length) return "";
+      return '<div class="refine-group"><div class="refine-group-head"><span>' + esc(group.type) + '</span><small>T2–T8</small></div>' + rows.join("") + '</div>';
+    }).join("");
+    list.innerHTML = groupsHtml || '<div class="sidebar-empty"><strong>No material matches</strong><p>Try planks, bars, leather, cloth, or a tier.</p></div>';
+  }
+
+  function refineMarginGridHtml(group, currentTier, currentEnchant, rate, tax) {
+    const levels = [0, 1, 2, 3, 4];
+    let html = '<span class="refine-margin-head"></span>' + levels.map((level) => '<span class="refine-margin-head">.' + level + '</span>').join("");
+    for (let tier = 2; tier <= 8; tier += 1) {
+      html += '<span class="refine-margin-tier">T' + tier + '</span>';
+      for (const level of levels) {
+        if (tier < 4 && level > 0) {
+          html += '<span class="refine-margin-cell is-empty" aria-hidden="true">·</span>';
+          continue;
+        }
+        const recipe = refineRecipe(group, tier, level);
+        const econ = refineEconomics(recipe, 1, rate, tax);
+        const active = tier === currentTier && level === currentEnchant;
+        if (econ.margin === null) {
+          html += '<button type="button" class="refine-margin-cell is-missing' + (active ? " is-active" : "") + '" data-refine-cell-tier="' + tier + '" data-refine-cell-enchant="' + level + '" title="' + esc(refineTierLabel(tier, level) + " · enter every material and sell price to see the margin") + '">—</button>';
+        } else {
+          const positive = econ.margin >= 0;
+          const title = refineTierLabel(tier, level) + " · investment " + fmt(econ.investment) + " · profit " + fmt(econ.profit) + " · margin " + econ.margin.toFixed(2) + "%";
+          html += '<button type="button" class="refine-margin-cell ' + (positive ? "is-positive" : "is-negative") + (active ? " is-active" : "") + '" data-refine-cell-tier="' + tier + '" data-refine-cell-enchant="' + level + '" title="' + esc(title) + '">' + (positive ? "+" : "") + econ.margin.toFixed(0) + '%</button>';
+        }
+      }
+    }
+    return '<div class="refine-margin-wrap"><div class="refine-margin-grid">' + html + '</div></div>';
+  }
+
+  function refineIconHtml(itemId) {
+    return '<span class="gear-icon"><img class="gear-render-img" src="https://render.albiononline.com/v1/item/' + encodeURIComponent(itemId) + '.png" alt="" loading="lazy" onerror="this.remove()"></span>';
+  }
+
+  function refinePriceField(key, value, label, bubble) {
+    return '<input' + (bubble ? ' class="craft-bubble-input"' : '') + ' type="text" inputmode="decimal" autocomplete="off" placeholder="0" value="' + esc(value > 0 ? formatPriceInput(value) : "") + '" data-refine-price="' + esc(key) + '" aria-label="' + esc(label) + '">';
+  }
+
+  function refineReturnCardHtml(rate) {
+    const settings = craftReturnSettings();
+    const mode = settings.mode;
+    const focus = Boolean(settings.focus);
+    const daily = settings.dailyBonus;
+    const quality = settings.zoneQuality;
+    const power = settings.powerLevel;
+    const activeMode = (value) => {
+      if (value === "city-nofocus") return mode === "royal" && !focus ? " is-active" : "";
+      if (value === "city-focus") return mode === "royal" && focus ? " is-active" : "";
+      return mode === "hideout" ? " is-active" : "";
+    };
+    const qualityPills = [1, 2, 3, 4, 5, 6].map((n) => '<button type="button" class="rr-ho-pill' + (quality === n ? " is-active" : "") + '" data-refine-quality="' + n + '">Q' + n + '</button>').join("");
+    const powerPills = Array.from({ length: 9 }, (_, index) => index + 1).map((n) => '<button type="button" class="rr-ho-pill' + (power === n ? " is-active" : "") + '" data-refine-power="' + n + '">' + n + '</button>').join("");
+    return '<section class="craft-card return-card potion-return refine-return" aria-label="Refining return rate">' +
+      '<div class="rr-header"><div class="rr-title-wrap"><svg class="rr-wind-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2"/><path d="M9.6 4.6A2 2 0 1 1 11 8H2"/><path d="M12.6 19.4A2 2 0 1 0 14 16H2"/></svg><span class="rr-title">RETURN RATE</span></div><div class="rr-badge"><span class="rr-badge-val">' + (rate * 100).toFixed(2) + '</span><span class="rr-badge-pct">%</span></div></div>' +
+      '<div class="rr-controls"><div class="rr-mode-group" role="radiogroup" aria-label="Refining return rate location">' +
+        '<button type="button" class="rr-pill' + activeMode("city-nofocus") + '" data-refine-mode="city-nofocus">CITY (NO FOCUS)</button>' +
+        '<button type="button" class="rr-pill' + activeMode("city-focus") + '" data-refine-mode="city-focus">CITY (USE FOCUS)</button>' +
+        '<button type="button" class="rr-pill rr-hideout-btn' + activeMode("hideout") + '" data-refine-mode="hideout"><span>HIDEOUT</span><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>' +
+      '</div>' +
+      '<div class="rr-hideout-panel"' + (mode === "hideout" ? "" : " hidden") + '>' +
+        '<div class="rr-ho-row"><span class="rr-ho-label">QUALITY</span><div class="rr-ho-pills" role="radiogroup" aria-label="Refining hideout zone quality">' + qualityPills + '</div></div>' +
+        '<div class="rr-ho-row"><span class="rr-ho-label">POWER</span><div class="rr-ho-pills" role="radiogroup" aria-label="Refining hideout power level">' + powerPills + '</div></div>' +
+        '<div class="rr-ho-row"><span class="rr-ho-label">FOCUS</span><div class="rr-ho-pills"><button type="button" class="rr-ho-pill rr-ho-focus-btn' + (focus ? " is-active" : "") + '" data-refine-hideout-focus="true">' + (focus ? "ON" : "OFF") + '</button></div></div>' +
+      '</div>' +
+      '<div class="rr-bonus-group"><span class="rr-bonus-label">DAILY BONUS</span><div class="rr-pills" role="radiogroup" aria-label="Refining daily bonus">' +
+        [0, 10, 20].map((value) => '<button type="button" class="rr-pill' + (daily === value ? " is-active" : "") + '" data-refine-daily="' + value + '">' + (value ? "+" + value + "%" : "NONE") + '</button>').join("") +
+      '</div></div></div>' +
+      '<div class="rr-slider-section"><input id="refine-return-slider" class="rr-slider" type="range" min="0" max="62" step="0.01" value="' + (rate * 100).toFixed(2) + '" aria-label="Refining return rate"><div class="rr-ticks" aria-hidden="true"><span class="rr-tick" style="left:0">1%</span><span class="rr-tick" style="left:31.1%">20%</span><span class="rr-tick" style="left:63.9%">40%</span><span class="rr-tick" style="right:0">62%</span></div></div>' +
+    '</section>';
+  }
+
+  function renderRefining() {
+    const root = $("#refining-workspace");
+    if (!root) return;
+    const stateSelection = refineSelection();
+    const selection = refineRecipe(stateSelection.group, stateSelection.tier, stateSelection.enchant);
+    const econ = refineEconomics(selection, stateSelection.qty);
+    const tierLabel = refineTierLabel(selection.tier, selection.enchant);
+    const taxMode = state.ui.craft && state.ui.craft.taxMode === "none" ? "none" : "premium";
+    const profitClass = econ.profit === null ? "" : (econ.profit >= 0 ? "is-positive" : "is-negative");
+    const profitText = econ.profit === null ? "—" : (econ.profit >= 0 ? "+" : "") + fmt(econ.profit);
+    const marginText = econ.margin === null ? "—" : econ.margin.toFixed(2) + "%";
+    const marginWidth = econ.margin === null ? 0 : Math.min(100, Math.abs(econ.margin));
+    const marginClass = econ.margin === null ? "is-muted" : (econ.margin < 0 ? "is-negative" : "");
+    const materialHtml = econ.rows.map((row) => {
+      const label = row.name.toUpperCase() + " " + refineTierLabel(row.tier, row.enchant);
+      return '<article class="potion-material craft-box-bubble material-bubble">' +
+        '<div class="craft-box-head"><span class="craft-box-label" title="' + esc(label + " · " + fmt(row.effective) + " net of returns") + '">' + esc(row.name.toUpperCase()) + ' <small class="refine-sub">' + esc(refineTierLabel(row.tier, row.enchant)) + '</small></span><span class="craft-count-pill">x' + fmt(row.need) + '</span></div>' +
+        '<div class="craft-box-body"><span class="craft-box-icon">' + refineIconHtml(row.id) + '</span>' + refinePriceField(row.id, row.price, row.name + " price", true) + '</div>' +
+      '</article>';
+    }).join("");
+    const rule = selection.tier === 2
+      ? "T2 needs 1 raw material and returns 1 refined material; there is no lower-tier refined input."
+      : "2 raw + 1 " + refineTierLabel(selection.tier - 1, selection.tier === 4 ? 0 : selection.enchant) + " refined → 1 " + tierLabel + ". Enchanted refining uses a matching enchant on the raw and lower-tier refined material; T4 enchanted refines from T3.0.";
+    const heroImg = '<img src="https://render.albiononline.com/v1/item/' + encodeURIComponent(selection.outputId) + '.png" alt="' + esc(selection.outputName + " " + tierLabel) + '" loading="lazy" onerror="this.remove()">';
+    const tierButtons = [2, 3, 4, 5, 6, 7, 8].map((tier) => '<button class="seg-btn' + (tier === selection.tier ? " is-active" : "") + '" type="button" data-refine-tier="' + tier + '" aria-pressed="' + (tier === selection.tier) + '">' + tier + '</button>').join("");
+    const enchantButtons = [0, 1, 2, 3, 4].map((level) => '<button class="seg-btn' + (level === selection.enchant ? " is-active" : "") + '" type="button" data-refine-enchant="' + level + '" aria-pressed="' + (level === selection.enchant) + '"' + (selection.tier < 4 && level > 0 ? " disabled" : "") + '>' + (level ? "." + level : ".0") + '</button>').join("");
+    root.innerHTML =
+      '<div class="potion-head refine-head"><div><span class="craft-label">REFINING WORKSTATION</span><h1>' + esc(selection.outputName) + ' <small>' + tierLabel + '</small></h1><p>' + esc(selection.group.type.toUpperCase()) + (selection.tier === 2 ? " · 1 RAW → 1 REFINED" : " · 2 RAW + 1 LOWER-TIER REFINED → 1 REFINED") + '</p></div></div>' +
+      '<div class="potion-topbar"><div class="craft-topgroup"><span class="craft-label">TIER</span><div class="segmented">' + tierButtons + '</div></div>' +
+      '<div class="craft-topgroup"><span class="craft-label">ENCHANT</span><div class="segmented">' + enchantButtons + '</div></div>' +
+      '<label class="potion-quantity-control"><span>OUTPUT</span><input id="refine-quantity" type="number" min="1" step="1" inputmode="numeric" value="' + stateSelection.qty + '"></label></div>' +
+      '<div class="potion-dashboard"><div class="potion-main">' +
+        '<section class="craft-card potion-material-card refine-card"><header><h2>⚡ REFINING · ' + esc(selection.outputName.toUpperCase()) + ' ' + tierLabel + '</h2><button class="potion-fetch" type="button" id="refine-fetch-prices">＋ GET PRICES</button></header><div class="potion-materials refine-materials">' + materialHtml + '</div><p class="refine-rule">' + rule + '</p>' +
+        '<div class="potion-pricing refine-pricing"><label class="potion-price-card is-selected"><span class="potion-market-pick">SELL PRICE · CITY</span>' + refinePriceField(selection.outputId, econ.sell, selection.outputName + " sell price", false) + '</label></div>' +
+        '<div class="potion-tax"><button type="button" class="' + (taxMode === "premium" ? "is-active" : "") + '" data-refine-tax="premium">PREMIUM TAX · 6.5%</button><button type="button" class="' + (taxMode === "none" ? "is-active" : "") + '" data-refine-tax="none">NO PREMIUM TAX · 10.5%</button></div></section>' +
+        refineReturnCardHtml(econ.rate) +
+        '<section class="craft-card potion-best refine-margins"><span class="craft-label">MARGIN BY TIER · ' + esc(selection.group.type.toUpperCase()) + '</span><p class="refine-margin-note">Every tier and enchant of ' + esc(selection.group.type.toLowerCase()) + ' refining, priced from your saved price book. A dash means a price is missing. Click any cell to open it.</p>' + refineMarginGridHtml(selection.group, selection.tier, selection.enchant, econ.rate, econ.tax) + '</section>' +
+      '</div>' +
+      '<aside class="craft-card potion-rail refine-rail"><div class="potion-rail-title"><div><strong>' + esc(selection.outputName) + '</strong><small>REFINING · ' + tierLabel + ' · CITY SELL</small></div></div><div class="potion-hero"><span class="tier-badge craft-item-tier">' + tierLabel + '</span>' + heroImg + '</div><div class="craft-item-stats"><div class="craft-stat-line investment"><span>Investment</span><strong>' + fmt(econ.investment) + '</strong></div><div class="craft-stat-line"><span>Saved by return</span><strong>' + fmt(econ.saved) + '</strong></div><div class="craft-stat-line"><span>Revenue after tax</span><strong>' + (econ.sell > 0 ? fmt(econ.netRevenue) : "—") + '</strong></div><div class="craft-stat-line"><span>Net profit</span><strong class="' + profitClass + '">' + profitText + '</strong></div><div class="craft-stat-line"><span>Margin</span><strong class="' + marginClass + '">' + marginText + '</strong></div><span class="craft-margin-track"><span class="craft-margin-fill ' + marginClass + '" style="width:' + marginWidth.toFixed(2) + '%"></span></span></div></aside></div>';
+    renderRefineOptions();
+  }
+
+  function bindRefineEvents() {
+    const search = $("#refine-search");
+    if (search) {
+      search.addEventListener("input", (event) => {
+        refineSearch = event.target.value;
+        renderRefineOptions();
+      });
+    }
+    const list = $("#refine-option-list");
+    if (list) {
+      list.addEventListener("click", (event) => {
+        const button = event.target.closest("[data-refine-type]");
+        if (!button) return;
+        refineType = button.dataset.refineType;
+        refineTier = Number(button.dataset.refineTier) || 4;
+        if (refineTier < 4) refineEnchant = 0;
+        renderRefining();
+      });
+    }
+    const workspace = $("#refining-workspace");
+    if (!workspace) return;
+    workspace.addEventListener("input", (event) => {
+      if (event.target.id !== "refine-return-slider") return;
+      state.craftReturn = state.craftReturn || {};
+      state.craftReturn.rate = roundReturnRate(event.target.value);
+      state.craftReturn.mode = "custom";
+      const badge = workspace.querySelector(".refine-return .rr-badge-val");
+      if (badge) badge.textContent = Number(event.target.value).toFixed(2);
+      scheduleSave();
+    });
+    workspace.addEventListener("change", (event) => {
+      if (event.target.id === "refine-return-slider") {
+        state.craftReturn = state.craftReturn || {};
+        state.craftReturn.rate = roundReturnRate(event.target.value);
+        state.craftReturn.mode = "custom";
+        renderRefining();
+        return;
+      }
+      if (event.target.id === "refine-quantity") {
+        refineQty = Math.max(1, Math.floor(Number(event.target.value) || 1));
+        renderRefining();
+        return;
+      }
+      const price = event.target.closest("[data-refine-price]");
+      if (!price) return;
+      const raw = price.value.trim();
+      const value = raw === "" ? 0 : parsePriceInput(raw);
+      if (!Number.isFinite(value) || value < 0) {
+        renderRefining();
+        return;
+      }
+      setCraftPrice(price.dataset.refinePrice, value);
+      scheduleSave();
+      renderRefining();
+      showToast(value > 0 ? "Price saved." : "Price cleared.");
+    });
+    workspace.addEventListener("click", async (event) => {
+      const cell = event.target.closest("[data-refine-cell-tier]");
+      if (cell) {
+        refineTier = Number(cell.dataset.refineCellTier) || 4;
+        refineEnchant = Number(cell.dataset.refineCellEnchant) || 0;
+        renderRefining();
+        return;
+      }
+      const tier = event.target.closest("[data-refine-tier]");
+      if (tier) {
+        refineTier = Number(tier.dataset.refineTier) || 4;
+        if (refineTier < 4) refineEnchant = 0;
+        renderRefining();
+        return;
+      }
+      const enchant = event.target.closest("[data-refine-enchant]");
+      if (enchant) {
+        refineEnchant = Number(enchant.dataset.refineEnchant) || 0;
+        renderRefining();
+        return;
+      }
+      const tax = event.target.closest("[data-refine-tax]");
+      if (tax) {
+        state.ui.craft.taxMode = tax.dataset.refineTax === "none" ? "none" : "premium";
+        scheduleSave();
+        renderRefining();
+        return;
+      }
+      const modeButton = event.target.closest("[data-refine-mode]");
+      if (modeButton) {
+        state.craftReturn = state.craftReturn || {};
+        const mode = modeButton.dataset.refineMode;
+        if (mode === "hideout") {
+          state.craftReturn.mode = "hideout";
+        } else {
+          state.craftReturn.mode = "royal";
+          state.craftReturn.focus = mode === "city-focus";
+        }
+        applyReturnPreset();
+        renderRefining();
+        return;
+      }
+      const quality = event.target.closest("[data-refine-quality]");
+      if (quality) {
+        state.craftReturn = state.craftReturn || {};
+        state.craftReturn.mode = "hideout";
+        state.craftReturn.zoneQuality = Number(quality.dataset.refineQuality) || 5;
+        applyReturnPreset();
+        renderRefining();
+        return;
+      }
+      const power = event.target.closest("[data-refine-power]");
+      if (power) {
+        state.craftReturn = state.craftReturn || {};
+        state.craftReturn.mode = "hideout";
+        state.craftReturn.powerLevel = Number(power.dataset.refinePower) || 5;
+        applyReturnPreset();
+        renderRefining();
+        return;
+      }
+      const focusButton = event.target.closest("[data-refine-hideout-focus]");
+      if (focusButton) {
+        state.craftReturn = state.craftReturn || {};
+        state.craftReturn.mode = "hideout";
+        state.craftReturn.focus = !Boolean(state.craftReturn.focus);
+        applyReturnPreset();
+        renderRefining();
+        return;
+      }
+      const daily = event.target.closest("[data-refine-daily]");
+      if (daily) {
+        state.craftReturn = state.craftReturn || {};
+        state.craftReturn.dailyBonus = Number(daily.dataset.refineDaily) || 0;
+        applyReturnPreset();
+        renderRefining();
+        return;
+      }
+      if (!event.target.closest("#refine-fetch-prices")) return;
+      const current = refineSelection();
+      const recipe = refineRecipe(current.group, current.tier, current.enchant);
+      const ids = recipe.rows.map((row) => row.id);
+      ids.push(recipe.outputId);
+      await fetchDbPrices(ids.filter(Boolean));
+      renderRefining();
+    });
+    workspace.addEventListener("keydown", (event) => {
+      if (event.key !== "Enter" || !event.target.matches("[data-refine-price]")) return;
+      event.preventDefault();
+      event.target.blur();
+    });
+  }
+
   const CRAFT_ITEM_KEY = (item) => item[1] + "|" + item[0];
   const CRAFT_HAS_RECIPE = (item) => Object.values(item[3]).some((variant) => variant[1] && variant[1].length);
   const CRAFT_EXCLUDED_ROYAL_ITEMS = new Set(["Royal Helmet", "Royal Hood", "Royal Cowl", "Royal Armor", "Royal Robe", "Royal Jacket", "Royal Boots", "Royal Sandals", "Royal Shoes"]);
@@ -7649,6 +8298,28 @@
     (item) => CRAFT_HAS_RECIPE(item) && !CRAFT_EXCLUDED_ROYAL_ITEMS.has(item[0]) && !(item[1] === "Capes" && item[0] !== "Cape")
   );
   const CRAFT_BY_KEY = new Map(CRAFT_ITEMS.map((entry) => [CRAFT_ITEM_KEY(entry), entry]));
+  const PLANNER_ITEM_BY_KEY = new Map(CRAFT_BY_KEY);
+  const POTION_PLANNER_BY_ID = new Map();
+  const POTION_MATERIAL_NAMES = new Map();
+  for (const potion of POTION_RECIPES) {
+    const tier = potion.tier;
+    for (let enchant = 0; enchant <= 3; enchant++) {
+      const outputId = potion.id + (enchant ? "@" + enchant : "");
+      const displayName = potion.name + (enchant ? " ." + enchant : "");
+      const itemKey = "Potions|" + displayName;
+      const materials = potion.materials.map((material) => [material.id, material.qty]);
+      potion.materials.forEach((material) => POTION_MATERIAL_NAMES.set(material.id, material.name));
+      if (enchant) {
+        const extract = POTION_ARCANE_EXTRACTS[enchant];
+        materials.push([extract.id, potionExtractBatchQuantity(potion)]);
+        POTION_MATERIAL_NAMES.set(extract.id, extract.name);
+      }
+      const recipe = [displayName, materials, 0, 0, potionFocusPerBatch(potion, enchant) / potion.batch];
+      const item = [displayName, "Potions", -1, { [tier]: recipe }, { id: outputId, batch: potion.batch, focus: potionFocusPerBatch(potion, enchant) }];
+      PLANNER_ITEM_BY_KEY.set(itemKey, item);
+      POTION_PLANNER_BY_ID.set(outputId, itemKey);
+    }
+  }
   const CRAFT_GROUPS = [
     {
       name: "Weapons",
@@ -7749,6 +8420,43 @@
     },
   ];
 
+  // Refining families. Each family refines one raw resource into one refined
+  // material, from T2 through T8. Enchanted variants exist from T4 onward.
+  const REFINE_GROUPS = [
+    {
+      key: "wood",
+      type: "Wood",
+      code: "PLANKS",
+      rawCode: "WOOD",
+      refined: ["Birch Planks", "Chestnut Planks", "Pine Planks", "Cedar Planks", "Bloodoak Planks", "Ashenbark Planks", "Whitewood Planks"],
+      raw: ["Birch Logs", "Chestnut Logs", "Pine Logs", "Cedar Logs", "Bloodoak Logs", "Ashenbark Logs", "Whitewood Logs"]
+    },
+    {
+      key: "ore",
+      type: "Ore",
+      code: "METALBAR",
+      rawCode: "ORE",
+      refined: ["Copper Bar", "Bronze Bar", "Steel Bar", "Titanium Steel Bar", "Runite Steel Bar", "Meteorite Steel Bar", "Adamantium Steel Bar"],
+      raw: ["Copper Ore", "Tin Ore", "Iron Ore", "Titanium Ore", "Runite Ore", "Meteorite Ore", "Adamantium Ore"]
+    },
+    {
+      key: "hide",
+      type: "Hide",
+      code: "LEATHER",
+      rawCode: "HIDE",
+      refined: ["Stiff Leather", "Thick Leather", "Worked Leather", "Cured Leather", "Hardened Leather", "Reinforced Leather", "Fortified Leather"],
+      raw: ["Rugged Hide", "Thin Hide", "Medium Hide", "Heavy Hide", "Robust Hide", "Thick Hide", "Resilient Hide"]
+    },
+    {
+      key: "fiber",
+      type: "Fiber",
+      code: "CLOTH",
+      rawCode: "FIBER",
+      refined: ["Simple Cloth", "Neat Cloth", "Fine Cloth", "Ornate Cloth", "Lavish Cloth", "Opulent Cloth", "Baroque Cloth"],
+      raw: ["Cotton", "Flax", "Hemp", "Skyflower", "Redleaf Cotton", "Sunflax", "Ghost Hemp"]
+    }
+  ];
+
   // Refined enchantment levels that actually exist in Albion Online:
   //   - T2 and T3 refined materials are base .0 only.
   //   - T4-T8 refined wood, ore, hide and fiber have .0 through .4.
@@ -7797,6 +8505,7 @@
     return Number.isFinite(n) && n > 0 ? Math.round(n * 100) / 100 : 0;
   };
   const fmt = (n) => numberFormat.format(Math.round(Number(n) || 0));
+  const fmtPotionSilver = (n) => new Intl.NumberFormat("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(Number(n) || 0);
   const fmtMoney = (n) => String(Math.round(Number(n) || 0)).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   const fmtInput = (n) => (Number(n) > 0 ? String(n) : "");
   // Price inputs use dot-grouped thousands (24.000) and an optional comma decimal (24.000,50).
@@ -7922,7 +8631,7 @@
     entries.slice(0, 500).forEach((entry) => {
       if (!entry || typeof entry !== "object") return;
       const itemKey = typeof entry.itemKey === "string" ? entry.itemKey.slice(0, 200) : "";
-      if (!itemKey || !CRAFT_BY_KEY.has(itemKey)) return;
+      if (!itemKey || !PLANNER_ITEM_BY_KEY.has(itemKey)) return;
       const tier = Number(entry.tier);
       const qty = Math.floor(Number(entry.qty));
       const enchant = Number(entry.enchant);
@@ -7939,7 +8648,7 @@
         returnRate: Number.isFinite(rate) && rate >= 0 && rate <= 100 ? Math.round(rate * 100) / 100 : 0,
         marketTarget: entry.marketTarget === "bm" || entry.marketTarget === "city" ? entry.marketTarget : (defaultMarketTarget === "bm" ? "bm" : "city"),
          focus: Boolean(entry.focus),
-         done: Boolean(entry.done)
+         done: Boolean(entry.done),
       });
     });
     return list;
@@ -8428,6 +9137,11 @@
   }
 
   function craftIconHtml(item, tier, enchant) {
+    if (item && item[1] === "Potions") {
+      const id = item[4] && item[4].id;
+      const img = id ? '<img class="gear-render-img" src="https://render.albiononline.com/v1/item/' + encodeURIComponent(id) + '.png" alt="" loading="lazy" onerror="this.remove()">' : "";
+      return '<span class="gear-icon">' + img + '</span>';
+    }
     return gearIconHtml(item[2], tier, enchant);
   }
 
@@ -8437,6 +9151,10 @@
 
   function craftIngredientIconHtml(row) {
     if (row.material) return iconHtml(row.material);
+    if (POTION_MATERIAL_NAMES.has(row.id)) {
+      const img = '<img class="gear-render-img" src="https://render.albiononline.com/v1/item/' + encodeURIComponent(row.id) + '.png" alt="" loading="lazy" onerror="this.remove()">';
+      return '<span class="gear-icon">' + img + '</span>';
+    }
     const artefactIndex = CRAFT_ARTEFACT_ICON_BY_ID.get(row.id);
     if (artefactIndex !== undefined) return artefactIconHtml(artefactIndex);
     const index = CRAFT_ICON_BY_FAMILY.get(craftIconFamily(row.id));
@@ -8483,6 +9201,7 @@
   }
 
   function craftProductId(item, tier, enchant) {
+    if (item && item[1] === "Potions") return item[4] && item[4].id || "";
     const iconName = CRAFT_DATA.iconNames[item[2]];
     if (!iconName) return "";
     const base = iconName.replace(/^T4_/, "T" + tier + "_");
@@ -9609,27 +10328,31 @@
     let totalProfit = 0;
     let profitReady = true;
     for (const entry of session.entries || []) {
-      const item = CRAFT_BY_KEY.get(entry.itemKey);
+      const item = PLANNER_ITEM_BY_KEY.get(entry.itemKey);
       const recipe = item && item[3][entry.tier];
       if (!item || !recipe) continue;
       const isBm = entry.marketTarget === "bm";
       const qty = Math.max(1, Number(entry.qty) || 1);
+      const batchSize = item[1] === "Potions" ? item[4].batch : 1;
+      const craftBatches = Math.ceil(qty / batchSize);
+      const outputQty = craftBatches * batchSize;
       const returnRate = Math.max(0, Number(entry.returnRate) || 0);
       let materialCost = 0;
       let requirementsPriced = true;
       for (const [resourceId, perCraft] of recipe[1] || []) {
         const isArtifact = /ARTEFACT/i.test(resourceId);
-        const enchant = isArtifact ? 0 : Number(entry.enchant) || 0;
-        const needed = isArtifact ? perCraft * qty : Math.ceil(perCraft * qty * (1 - returnRate / 100));
+        const isSpecial = isArtifact || (item[1] === "Potions" && potionMaterialIsSpecial(resourceId));
+        const enchant = isSpecial ? 0 : Number(entry.enchant) || 0;
+        const needed = isSpecial ? perCraft * craftBatches : Math.ceil(perCraft * craftBatches * (1 - returnRate / 100));
         const unitPrice = Number(state.craftPriceOverrides[craftApiId(resourceId, enchant)]) || 0;
         materialCost += unitPrice * needed;
         if (!unitPrice) requirementsPriced = false;
       }
       const productId = craftProductId(item, entry.tier, entry.enchant);
       const salePrice = Number(state.craftPriceOverrides[productId + (isBm ? "@bm" : "")]) || 0;
-      if (salePrice > 0 && requirementsPriced) totalProfit += salePrice * qty * (1 - taxRate) - materialCost;
+      if (salePrice > 0 && requirementsPriced) totalProfit += salePrice * outputQty * (1 - taxRate) - materialCost;
       else profitReady = false;
-      items.push({ itemKey: entry.itemKey, name: item[0], tier: Number(entry.tier), enchant: Number(entry.enchant) || 0, qty });
+      items.push({ itemKey: entry.itemKey, name: item[0], tier: Number(entry.tier), enchant: Number(entry.enchant) || 0, qty: outputQty });
     }
     for (const row of plannerJournalNeeds(session)) {
       const emptyPrice = Number((state.journalPrices.empty[row.type] || {})[row.tier]) || 0;
@@ -9686,7 +10409,7 @@
       }
     }
     const rows = Array.from(items.values()).sort((a, b) => a.name.localeCompare(b.name) || a.tier - b.tier || a.enchant - b.enchant).map((item) => {
-      const craft = CRAFT_BY_KEY.get(item.itemKey);
+      const craft = PLANNER_ITEM_BY_KEY.get(item.itemKey);
       const icon = craft ? craftIconHtml(craft, item.tier, item.enchant) : '<span class="planner-lifetime-icon-placeholder" aria-hidden="true"></span>';
       const label = item.name + " " + item.tier + "." + item.enchant;
       return '<div class="planner-lifetime-item">' + icon + '<strong title="' + esc(label) + '">' + esc(label) + '</strong><b>' + fmt(item.qty) + '×</b></div>';
@@ -9801,22 +10524,24 @@
     const taxRate = state.ui.craft && state.ui.craft.taxMode === "none" ? 0.105 : 0.065;
     let totalInvestment = 0;
     let totalProfit = 0;
-    const useFocus = Boolean(state.craftReturn && state.craftReturn.focus);
     let sessionFocusTotal = 0;
     let hasFocusCrafts = false;
     let allSessionMaterialsPriced = true;
     let allSessionProfitsPriced = true;
     const cards = (active.entries || []).map((entry) => {
-      const item = CRAFT_BY_KEY.get(entry.itemKey);
+      const item = PLANNER_ITEM_BY_KEY.get(entry.itemKey);
       if (!item) return "";
       const recipe = item[3][entry.tier];
       if (!recipe) return "";
       const qty = Math.max(1, Number(entry.qty) || 1);
+      const batchSize = item[1] === "Potions" ? item[4].batch : 1;
+      const craftBatches = Math.ceil(qty / batchSize);
+      const outputQty = craftBatches * batchSize;
       const returnRate = Math.max(0, Number(entry.returnRate) || 0);
       const entryUsesFocus = Boolean(entry.focus);
-      const showEntryFocus = useFocus && entryUsesFocus;
-      const focusPerItem = showEntryFocus ? craftFocusCostPerItem(item, entry.tier, entry.enchant) : 0;
-      const entryFocusTotal = focusPerItem * qty;
+      const showEntryFocus = entryUsesFocus;
+      const focusPerItem = showEntryFocus ? (item[1] === "Potions" ? Number(recipe[4]) || 0 : craftFocusCostPerItem(item, entry.tier, entry.enchant)) : 0;
+      const entryFocusTotal = item[1] === "Potions" ? focusPerItem * outputQty : focusPerItem * qty;
       if (showEntryFocus) { sessionFocusTotal += entryFocusTotal; hasFocusCrafts = true; }
       const isBm = entry.marketTarget === "bm";
       const marketLabel = isBm ? "BLACK MARKET" : "CITY";
@@ -9826,11 +10551,12 @@
 
       for (const [resourceId, perCraft] of recipe[1] || []) {
         const isArtefact = /ARTEFACT/i.test(resourceId);
-        const enchant = isArtefact ? 0 : Number(entry.enchant) || 0;
+        const isSpecial = isArtefact || (item[1] === "Potions" && potionMaterialIsSpecial(resourceId));
+        const enchant = isSpecial ? 0 : Number(entry.enchant) || 0;
         const resourceKey = craftResourceId(resourceId, enchant);
-        const needed = isArtefact
-          ? perCraft * qty
-          : Math.ceil(perCraft * qty * (1 - returnRate / 100));
+        const needed = isSpecial
+          ? perCraft * craftBatches
+          : Math.ceil(perCraft * craftBatches * (1 - returnRate / 100));
         const priceKey = craftApiId(resourceId, enchant);
         const unitPrice = Number(state.craftPriceOverrides[priceKey]) || 0;
         materialCost += unitPrice * needed;
@@ -9838,33 +10564,35 @@
 
         const material = BASE_BY_ITEM_ID.get(resourceKey);
         const tier = Number((String(resourceId).match(/^T(\d+)_/) || [])[1]) || Number(entry.tier);
-        const typeName = material
-          ? ({ Fiber: "Cloth", Ore: "Steel", Wood: "Planks", Hide: "Leather" }[material.type] || material.type)
-          : craftResourceName(resourceId, resourceKey, enchant);
+        const typeName = item[1] === "Potions"
+          ? (POTION_MATERIAL_NAMES.get(resourceId) || resourceId)
+          : (material
+            ? ({ Fiber: "Cloth", Ore: "Steel", Wood: "Planks", Hide: "Leather" }[material.type] || material.type)
+            : craftResourceName(resourceId, resourceKey, enchant));
         const requirementName = isArtefact
           ? typeName
-          : "T" + tier + "." + enchant + " " + typeName;
+          : (isSpecial ? typeName : "T" + tier + "." + enchant + " " + typeName);
         const requirementIcon = craftIngredientIconHtml({ id: resourceKey, material, tier, enchant });
         requirements.push(
-          '<span class="planner-requirement-chip' + (isArtefact ? ' is-artefact' : '') + '"><span class="planner-requirement-image">' + requirementIcon + '</span><b>' + fmt(needed) + '</b><span>' + esc(requirementName) + '</span></span>'
+          '<span class="planner-requirement-chip' + (isSpecial ? ' is-artefact' : '') + '"><span class="planner-requirement-image">' + requirementIcon + '</span><b>' + fmt(needed) + '</b><span>' + esc(requirementName) + '</span></span>'
         );
       }
 
-      const journalTypeId = plannerJournalType(item);
-      const journalType = JOURNAL_TYPES.find((type) => type.id === journalTypeId) || JOURNAL_TYPES[0];
-      const famePerCraft = plannerJournalCraftFame(item, entry.tier, entry.enchant, journalTypeId);
+      const journalTypeId = item[1] === "Potions" ? "" : plannerJournalType(item);
+      const journalType = journalTypeId ? JOURNAL_TYPES.find((type) => type.id === journalTypeId) : null;
+      const famePerCraft = journalTypeId ? plannerJournalCraftFame(item, entry.tier, entry.enchant, journalTypeId) : 0;
       const famePerJournal = Number(JOURNAL_FAME_BY_TIER[entry.tier]) || 0;
       const journalsNeeded = famePerJournal && famePerCraft
         ? Math.ceil(famePerCraft * qty / famePerJournal)
         : 0;
-      const emptyJournalIcon = journalType.icon
+      const emptyJournalIcon = journalType ? journalType.icon
         .replace(/^T\d+_/, "T" + entry.tier + "_")
-        .replace(/_FULL$/, "_EMPTY");
+        .replace(/_FULL$/, "_EMPTY") : "";
       const productId = craftProductId(item, entry.tier, entry.enchant);
       const saleKey = productId + (isBm ? "@bm" : "");
       const salePrice = Number(state.craftPriceOverrides[saleKey]) || 0;
       const profitReady = salePrice > 0 && allRequirementsPriced;
-      const profit = salePrice * qty * (1 - taxRate) - materialCost;
+      const profit = salePrice * outputQty * (1 - taxRate) - materialCost;
       totalInvestment += materialCost;
       if (!allRequirementsPriced) allSessionMaterialsPriced = false;
       if (profitReady) totalProfit += profit;
@@ -9876,41 +10604,43 @@
         '<div class="planner-craft-identity"><span class="planner-craft-image">' + craftIconHtml(item, entry.tier, entry.enchant) + '</span><strong>' + esc(item[0]) + ' ' + tierLabel + '</strong>' + '<button type="button" class="planner-focus-toggle' + (entryUsesFocus ? ' is-active' : '') + '" data-planner-focus="' + esc(entry.id) + '" title="Toggle Focus for this craft" aria-label="' + (entryUsesFocus ? 'Disable' : 'Enable') + ' Focus for ' + esc(item[0]) + '" aria-pressed="' + entryUsesFocus + '"><span class="planner-focus-switch" aria-hidden="true"></span><span>FOCUS</span></button>' + '<button type="button" class="planner-craft-market-toggle" data-planner-entry-market="' + esc(entry.id) + '" title="Change market destination">' + marketLabel + '</button></div>' +
         '<label class="planner-craft-stat planner-craft-quantity"><span>QTY</span><input type="number" min="1" max="1000000" step="1" value="' + qty + '" data-planner-entry-qty="' + esc(entry.id) + '" aria-label="Quantity for ' + esc(item[0]) + '"></label>' +
         '<div class="planner-craft-stat planner-craft-requirements"><span>MATERIALS NEEDED</span><div class="planner-requirements-list">' + (requirements.join("") || '<span class="planner-requirement-chip"><span>No materials</span></span>') + '</div></div>' +
-        '<div class="planner-craft-stat planner-craft-journals"><span>JOURNALS NEEDED</span><div class="planner-journal-need">' + (journalsNeeded
-          ? '<img src="https://render.albiononline.com/v1/item/' + encodeURIComponent(emptyJournalIcon) + '.png" alt="" aria-hidden="true"><b>' + fmt(journalsNeeded) + '×</b><span>' + esc(journalType.name) + '</span>'
-          : '<span>—</span>') + '</div></div>' +
-        (showEntryFocus ? '<div class="planner-craft-stat planner-craft-focus"><span>FOCUS REQUIRED</span><strong>' + fmt(entryFocusTotal) + '</strong><small>' + fmt(focusPerItem) + ' each · ' + fmt(qty) + ' crafts</small></div>' : '') +
+        (item[1] === "Potions" ? '' : '<div class="planner-craft-stat planner-craft-journals"><span>JOURNALS NEEDED</span><div class="planner-journal-need">' + (journalsNeeded
+            ? '<img src="https://render.albiononline.com/v1/item/' + encodeURIComponent(emptyJournalIcon) + '.png" alt="" aria-hidden="true"><b>' + fmt(journalsNeeded) + '×</b><span>' + esc(journalType.name) + '</span>'
+            : '<span>—</span>') + '</div></div>') +
+        (showEntryFocus ? '<div class="planner-craft-stat planner-craft-focus"><span>FOCUS REQUIRED</span><strong>' + fmt(entryFocusTotal) + '</strong><small>' + fmt(focusPerItem) + (item[1] === "Potions" ? ' each · ' + craftBatches + ' batches' : ' each · ' + fmt(qty) + ' crafts') + '</small></div>' : '') +
         '<label class="planner-craft-stat planner-craft-return"><span>RETURN RATE</span><span class="planner-return-input-wrap"><input class="planner-return-input" type="number" min="0" max="100" step="0.1" value="' + returnRate.toFixed(1) + '" data-planner-entry-return="' + esc(entry.id) + '" aria-label="Return rate for ' + esc(item[0]) + '"><i>%</i></span></label>' +
         '<div class="planner-craft-stat planner-craft-profit"><span>PROFIT</span><strong class="' + (profitReady ? profitClass : 'is-unpriced') + '">' + (profitReady ? ((profit > 0 ? '+' : '') + fmtMoney(Math.round(profit))) : '—') + '</strong></div>' +
         '<button type="button" class="planner-craft-delete" data-planner-remove="' + esc(entry.id) + '" aria-label="Remove ' + esc(item[0]) + ' from planner" title="Remove craft">' + ICON_TRASH + '</button>' +
       '</article>';
     }).join("");
     const marketTransportItems = (active.entries || []).filter((entry) => entry.marketTarget === "bm").map((entry) => {
-      const item = CRAFT_BY_KEY.get(entry.itemKey);
+      const item = PLANNER_ITEM_BY_KEY.get(entry.itemKey);
       if (!item) return "";
       const enchant = Number(entry.enchant) || 0;
-      const title = item[0] + " " + entry.tier + "." + enchant;
+      const title = item[1] === "Potions" ? item[0] : item[0] + " " + entry.tier + "." + enchant;
       return '<div class="planner-transport-item">' + craftIconHtml(item, entry.tier, enchant) + '<strong title="' + esc(title) + '">' + esc(title) + '</strong><b>' + fmt(Math.max(1, Number(entry.qty) || 1)) + '×</b></div>';
     }).join("");
     const materialTotals = new Map();
     const artifactTotals = new Map();
     for (const entry of active.entries || []) {
-      const item = CRAFT_BY_KEY.get(entry.itemKey);
+      const item = PLANNER_ITEM_BY_KEY.get(entry.itemKey);
       const recipe = item && item[3][entry.tier];
       if (!recipe) continue;
       const qty = Math.max(1, Number(entry.qty) || 1);
+      const craftBatches = Math.ceil(qty / (item[1] === "Potions" ? item[4].batch : 1));
       const returnRate = Math.max(0, Number(entry.returnRate) || 0);
       for (const [resourceId, perCraft] of recipe[1] || []) {
         if (/ARTEFACT/i.test(resourceId)) {
           const artifactTier = Number((String(resourceId).match(/^T(\d+)_/) || [])[1]) || Number(entry.tier);
           const artifact = artifactTotals.get(resourceId) || { id: resourceId, need: 0, tier: artifactTier, enchant: 0 };
-          artifact.need += perCraft * qty;
+          artifact.need += perCraft * craftBatches;
           artifactTotals.set(resourceId, artifact);
           continue;
         }
-        const enchant = Number(entry.enchant) || 0;
+        const isSpecial = item[1] === "Potions" && potionMaterialIsSpecial(resourceId);
+        const enchant = isSpecial ? 0 : Number(entry.enchant) || 0;
         const resourceKey = craftResourceId(resourceId, enchant);
-        const needed = Math.ceil(perCraft * qty * (1 - returnRate / 100));
+        const needed = isSpecial ? perCraft * craftBatches : Math.ceil(perCraft * craftBatches * (1 - returnRate / 100));
         const row = materialTotals.get(resourceKey) || { id: resourceKey, need: 0, tier: Number((String(resourceId).match(/^T(\d+)_/) || [])[1]) || Number(entry.tier), enchant, material: BASE_BY_ITEM_ID.get(resourceKey) || null };
         row.need += needed;
         materialTotals.set(resourceKey, row);
@@ -9919,7 +10649,7 @@
     const materialCards = Array.from(materialTotals.values())
       .sort((a, b) => a.tier - b.tier || a.enchant - b.enchant || String(a.material?.name || a.id).localeCompare(String(b.material?.name || b.id)))
       .map((row) => {
-        const materialName = row.material?.name || CRAFT_DATA.resourceNames[row.id] || row.id;
+        const materialName = row.material?.name || POTION_MATERIAL_NAMES.get(row.id) || CRAFT_DATA.resourceNames[row.id] || row.id;
         return '<article class="planner-material-bubble"><span class="planner-material-image">' + craftIngredientIconHtml(row) + '</span><span class="planner-material-name"><strong>' + esc(materialName) + '</strong><small>T' + row.tier + '.' + row.enchant + '</small></span><b>' + fmt(row.need) + '</b></article>';
       }).join("");
     const artifactCards = Array.from(artifactTotals.values())
@@ -9961,7 +10691,7 @@
     page.innerHTML =
       '<h2 class="planner-active-session-title">' + esc(active.name) + '</h2>' +
       '<section class="planner-session-card" aria-label="Items in ' + esc(active.name) + '">' +
-        '<header class="planner-session-card-head"><div><span>ITEMS</span></div>' + (useFocus && hasFocusCrafts ? '<strong class="planner-session-focus-total">SESSION FOCUS REQUIRED · ' + fmt(sessionFocusTotal) + '</strong>' : '') + '</header>' +
+        '<header class="planner-session-card-head"><div><span>ITEMS</span></div>' + (hasFocusCrafts ? '<strong class="planner-session-focus-total">SESSION FOCUS REQUIRED · ' + fmt(sessionFocusTotal) + '</strong>' : '') + '</header>' +
         '<div class="planner-session-crafts">' + (cards || '<div class="planner-session-empty">This session has no planned crafts yet.</div>') + '</div>' +
       '</section>' +
       '<section class="planner-materials-session-card" aria-label="Materials needed for ' + esc(active.name) + '">' +
@@ -10035,8 +10765,9 @@
   function plannerJournalNeeds(session) {
     const totals = new Map();
     for (const entry of session.entries || []) {
-      const item = CRAFT_BY_KEY.get(entry.itemKey);
+      const item = PLANNER_ITEM_BY_KEY.get(entry.itemKey);
       if (!item) continue;
+      if (item[1] === "Potions") continue;
       const type = plannerJournalType(item);
       const fame = plannerJournalCraftFame(item, entry.tier, entry.enchant, type) * entry.qty;
       if (!(fame > 0)) continue;
@@ -10132,7 +10863,8 @@
   function populatePlannerEnchantSelect(tier, selectedEnchant) {
     const select = $("#planner-enchant");
     if (!select) return;
-    const levels = enchantLevelsFor(Number(tier) || 4);
+    const currentItem = PLANNER_ITEM_BY_KEY.get(plannerItemKey);
+    const levels = currentItem && currentItem[1] === "Potions" ? [0] : enchantLevelsFor(Number(tier) || 4);
     select.innerHTML = levels.map((level) =>
       '<option value="' + level + '">' + ENCHANTS[level] + "</option>"
     ).join("");
@@ -10165,7 +10897,7 @@
   }
 
   function syncPlannerPreview() {
-    const item = CRAFT_BY_KEY.get(plannerItemKey);
+    const item = PLANNER_ITEM_BY_KEY.get(plannerItemKey);
     const art = $("#planner-item-art");
     const name = $("#planner-item-name");
     if (!item || !art || !name) return;
@@ -10182,7 +10914,7 @@
   }
 
   function plannerDialogRate() {
-    return roundReturnRate(craftReturnRate());
+    return roundReturnRate(plannerItemKey && PLANNER_ITEM_BY_KEY.get(plannerItemKey)?.[1] === "Potions" ? potionReturnRate() * 100 : craftReturnRate());
   }
 
   function syncPlannerDialog() {
@@ -10192,7 +10924,7 @@
     const addBtn = $("#planner-dialog-add");
     if (!tierSelect || !qtyInput || !rateInput || !addBtn) return;
 
-    const item = CRAFT_BY_KEY.get(plannerItemKey);
+    const item = PLANNER_ITEM_BY_KEY.get(plannerItemKey);
     const qty = Math.max(1, Math.floor(Number(qtyInput.value) || 0));
     const rate = plannerDialogRate();
 
@@ -10222,18 +10954,26 @@
   function openPlannerDialog() {
     const dialog = $("#planner-dialog");
     if (!dialog) return;
-    const selection = ensureCraftSelection();
-    plannerItemKey = CRAFT_ITEM_KEY(selection.item);
+    const isPotion = state.ui.tab === "potions";
+    const selection = isPotion ? null : ensureCraftSelection();
+    plannerItemKey = isPotion ? POTION_PLANNER_BY_ID.get(potionOutputId()) : CRAFT_ITEM_KEY(selection.item);
     plannerDialogOpen = true;
 
-    const item = CRAFT_BY_KEY.get(plannerItemKey) || CRAFT_ITEMS[0];
-    plannerItemKey = CRAFT_ITEM_KEY(item);
-    populatePlannerTierSelect(item, selection.tier);
-    populatePlannerEnchantSelect(selection.tier, selection.enchant);
+    const item = PLANNER_ITEM_BY_KEY.get(plannerItemKey) || CRAFT_ITEMS[0];
+    if (!isPotion) plannerItemKey = CRAFT_ITEM_KEY(item);
+    const selectedTier = isPotion ? item[4].id.slice(1, 2) : selection.tier;
+    const selectedEnchant = isPotion ? 0 : selection.enchant;
+    populatePlannerTierSelect(item, Number(selectedTier));
+    populatePlannerEnchantSelect(Number(selectedTier), selectedEnchant);
+    const enchantPills = $("#planner-enchant-pills");
+    const enchantField = enchantPills && enchantPills.parentElement;
+    const tierGrid = enchantField && enchantField.parentElement;
+    if (enchantField) enchantField.hidden = isPotion;
+    if (tierGrid) tierGrid.style.gridTemplateColumns = isPotion ? "1fr" : "";
     populatePlannerSessionSelect();
 
     const qtyInput = $("#planner-qty");
-    if (qtyInput) qtyInput.value = "1";
+    if (qtyInput) qtyInput.value = String(isPotion ? potionQuantity : 1);
 
     syncPlannerPreview();
     syncPlannerDialog();
@@ -10248,7 +10988,7 @@
     if (!tierSelect || !qtyInput) return;
 
     const itemKey = plannerItemKey;
-    const item = CRAFT_BY_KEY.get(itemKey);
+    const item = PLANNER_ITEM_BY_KEY.get(itemKey);
     if (!item) return;
     const tiers = Object.keys(item[3]).map(Number);
     let tier = Number(tierSelect.value);
@@ -10270,8 +11010,8 @@
       enchant,
       qty,
       returnRate: plannerDialogRate(),
-      marketTarget: state.ui.craft && state.ui.craft.marketTarget === "bm" ? "bm" : "city",
-      focus: Boolean(state.craftReturn && state.craftReturn.focus),
+      marketTarget: item[1] === "Potions" ? potionMarketTarget : (state.ui.craft && state.ui.craft.marketTarget === "bm" ? "bm" : "city"),
+      focus: item[1] === "Potions" ? potionFocus : Boolean(state.craftReturn && state.craftReturn.focus),
       done: false
     });
     state.plannerActive = target.id;
@@ -10704,12 +11444,14 @@
 
   function switchTab(name, options) {
     const opts = options || {};
-    if (!["craft", "database", "help", "planner", "spec", "destiny"].includes(name)) name = "craft";
+    if (!["craft", "database", "help", "planner", "spec", "destiny", "potions", "refining"].includes(name)) name = "craft";
     state.ui.tab = name;
 
     $$(".app-nav-btn").forEach((btn) => {
       const active = (btn.dataset.view === "calculator" && name === "craft") ||
-        (btn.dataset.view === "planner" && name === "planner");
+        (btn.dataset.view === "planner" && name === "planner") ||
+        (btn.dataset.view === "potions" && name === "potions") ||
+        (btn.dataset.view === "refining" && name === "refining");
       btn.classList.toggle("active", active);
       btn.setAttribute("aria-selected", String(active));
       btn.tabIndex = active ? 0 : -1;
@@ -10721,8 +11463,12 @@
 
     const calculatorPane = $("#sidebar-calculator");
     const plannerPane = $("#sidebar-planner");
+    const potionPane = $("#sidebar-potions");
+    const refinePane = $("#sidebar-refining");
     if (calculatorPane) calculatorPane.hidden = name !== "craft";
     if (plannerPane) plannerPane.hidden = name !== "planner";
+    if (potionPane) potionPane.hidden = name !== "potions";
+    if (refinePane) refinePane.hidden = name !== "refining";
 
     $$(".panel").forEach((panel) => {
       const active = panel.id === "panel-" + name;
@@ -10733,7 +11479,7 @@
     const addToPlannerBtn = $("#add-to-planner");
     const crumbEl = $("#craft-breadcrumb");
     const sectionTitleEl = $("#topbar-section-title");
-    if (addToPlannerBtn) addToPlannerBtn.hidden = name !== "craft";
+    if (addToPlannerBtn) addToPlannerBtn.hidden = !["craft", "potions"].includes(name);
     if (crumbEl && sectionTitleEl) {
       if (name === "craft") {
         crumbEl.hidden = false;
@@ -10743,8 +11489,10 @@
         sectionTitleEl.hidden = false;
         const titles = {
           database: "Database · Items, City & Black Market Prices",
+          potions: "Potion Crafting · Alchemy Recipes & Profit",
           planner: "Crafting Planner · Saved Queues",
           spec: "Spec Calculator",
+          refining: "Refining · Materials, Return Rates & Margins",
           destiny: "Destiny Board",
           help: "Settings & Albion Guide"
         };
@@ -10753,6 +11501,8 @@
     }
 
     if (name === "craft") renderCraft();
+    if (name === "potions") renderPotions();
+    if (name === "refining") renderRefining();
     if (name === "database") renderDatabase();
     if (name === "planner") renderPlannerPage();
     if (name === "spec") renderSpecPage();
@@ -11431,6 +12181,64 @@
       '<div class="destiny-node' + (option.isBase ? ' is-base' : '') + '"><span class="destiny-node-icon">' + craftIconHtml(option.item, 4, 0) + '</span><span class="destiny-node-copy"><strong>' + esc(option.name) + '</strong><small>' + esc(option.detail) + '</small></span><input class="destiny-level-input" type="number" min="0" max="100" step="1" value="' + level + '" data-destiny-level="' + esc(option.key) + '" aria-label="' + esc(option.name) + ' specialization level, 0 to 100"></div></article>';
   }
 
+  function bindPotionEvents() {
+    const search = $("#potion-search");
+    if (search) search.addEventListener("input", () => { potionSearch = search.value; renderPotionList(); });
+    const list = $("#potion-option-list");
+    if (list) list.addEventListener("click", (event) => { const button = event.target.closest("[data-potion-family]"); if (!button) return; const familyRecipes = POTION_RECIPES.filter((item) => potionFamilyName(item) === button.dataset.potionFamily).sort((a, b) => a.tier - b.tier); if (!familyRecipes.length) return; if (!familyRecipes.some((item) => item.id === potionSelectedId)) potionSelectedId = familyRecipes[Math.floor(familyRecipes.length / 2)].id; renderPotions(); });
+    const workspace = $("#potion-workspace");
+    if (workspace) {
+      workspace.addEventListener("input", (event) => {
+        if (event.target.id !== "potion-return-slider") return;
+        state.craftReturn = state.craftReturn || {};
+        state.craftReturn.rate = roundReturnRate(event.target.value);
+        state.craftReturn.mode = "custom";
+        const badge = workspace.querySelector(".potion-return .rr-badge-val");
+        if (badge) badge.textContent = Number(event.target.value).toFixed(2);
+        scheduleSave();
+      });
+      workspace.addEventListener("change", (event) => {
+        if (event.target.id === "potion-return-slider") { state.craftReturn.rate = roundReturnRate(event.target.value); state.craftReturn.mode = "custom"; renderPotions(); return; }
+        if (event.target.id === "potion-focus") potionFocus = event.target.checked;
+        const price = event.target.closest("[data-potion-price]");
+        if (price) { const id = price.dataset.potionPrice; const value = Number(price.value); if (Number.isFinite(value) && value > 0) state.craftPriceOverrides[id] = value; else delete state.craftPriceOverrides[id]; scheduleSave(); }
+        renderPotions();
+      });
+      workspace.addEventListener("click", async (event) => {
+        const tier = event.target.closest("[data-potion-tier]");
+        if (tier) { potionSelectedId = tier.dataset.potionTier; renderPotions(); return; }
+        const enchant = event.target.closest("[data-potion-enchant]");
+        if (enchant) { potionEnchant = Number(enchant.dataset.potionEnchant) || 0; renderPotions(); return; }
+        const market = event.target.closest("[data-potion-market]");
+        if (market) { potionMarketTarget = market.dataset.potionMarket; renderPotions(); return; }
+        const tax = event.target.closest("[data-potion-tax]");
+        if (tax) { state.ui.craft.taxMode = tax.dataset.potionTax; scheduleSave(); renderPotions(); return; }
+        const modeButton = event.target.closest("[data-potion-mode]");
+        if (modeButton) {
+          state.craftReturn = state.craftReturn || {};
+          const mode = modeButton.dataset.potionMode;
+          if (mode === "hideout") { state.craftReturn.mode = "hideout"; potionFocus = Boolean(state.craftReturn.focus); }
+          else { state.craftReturn.mode = "royal"; potionFocus = mode === "city-focus"; state.craftReturn.focus = potionFocus; }
+          applyReturnPreset(); renderPotions(); return;
+        }
+        const quality = event.target.closest("[data-potion-quality]");
+        if (quality) { state.craftReturn = state.craftReturn || {}; state.craftReturn.focus = potionFocus; state.craftReturn.zoneQuality = Number(quality.dataset.potionQuality); state.craftReturn.mode = "hideout"; applyReturnPreset(); renderPotions(); return; }
+        const power = event.target.closest("[data-potion-power]");
+        if (power) { state.craftReturn = state.craftReturn || {}; state.craftReturn.focus = potionFocus; state.craftReturn.powerLevel = Number(power.dataset.potionPower); state.craftReturn.mode = "hideout"; applyReturnPreset(); renderPotions(); return; }
+        const hideoutFocus = event.target.closest("[data-potion-hideout-focus]");
+        if (hideoutFocus) { state.craftReturn = state.craftReturn || {}; potionFocus = !potionFocus; state.craftReturn.focus = potionFocus; state.craftReturn.mode = "hideout"; applyReturnPreset(); renderPotions(); return; }
+        const dailyButton = event.target.closest("[data-potion-daily]");
+        if (dailyButton) { state.craftReturn = state.craftReturn || {}; state.craftReturn.focus = potionFocus; state.craftReturn.dailyBonus = Number(dailyButton.dataset.potionDaily); applyReturnPreset(); renderPotions(); return; }
+        if (!event.target.closest("#potion-fetch-prices")) return;
+        const recipe = potionRecipe();
+        const ids = [potionOutputId(recipe), ...recipe.materials.map(potionMaterialId)];
+        if (potionEnchant) ids.push(POTION_ARCANE_EXTRACTS[potionEnchant].id);
+        await fetchDbPrices(ids.filter(Boolean));
+        renderPotions();
+      });
+    }
+  }
+
   function bindEvents() {
     // Spec Calculator search and suggestions binding
     const specSearchInput = $("#spec-item-search");
@@ -11981,7 +12789,7 @@
 
     // Sidebar navigation
     $$(".app-nav-btn").forEach((btn) => {
-      btn.addEventListener("click", () => switchTab(btn.dataset.view === "planner" ? "planner" : "craft"));
+      btn.addEventListener("click", () => switchTab(btn.dataset.view === "calculator" ? "craft" : btn.dataset.view));
     });
     $$(".app-util-btn").forEach((btn) => {
       btn.addEventListener("click", () => switchTab(btn.dataset.tab));
@@ -12526,7 +13334,7 @@
     // Hash navigation
     window.addEventListener("hashchange", () => {
       const name = location.hash.replace("#", "");
-      if (["stock", "craft", "database", "help", "planner"].includes(name) && name !== state.ui.tab) {
+      if (["stock", "craft", "database", "help", "planner", "potions", "refining"].includes(name) && name !== state.ui.tab) {
         switchTab(name, { scroll: false });
       }
     });
@@ -12540,7 +13348,8 @@
   function init() {
     initSettings();
     populateReturnControls();
-    bindEvents();
+    bindEvents();    bindPotionEvents();
+    bindRefineEvents();
     ensureCraftSelection();
     renderCraftOptions();
 
@@ -12549,7 +13358,7 @@
     setSaveState(storageOK ? "saved" : "error");
 
     const hashTab = location.hash.replace("#", "");
-    const appTabs = ["craft", "database", "help", "planner"];
+    const appTabs = ["craft", "database", "help", "planner", "potions", "refining"];
     const initialTab = appTabs.includes(hashTab)
       ? hashTab
       : (appTabs.includes(state.ui.tab) ? state.ui.tab : "craft");
