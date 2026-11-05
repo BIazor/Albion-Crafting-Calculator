@@ -1,6 +1,6 @@
 # Albion Crafting Calculator
 
-A free, browser-only crafting calculator for **Albion Online**. The site root opens the calculator; there is no separate landing page.
+A free, browser-only crafting calculator for **Albion Online**. The site opens on a landing page that introduces the calculator.
 
 Live at <https://albioncrafting.vercel.app/>:
 
@@ -8,16 +8,16 @@ Live at <https://albioncrafting.vercel.app/>:
 
 | File | Purpose |
 | --- | --- |
-| `index.html` | Root redirect to the calculator (opens the craft page, preserving a hash) |
+| `index.html` | Landing page with the calculator and refining-calculator buttons and the Discord invite |
 | `calculator.html` | The calculator app itself — one self-contained file |
 | `favicon.svg` | Site icon (browsers and tabs) |
 | `404.html` | Styled "page not found" page |
 
-`index.html` redirects to `calculator.html`, which is the app; nothing else needs a build step.
+`index.html` is the landing page and links to `calculator.html`, which is the app; nothing else needs a build step.
 
 ## Stack
 
-Plain HTML, CSS and JavaScript with no framework, no bundler and no runtime dependencies. The only external request is the Inter webfont from Google Fonts. All application state lives in the visitor's browser via `localStorage`.
+Plain HTML, CSS and JavaScript with no framework, no bundler and no runtime dependencies. The landing page loads the Eczar and Inter webfonts from Google Fonts; the calculator loads Inter. All application state lives in the visitor's browser via `localStorage`.
 
 ## Hosting
 

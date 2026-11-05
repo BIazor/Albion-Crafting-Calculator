@@ -1,30 +1,1207 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Albion Crafting Calculator</title>
-<meta name="robots" content="noindex">
+<meta name="color-scheme" content="dark">
+<title>Albion Crafting Calculator — price the craft before you buy</title>
+<meta name="description" content="A free Albion Online crafting calculator: recipe materials after your hideout return, focus per craft, sales tax, profit margins and a planner that keeps every session in one place. No account, all data in your browser.">
+<meta name="theme-color" content="#0b110e">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
-<meta http-equiv="refresh" content="0; url=calculator.html#craft">
-<script>
-  var hash = window.location.hash && window.location.hash !== "#" ? window.location.hash : "#craft";
-  window.location.replace("calculator.html" + hash);
-</script>
+<link rel="canonical" href="https://albioncrafting.vercel.app/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Albion Crafting Calculator">
+<meta property="og:title" content="Albion Crafting Calculator — by Blazor">
+<meta property="og:description" content="Recipe costs, hideout return rates, focus and profit margins for every craft — plus a planner that adds the whole session up. Free, no account.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Albion Crafting Calculator — by Blazor">
+<meta name="twitter:description" content="Price the craft before you buy the materials. Free, no account, all data in your browser.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Eczar:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
+  :root {
+    --ground: #0b110e;
+    --ground-soft: #0e1612;
+    --plate: #141e19;
+    --plate-2: #18241e;
+    --ink: #f2ead9;
+    --ink-2: #c0b9a8;
+    --ink-3: #8a8c7d;
+    --brass: #ddb15c;
+    --brass-hi: #f3d393;
+    --brass-dim: #9c7434;
+    --copper: #c07a50;
+    --profit: #8dbe95;
+    --discord: #5865f2;
+    --line: rgba(221, 177, 92, 0.22);
+    --line-soft: rgba(242, 234, 217, 0.08);
+    --serif: "Eczar", Georgia, "Times New Roman", serif;
+    --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  html {
+    background: var(--ground);
+    -webkit-text-size-adjust: 100%;
+  }
+
   body {
+    margin: 0;
+    background:
+      radial-gradient(1100px 640px at 86% -10%, rgba(192, 122, 80, 0.18), transparent 62%),
+      radial-gradient(900px 620px at -8% 22%, rgba(221, 177, 92, 0.05), transparent 68%),
+      radial-gradient(700px 500px at 50% 108%, rgba(141, 190, 149, 0.04), transparent 70%),
+      var(--ground);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* A whisper of paper grain over the whole page. */
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    pointer-events: none;
+    opacity: 0.032;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  ::selection {
+    background: rgba(221, 177, 92, 0.32);
+    color: #fff;
+  }
+
+  a { color: var(--brass); }
+
+  h1, h2, h3 {
+    margin: 0;
+    font-family: var(--serif);
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  p { margin: 0; }
+
+  .wrap {
+    width: min(1180px, 100%);
+    margin-inline: auto;
+    padding-inline: clamp(20px, 4vw, 40px);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--brass-hi);
+    outline-offset: 3px;
+  }
+
+  .skip-link {
+    position: absolute;
+    top: -60px;
+    left: 20px;
+    z-index: 200;
+    padding: 10px 16px;
+    border-radius: 3px;
+    background: var(--brass);
+    color: #1b1408;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .skip-link:focus { top: 12px; }
+
+  .topline {
+    height: 4px;
+    background: linear-gradient(90deg, transparent 0%, var(--brass-dim) 16%, var(--brass) 50%, var(--brass-dim) 84%, transparent 100%);
+    opacity: 0.85;
+  }
+
+  /* ------------------------------------------------------------------ header */
+  .masthead {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    border-bottom: 1px solid var(--line-soft);
+    background: rgba(11, 17, 14, 0.86);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+  }
+
+  .masthead-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 26px;
+    min-height: 78px;
+  }
+
+  .wordmark {
+    display: inline-flex;
+    align-items: center;
+    gap: 15px;
+    color: var(--ink);
+    text-decoration: none;
+    flex: 0 1 auto;
+  }
+
+  .mark {
     display: grid;
     place-items: center;
-    min-height: 100vh;
-    margin: 0;
-    background: #060814;
-    color: #f3efe8;
-    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    flex: 0 0 auto;
+    width: 34px;
+    height: 34px;
+    border: 1px solid var(--line);
+    background: rgba(221, 177, 92, 0.05);
+    transform: rotate(45deg);
   }
-  a { color: #e9bb62; }
+
+  .mark svg {
+    width: 18px;
+    height: 18px;
+    color: var(--brass);
+    transform: rotate(-45deg);
+  }
+
+  .wordmark-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.15;
+  }
+
+  .wordmark-name {
+    font-family: var(--serif);
+    font-size: 16.5px;
+    font-weight: 600;
+    letter-spacing: 0.002em;
+  }
+
+  .brand-short { display: none; }
+
+  .wordmark-by {
+    margin-top: 2px;
+    color: var(--ink-3);
+    font-size: 10.5px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+  }
+
+  .nav {
+    display: flex;
+    align-items: center;
+    gap: 26px;
+    margin-left: auto;
+  }
+
+  .nav a {
+    color: var(--ink-2);
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+    text-underline-offset: 4px;
+  }
+
+  .nav a:hover {
+    color: var(--ink);
+    text-decoration: underline;
+    text-decoration-color: var(--brass-dim);
+  }
+
+  /* ----------------------------------------------------------------- buttons */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 46px;
+    padding: 12px 18px;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    font-family: var(--sans);
+    font-size: 13.5px;
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: 0.004em;
+    text-align: center;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: transform 0.16s ease, filter 0.16s ease, border-color 0.16s ease, background-color 0.16s ease;
+  }
+
+  .btn-gold {
+    border-color: #8c6427;
+    background: linear-gradient(180deg, #f1d294 0%, #ddb15c 52%, #c99a48 100%);
+    color: #1b1408;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.42), 0 12px 26px rgba(0, 0, 0, 0.34);
+  }
+
+  .btn-gold:hover {
+    filter: brightness(1.05);
+    transform: translateY(-1px);
+  }
+
+  .btn-gold:active { transform: translateY(0); }
+
+  .btn-sm {
+    min-height: 40px;
+    padding: 9px 15px;
+    font-size: 12.5px;
+  }
+
+  .btn-lg {
+    min-height: 52px;
+    padding: 14px 22px;
+    font-size: 14px;
+  }
+
+  .btn-locked {
+    border-color: var(--line);
+    background: rgba(242, 234, 217, 0.035);
+    color: #cbc4b3;
+    cursor: not-allowed;
+    text-align: left;
+  }
+
+  .btn-quiet {
+    border-color: var(--line);
+    background: rgba(242, 234, 217, 0.035);
+    color: var(--ink);
+  }
+
+  .btn-quiet:hover {
+    border-color: var(--brass-dim);
+    background: rgba(242, 234, 217, 0.06);
+    transform: translateY(-1px);
+  }
+
+  .btn-locked .badge-soon {
+    margin-left: 2px;
+    padding: 2px 6px;
+    border: 1px solid rgba(221, 177, 92, 0.38);
+    border-radius: 2px;
+    background: rgba(221, 177, 92, 0.06);
+    color: var(--brass-hi);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.015em;
+    white-space: nowrap;
+  }
+
+  /* -------------------------------------------------------------------- hero */
+  .hero {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    padding: clamp(54px, 7vw, 92px) 0 clamp(50px, 6vw, 78px);
+  }
+
+  .hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image:
+      linear-gradient(to right, rgba(242, 234, 217, 0.04) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(242, 234, 217, 0.04) 1px, transparent 1px);
+    background-size: 56px 56px;
+    -webkit-mask-image: radial-gradient(115% 90% at 72% 22%, #000 18%, transparent 72%);
+    mask-image: radial-gradient(115% 90% at 72% 22%, #000 18%, transparent 72%);
+  }
+
+  .hero > .wrap {
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.06fr) minmax(0, 0.94fr);
+    gap: clamp(40px, 6vw, 76px);
+    align-items: center;
+  }
+
+  .hero-copy {
+    display: grid;
+    grid-template-columns: 58px minmax(0, 1fr);
+    gap: 22px;
+    align-items: stretch;
+  }
+
+  .tier-rule {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 5px;
+    padding: 10px 0;
+    min-height: 330px;
+  }
+
+  .tier-rule::before {
+    content: "";
+    position: absolute;
+    top: 12px;
+    bottom: 12px;
+    right: 8px;
+    width: 1px;
+    background: linear-gradient(to bottom, transparent, var(--line) 8%, var(--line) 92%, transparent);
+  }
+
+  .tick {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding-right: 15px;
+    color: var(--ink-3);
+  }
+
+  .tick b {
+    width: 25px;
+    flex: 0 0 auto;
+    font-family: var(--sans);
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .tick::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.4;
+  }
+
+  .tick.is-on b { color: var(--brass-hi); }
+
+  .tick.is-on::after {
+    background: var(--brass);
+    opacity: 1;
+  }
+
+  .tick.is-on i {
+    position: absolute;
+    right: 4.5px;
+    width: 8px;
+    height: 8px;
+    background: var(--brass);
+    transform: rotate(45deg);
+    box-shadow: 0 0 0 3px rgba(221, 177, 92, 0.14);
+  }
+
+  h1 {
+    max-width: 14ch;
+    font-size: clamp(40px, 4.7vw, 68px);
+    font-weight: 600;
+    line-height: 1.01;
+    letter-spacing: -0.018em;
+    text-wrap: balance;
+  }
+
+  .lede {
+    max-width: 46ch;
+    margin-top: 24px;
+    color: var(--ink-2);
+    font-size: 16.5px;
+    line-height: 1.66;
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    margin-top: 30px;
+  }
+
+  .fineprint {
+    margin-top: 18px;
+    color: var(--ink-3);
+    font-size: 12.5px;
+    line-height: 1.55;
+  }
+
+  /* ------------------------------------------------------ calculator preview */
+  .app-figure {
+    margin: 0;
+    max-width: 500px;
+    width: 100%;
+    justify-self: end;
+  }
+
+  .app-frame {
+    position: relative;
+    padding: 6px;
+    border: 1px solid rgba(221, 177, 92, 0.34);
+    background: linear-gradient(168deg, #18241e 0%, #121b16 58%, #101813 100%);
+    box-shadow: 0 34px 70px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(242, 234, 217, 0.06);
+  }
+
+  .app-frame::before {
+    content: "";
+    position: absolute;
+    inset: 2px;
+    border: 1px solid rgba(221, 177, 92, 0.13);
+    pointer-events: none;
+  }
+
+  .app-frame::after {
+    content: "";
+    position: absolute;
+    top: -5px;
+    left: calc(50% - 5px);
+    width: 10px;
+    height: 10px;
+    background: var(--brass);
+    transform: rotate(45deg);
+    box-shadow: 0 0 0 5px #121a15;
+  }
+
+  .app-frame img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid rgba(0, 0, 0, 0.45);
+    background: #0f1411;
+  }
+
+  .app-figure figcaption {
+    margin-top: 13px;
+    color: var(--ink-3);
+    font-size: 11.5px;
+    line-height: 1.5;
+    text-align: right;
+  }
+
+  /* ---------------------------------------------------------------- sections */
+  .section {
+    padding: clamp(62px, 8vw, 102px) 0;
+    border-top: 1px solid var(--line-soft);
+  }
+
+  .section[id] { scroll-margin-top: 96px; }
+
+  .section-head {
+    display: grid;
+    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.28fr);
+    gap: clamp(24px, 5vw, 60px);
+    align-items: end;
+    margin-bottom: clamp(30px, 4vw, 44px);
+  }
+
+  h2 {
+    max-width: 19ch;
+    font-size: clamp(27px, 3.2vw, 39px);
+    font-weight: 600;
+    line-height: 1.13;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+
+  .section-head p {
+    max-width: 58ch;
+    color: var(--ink-2);
+    font-size: 15px;
+    line-height: 1.65;
+  }
+
+  .ledger {
+    margin: 0;
+    border-bottom: 1px solid var(--line-soft);
+  }
+
+  .ledger-row {
+    display: grid;
+    grid-template-columns: 44px minmax(0, 0.72fr) minmax(0, 1.55fr);
+    gap: 26px;
+    align-items: start;
+    padding: 23px 10px 23px 0;
+    border-top: 1px solid var(--line-soft);
+    transition: background-color 0.18s ease;
+  }
+
+  .ledger-row:hover { background: linear-gradient(90deg, rgba(221, 177, 92, 0.035), transparent 70%); }
+
+  .ledger-icon {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    margin-top: 1px;
+    border: 1px solid var(--line-soft);
+    border-radius: 2px;
+    background: rgba(221, 177, 92, 0.035);
+    color: var(--brass);
+  }
+
+  .ledger-icon svg { width: 20px; height: 20px; }
+
+  .ledger dt {
+    font-family: var(--serif);
+    font-size: 19px;
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--ink);
+  }
+
+  .ledger dd {
+    margin: 0;
+    max-width: 66ch;
+    color: var(--ink-2);
+    font-size: 14.5px;
+    line-height: 1.65;
+  }
+
+  /* ------------------------------------------------------------------- steps */
+  .steps {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: step;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    border-top: 1px solid var(--line-soft);
+    border-bottom: 1px solid var(--line-soft);
+  }
+
+  .steps li {
+    counter-increment: step;
+    padding: 28px 30px 34px;
+  }
+
+  .steps li + li { border-left: 1px solid var(--line-soft); }
+
+  .steps li::before {
+    content: counter(step, upper-roman);
+    display: block;
+    margin-bottom: 13px;
+    color: var(--brass-dim);
+    font-family: var(--serif);
+    font-size: 30px;
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: 0.01em;
+  }
+
+  .steps h3 {
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 1.25;
+  }
+
+  .steps p {
+    margin-top: 8px;
+    max-width: 36ch;
+    color: var(--ink-2);
+    font-size: 14px;
+    line-height: 1.62;
+  }
+
+  /* ---------------------------------------------------------------- refining */
+  .refining {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    background:
+      radial-gradient(700px 360px at 92% 0%, rgba(192, 122, 80, 0.12), transparent 68%),
+      linear-gradient(150deg, #16211b 0%, #111a15 62%, #0d1410 100%);
+    box-shadow: inset 0 1px 0 rgba(242, 234, 217, 0.06), 0 28px 60px rgba(0, 0, 0, 0.32);
+  }
+
+  .refining::before {
+    content: "";
+    position: absolute;
+    inset: 7px;
+    border: 1px solid rgba(242, 234, 217, 0.05);
+    pointer-events: none;
+  }
+
+  .refining-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+    gap: clamp(32px, 5vw, 64px);
+    align-items: center;
+    padding: clamp(30px, 5vw, 56px);
+  }
+
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 15px;
+    color: var(--brass);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+  }
+
+  .status::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    background: var(--brass);
+    transform: rotate(45deg);
+  }
+
+  .refining h2 { max-width: 17ch; }
+
+  .refining p.body {
+    max-width: 54ch;
+    margin-top: 17px;
+    color: var(--ink-2);
+    font-size: 15px;
+    line-height: 1.68;
+  }
+
+  .refining-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 14px;
+    margin-top: 26px;
+  }
+
+  .refining-note {
+    margin-top: 16px;
+    color: var(--ink-3);
+    font-size: 12.5px;
+    line-height: 1.6;
+  }
+
+  .refining-note a { color: var(--ink-2); text-underline-offset: 3px; }
+  .refining-note a:hover { color: var(--brass); }
+
+  .bench-sheet {
+    padding: 20px 20px 16px;
+    border: 1px dashed rgba(221, 177, 92, 0.34);
+    background: rgba(8, 13, 10, 0.34);
+  }
+
+  .bench-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--line-soft);
+  }
+
+  .bench-head span:first-child {
+    font-family: var(--serif);
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .bench-status {
+    color: var(--brass);
+    font-size: 10.5px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .bench-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .bench-list li {
+    display: grid;
+    grid-template-columns: 22px minmax(0, 1fr) 18px minmax(0, 1fr) 24px;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 0;
+    border-bottom: 1px solid rgba(242, 234, 217, 0.055);
+    color: var(--ink-2);
+    font-size: 12.5px;
+  }
+
+  .bench-list li:last-child { border-bottom: 0; }
+
+  .bench-list svg {
+    width: 17px;
+    height: 17px;
+    color: var(--brass-dim);
+  }
+
+  .bench-list .arrow {
+    color: var(--brass-dim);
+    font-size: 13px;
+    text-align: center;
+  }
+
+  .bench-list .pending {
+    color: var(--ink-3);
+    text-align: right;
+  }
+
+  .bench-list .ready {
+    color: var(--profit);
+    text-align: right;
+  }
+
+  .bench-foot {
+    margin-top: 8px;
+    padding-top: 11px;
+    border-top: 1px solid var(--line-soft);
+    color: var(--ink-3);
+    font-size: 10.5px;
+  }
+
+  /* ----------------------------------------------------------------- closing */
+  .closing {
+    padding-top: clamp(58px, 7vw, 88px);
+    border-top: 1px solid var(--line-soft);
+  }
+
+  .closing-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.16fr) minmax(0, 0.84fr);
+    gap: 34px;
+    align-items: end;
+  }
+
+  .closing h2 {
+    max-width: 16ch;
+    font-size: clamp(29px, 3.8vw, 45px);
+  }
+
+  .closing p {
+    margin-top: 12px;
+    color: var(--ink-2);
+    font-size: 14.5px;
+  }
+
+  .closing-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+  /* Discord CTA — same button as the calculator page */
+  .discord-cta {
+    display: flex;
+    justify-content: center;
+    padding: 38px 0 46px;
+  }
+
+  .discord-cta a {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    max-width: 100%;
+    padding: 13px 22px;
+    border: 1px solid rgba(88, 101, 242, 0.55);
+    border-radius: 12px;
+    background: linear-gradient(135deg, #5865f2 0%, #4149d6 100%);
+    color: #fff;
+    font-size: 12px;
+    line-height: 1.4;
+    letter-spacing: 0.01em;
+    text-align: left;
+    text-decoration: none;
+    box-shadow: 0 8px 24px rgba(88, 101, 242, 0.26);
+    transition: transform 0.15s ease, filter 0.15s ease;
+  }
+
+  .discord-cta a:hover { filter: brightness(1.08); transform: translateY(-1px); }
+  .discord-cta svg { flex: 0 0 auto; }
+  .discord-cta-label { display: flex; flex-direction: column; gap: 1px; }
+  .discord-cta-label strong { font-size: 13px; font-weight: 800; }
+  .discord-cta-label span { color: rgba(255, 255, 255, 0.85); font-size: 12px; font-weight: 600; }
+
+  @media (max-width: 720px) {
+    .discord-cta { padding: 30px 0 38px; }
+    .discord-cta a { width: 100%; }
+  }
+
+  /* ------------------------------------------------------------------ footer */
+  footer {
+    padding: 24px 0 36px;
+    border-top: 1px solid var(--line);
+    color: var(--ink-3);
+    font-size: 11.5px;
+    line-height: 1.6;
+  }
+
+  .footer-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 14px 28px;
+  }
+
+  .footer-inner strong {
+    color: var(--ink-2);
+    font-family: var(--serif);
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .footer-links a {
+    color: var(--ink-2);
+    text-decoration: none;
+  }
+
+  .footer-links a:hover {
+    color: var(--brass);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  /* -------------------------------------------------------------- responsive */
+  @media (max-width: 1020px) {
+    .hero-grid { grid-template-columns: minmax(0, 1fr); gap: 46px; }
+    .hero-copy { max-width: 680px; }
+    h1 { max-width: 16ch; }
+    .app-figure { justify-self: start; max-width: 560px; }
+    .app-figure figcaption { text-align: left; }
+    .refining-grid { grid-template-columns: minmax(0, 1fr); gap: 34px; }
+    .bench-sheet { max-width: 520px; }
+  }
+
+  @media (max-width: 880px) {
+    .nav { display: none; }
+    .section-head { grid-template-columns: minmax(0, 1fr); align-items: start; gap: 14px; }
+    .steps { grid-template-columns: minmax(0, 1fr); }
+    .steps li { padding: 25px 4px 28px; }
+    .steps li + li { border-left: 0; border-top: 1px solid var(--line-soft); }
+    .steps li::before { font-size: 25px; margin-bottom: 9px; }
+    .steps p { max-width: 56ch; }
+    .closing-grid { grid-template-columns: minmax(0, 1fr); align-items: start; }
+    .closing-actions { justify-content: flex-start; margin-top: 8px; }
+    .ledger-row { grid-template-columns: 38px minmax(0, 0.8fr) minmax(0, 1.5fr); gap: 18px; }
+    .ledger-icon { width: 34px; height: 34px; }
+  }
+
+  @media (max-width: 700px) {
+    .tier-rule { display: none; }
+    .hero-copy { grid-template-columns: minmax(0, 1fr); }
+    .masthead-inner { min-height: 70px; gap: 16px; }
+    .wordmark-name { font-size: 15px; }
+    .hero { padding-top: 44px; }
+    .app-figure { max-width: 100%; }
+    .ledger-row {
+      grid-template-columns: 34px minmax(0, 1fr);
+      gap: 12px 14px;
+      padding: 20px 6px 20px 0;
+    }
+    .ledger-row dt { font-size: 18px; }
+    .ledger-row dd { grid-column: 2; font-size: 14px; }
+    .section-head p { font-size: 14.5px; }
+    .refining-grid { padding: 26px 20px 28px; }
+    .refining h2 { font-size: 27px; }
+    .bench-sheet { padding: 17px 16px 14px; }
+  }
+
+  @media (max-width: 430px) {
+    .brand-long { display: none; }
+    .brand-short { display: inline; }
+  }
+
+  @media (max-width: 560px) {
+    .hero-actions { flex-direction: column; align-items: stretch; }
+    .hero-actions .btn { width: 100%; }
+    .btn-locked { justify-content: space-between; }
+    .closing-actions .btn { width: 100%; }
+    .closing-actions { width: 100%; }
+    .masthead-inner { gap: 12px; }
+    .masthead-inner .btn { padding: 9px 11px; font-size: 11.5px; }
+    .wordmark { gap: 11px; }
+    .mark { width: 30px; height: 30px; }
+    .mark svg { width: 16px; height: 16px; }
+    .wordmark-by { display: none; }
+    .ledger-row { grid-template-columns: minmax(0, 1fr); }
+    .ledger-row dd { grid-column: 1; }
+    .ledger-icon { display: none; }
+    .bench-list li { grid-template-columns: 20px minmax(0, 1fr) 16px minmax(0, 1fr); }
+    .bench-list .pending { display: none; }
+    .footer-inner { display: block; }
+    .footer-links { margin-top: 12px; }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html { scroll-behavior: smooth; }
+
+    .hero-text > * {
+      animation: rise 0.72s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+    }
+
+    .hero-text > *:nth-child(1) { animation-delay: 0.04s; }
+    .hero-text > *:nth-child(2) { animation-delay: 0.11s; }
+    .hero-text > *:nth-child(3) { animation-delay: 0.18s; }
+    .hero-text > *:nth-child(4) { animation-delay: 0.24s; }
+
+    .app-figure {
+      animation: settle 0.9s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+      animation-delay: 0.12s;
+    }
+  }
+
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  @keyframes settle {
+    from { opacity: 0; transform: translateY(20px) scale(0.988); }
+    to { opacity: 1; transform: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+    html { scroll-behavior: auto; }
+  }
 </style>
 </head>
 <body>
-  <p><a href="calculator.html#craft">Open the Albion Crafting Calculator</a></p>
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="topline" aria-hidden="true"></div>
+
+<header class="masthead">
+  <div class="wrap masthead-inner">
+    <a class="wordmark" href="./" aria-label="Albion Crafting Calculator — home">
+      <span class="mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m14.5 3 6 6-3 3-6-6 3-3Z"/><path d="m3 21 6-6"/><path d="m13.5 10.5 2 2"/><path d="m4 4 4 1 1 4"/><path d="m20 20-4-1-1-4"/></svg>
+      </span>
+      <span class="wordmark-text">
+        <span class="wordmark-name"><span class="brand-long">Albion Crafting Calculator</span><span class="brand-short">Crafting Calculator</span></span>
+        <span class="wordmark-by">by Blazor</span>
+      </span>
+    </a>
+    <nav class="nav" aria-label="Main">
+      <a href="#ledger">The ledger</a>
+      <a href="#how">How it works</a>
+      <a href="#refining">Refining</a>
+    </nav>
+    <a class="btn btn-gold btn-sm" href="calculator.html#craft">Open the calculator</a>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <div class="tier-rule" aria-hidden="true">
+          <span class="tick"><b>T4</b></span>
+          <span class="tick"><b>T5</b></span>
+          <span class="tick is-on"><b>T6</b><i></i></span>
+          <span class="tick"><b>T7</b></span>
+          <span class="tick"><b>T8</b></span>
+        </div>
+
+        <div class="hero-text">
+          <h1>Price the craft before you buy the materials.</h1>
+          <p class="lede">
+            Pick the item, set what your hideout returns, and enter the prices you see in game.
+            You get the materials you actually have to buy, the focus each craft costs, and the
+            margin left over — before a single bar leaves your stash.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-gold btn-lg" href="calculator.html#craft">Open the crafting calculator</a>
+            <a class="btn btn-quiet btn-lg" href="calculator.html#refining">Open the refining calculator</a>
+          </div>
+          <p class="fineprint">Free to use. No account. Every price stays in your browser.</p>
+        </div>
+      </div>
+
+      <figure class="app-figure">
+        <div class="app-frame">
+          <img
+            src="assets/calculator-craft.webp"
+            width="1180"
+            height="930"
+            alt="The live Albion Crafting Calculator showing a Master’s Dual Swords T6.1 craft, material prices of 1,450 and 1,850, a 64,000 sell price, and the resulting 38.497 investment, +21.343 net profit and +55.44% margin."
+            decoding="async"
+          >
+        </div>
+        <figcaption>A real T6.1 order from the calculator. Change a price and the margin follows.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section" id="ledger">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>What the calculator settles.</h2>
+        <p>Every figure comes from the recipe you picked, the return rate you set and the prices you typed. Nothing is guessed, and nothing is sent anywhere.</p>
+      </div>
+
+      <dl class="ledger">
+        <div class="ledger-row">
+          <span class="ledger-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3.6 14.5h16.8l-1.9 4.5H5.5l-1.9-4.5Z"/><path d="M7.1 14.5 8.6 8h6.8l1.5 6.5"/></svg>
+          </span>
+          <dt>Materials after your return</dt>
+          <dd>Hideout power level, zone quality, focus and the daily bonus all change how much of each ingredient comes back — and what you actually have to buy.</dd>
+        </div>
+        <div class="ledger-row">
+          <span class="ledger-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c3.2 3 5 5.4 5 8.2A5 5 0 0 1 7 11.2C7 8.4 8.8 6 12 3Z"/><path d="M12 18.5c-1.6-1.4-2.4-2.6-2.4-4.1a2.4 2.4 0 0 1 4.8 0c0 1.5-.8 2.7-2.4 4.1Z"/></svg>
+          </span>
+          <dt>Focus, per craft and per session</dt>
+          <dd>Your Destiny Board specialisation is part of the efficiency formula, so focus is counted for a single craft and for the whole planner.</dd>
+        </div>
+        <div class="ledger-row">
+          <span class="ledger-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="9" cy="8" rx="5" ry="2.4"/><path d="M4 8v4c0 1.3 2.2 2.4 5 2.4s5-1.1 5-2.4V8"/><path d="M14 12.4c.9 1.2 2.6 1.9 4.2 1.6 1.5-.3 2.6-1.3 2.6-2.5V8.4"/><ellipse cx="18.2" cy="8.4" rx="4.5" ry="2.1"/><path d="M14 16.4c.9 1.2 2.6 1.9 4.2 1.6 1.5-.3 2.6-1.3 2.6-2.5"/><ellipse cx="18.2" cy="15.5" rx="4.5" ry="2.1"/></svg>
+          </span>
+          <dt>Tax, margin and the best craft</dt>
+          <dd>Enter the buy and sell prices you see in game. The sales tax you choose is applied to revenue, and every tier and enchantment is ranked by margin.</dd>
+        </div>
+        <div class="ledger-row">
+          <span class="ledger-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="1.5"/><path d="M8 9h8M8 12h8M8 15h5"/></svg>
+          </span>
+          <dt>A planner that keeps up</dt>
+          <dd>Queue the crafts worth running, set quantities and journals, and materials, artefacts and focus stay in one running total for the session.</dd>
+        </div>
+        <div class="ledger-row">
+          <span class="ledger-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5 19 6v5.5c0 4-3 7-7 9-4-2-7-5-7-9V6l7-2.5Z"/><path d="m8.8 12 2.2 2.2 4.2-4.4"/></svg>
+          </span>
+          <dt>Your data stays put</dt>
+          <dd>No account and no server. Prices, stock and planner sessions are saved in this browser, so the page comes back the way you left it.</dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="section" id="how">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Three steps from recipe to margin.</h2>
+        <p>The whole workflow lives on one screen. You bring the prices you see in game; the numbers update as you type.</p>
+      </div>
+
+      <ol class="steps">
+        <li>
+          <h3>Choose the item</h3>
+          <p>Set the category, tier and enchantment. The recipe, its material list and the item art follow the selection.</p>
+        </li>
+        <li>
+          <h3>Set your return</h3>
+          <p>Give it your hideout's power level and zone quality, whether you're using focus, and whether the daily bonus is up.</p>
+        </li>
+        <li>
+          <h3>Read the margin</h3>
+          <p>Type what the materials cost and what the item sells for. Investment, revenue and margin update as you type.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section" id="refining">
+    <div class="wrap">
+      <div class="refining">
+        <div class="refining-grid">
+          <div>
+            <p class="status">Live now</p>
+            <h2>Refining, worked the same way.</h2>
+            <p class="body">
+              Ore into bars, hide into leather, logs into planks and fibre into cloth. The refining
+              calculator uses the same return-rate maths and the same price book as crafting, so a bar
+              costs the same whichever bench you're standing at.
+            </p>
+            <div class="refining-actions">
+              <a class="btn btn-gold btn-lg" href="calculator.html#refining">Open the refining calculator</a>
+            </div>
+            <p class="refining-note">Every material from T2 to T8, with .0–.4 enchantments from T4. <a href="calculator.html#craft">Open the crafting calculator</a>.</p>
+          </div>
+
+          <div class="bench-sheet" aria-label="Planned refining calculator contents">
+            <div class="bench-head">
+              <span>Refining calculator</span>
+              <span class="bench-status">Live</span>
+            </div>
+            <ul class="bench-list">
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 15.5 7 8l5-2 5 3 3 6.5-4 3H8l-4-3Z"/><path d="m7 8 3 5 5-1.5M10 16l5-4.5"/></svg>
+                <span>Ore</span>
+                <span class="arrow" aria-hidden="true">→</span>
+                <span>Bars</span>
+                <span class="ready" aria-hidden="true">✓</span>
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.5 5.5c2.2 0 3.2 1.7 5.5 1.7s3.3-1.7 5.5-1.7c1.3 3.5-1.7 5.4-1.7 8.2 0 3 2 4.2.4 6.2-1.7-.9-2.7 0-4.2 0s-2.5-.9-4.2 0c-1.6-2 .4-3.2.4-6.2 0-2.8-3-4.7-1.7-8.2Z"/></svg>
+                <span>Hide</span>
+                <span class="arrow" aria-hidden="true">→</span>
+                <span>Leather</span>
+                <span class="ready" aria-hidden="true">✓</span>
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="7" width="18" height="10" rx="1"/><path d="M3 12h18M8 7v5M15 12v5"/></svg>
+                <span>Logs</span>
+                <span class="arrow" aria-hidden="true">→</span>
+                <span>Planks</span>
+                <span class="ready" aria-hidden="true">✓</span>
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16v10H4z"/><path d="M4 10c2 0 3 1.5 5 1.5s3-1.5 5-1.5 3 1.5 5 1.5M4 14c2 0 3 1.5 5 1.5s3-1.5 5-1.5 3 1.5 5 1.5"/></svg>
+                <span>Fibre</span>
+                <span class="arrow" aria-hidden="true">→</span>
+                <span>Cloth</span>
+                <span class="ready" aria-hidden="true">✓</span>
+              </li>
+            </ul>
+            <p class="bench-foot">Wood, ore, hide and fibre · T2–T8 · .0–.4 from T4.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="closing" aria-labelledby="closing-title">
+    <div class="wrap closing-grid">
+      <div>
+        <h2 id="closing-title">Ready to price your next craft?</h2>
+        <p>Opens in one click, remembers your setup, and keeps every price on your machine.</p>
+      </div>
+      <div class="closing-actions">
+        <a class="btn btn-gold btn-lg" href="calculator.html#craft">Open the crafting calculator</a>
+      </div>
+    </div>
+
+    <div class="wrap">
+      <div class="discord-cta">
+        <a href="https://discord.gg/zzwVFKNQze" target="_blank" rel="noopener noreferrer">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.317 4.3698a19.7913 19.7913 0 0 0-4.8851-1.5152.0741.0741 0 0 0-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 0 0-.0785-.037 19.7363 19.7363 0 0 0-4.8852 1.515.0699.0699 0 0 0-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 0 0 .0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 0 0 .0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 0 0-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 0 1-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 0 1 .0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 0 1 .0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 0 1-.0066.1276 12.2986 12.2986 0 0 1-1.873.8914.0766.0766 0 0 0-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 0 0 .0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 0 0 .0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 0 0-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg>
+          <span class="discord-cta-label">
+            <strong>Have a question or a suggestion?</strong>
+            <span>Send it in the Discord</span>
+          </span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap footer-inner">
+    <p><strong>Albion Crafting Calculator</strong> — an unofficial fan tool, not affiliated with Sandbox Interactive.</p>
+    <p class="footer-links">
+      <a href="calculator.html#craft">Crafting calculator</a>
+      <a href="calculator.html#refining">Refining calculator</a>
+      <a href="https://discord.gg/zzwVFKNQze" target="_blank" rel="noopener noreferrer">Discord</a>
+    </p>
+  </div>
+</footer>
 </body>
 </html>
