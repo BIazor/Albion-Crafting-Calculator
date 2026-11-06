@@ -3335,49 +3335,6 @@
   }
 
   /* ---------------------------------------------------------------------- */
-  /* Discord invite                                                          */
-  /* ---------------------------------------------------------------------- */
-  .discord-cta {
-    display: flex;
-    justify-content: center;
-    padding: 26px 22px 34px;
-  }
-
-  .discord-cta a {
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
-    max-width: 100%;
-    padding: 13px 22px;
-    border: 1px solid rgba(88, 101, 242, 0.55);
-    border-radius: 12px;
-    background: linear-gradient(135deg, #5865f2 0%, #4149d6 100%);
-    color: #fff;
-    font-size: 12px;
-    line-height: 1.4;
-    letter-spacing: 0.01em;
-    text-align: left;
-    text-decoration: none;
-    box-shadow: 0 8px 24px rgba(88, 101, 242, 0.26);
-    transition: transform 0.15s ease, filter 0.15s ease;
-  }
-
-  .discord-cta a:hover { filter: brightness(1.08); transform: translateY(-1px); }
-  .discord-cta svg { flex: 0 0 auto; }
-  .discord-cta-label { display: flex; flex-direction: column; gap: 1px; }
-  .discord-cta-label strong { font-size: 13px; font-weight: 800; }
-  .discord-cta-label span { color: rgba(255, 255, 255, 0.85); font-size: 12px; font-weight: 600; }
-
-  @media (max-width: 720px) {
-    .discord-cta { padding: 20px 14px 28px; }
-    .discord-cta a { width: 100%; }
-  }
-
-  @media print {
-    .discord-cta { display: none !important; }
-  }
-
-  /* ---------------------------------------------------------------------- */
   /* Footer                                                                  */
   /* ---------------------------------------------------------------------- */
   .footer {
@@ -5357,6 +5314,7 @@
   .app-content { background-color: transparent; }
   #panel-craft { background: transparent !important; }
   #panel-potions { background: transparent !important; }
+  #panel-refining { background: transparent !important; }
   #panel-planner { background: transparent !important; }
   #panel-database { background: transparent !important; }
   #panel-spec { background: transparent !important; border: 0 !important; }
@@ -7226,9 +7184,9 @@
     <div class="app-sidebar-content">
       <div class="app-nav" role="tablist" aria-label="Calculator, planner, potions and refining">
         <button class="app-nav-btn active" type="button" role="tab" aria-selected="true" data-view="calculator" data-page-entry="craft">Calculator</button>
-        <button class="app-nav-btn" type="button" role="tab" aria-selected="false" data-view="planner" data-page-entry="craft,potions">Planner</button>
         <button class="app-nav-btn" type="button" role="tab" aria-selected="false" data-view="potions" data-page-entry="potions">Potions</button>
         <button class="app-nav-btn" type="button" role="tab" aria-selected="false" data-view="refining" data-page-entry="refining">Refining</button>
+        <button class="app-nav-btn" type="button" role="tab" aria-selected="false" data-view="planner" data-page-entry="craft,potions">Planner</button>
       </div>
 
       <div class="app-sidebar-body">
@@ -7578,16 +7536,6 @@
     </section>
   </main>
 
-    <div class="discord-cta">
-      <a href="https://discord.gg/zzwVFKNQze" target="_blank" rel="noopener noreferrer">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.317 4.3698a19.7913 19.7913 0 0 0-4.8851-1.5152.0741.0741 0 0 0-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 0 0-.0785-.037 19.7363 19.7363 0 0 0-4.8852 1.515.0699.0699 0 0 0-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 0 0 .0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 0 0 .0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 0 0-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 0 1-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 0 1 .0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 0 1 .0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 0 1-.0066.1276 12.2986 12.2986 0 0 1-1.873.8914.0766.0766 0 0 0-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 0 0 .0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 0 0 .0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 0 0-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg>
-        <span class="discord-cta-label">
-          <strong>Have a question or a suggestion?</strong>
-          <span>Send it in the Discord</span>
-        </span>
-      </a>
-    </div>
-
   </div>
 </div>
 
@@ -7882,7 +7830,7 @@
     const daily = Number(settings.dailyBonus) || 0;
     const activeMode = (value) => (value === "city-focus" ? mode === "city-focus" : mode === value) ? " is-active" : "";
     const activeDaily = (value) => daily === value ? " is-active" : "";
-    const materialHtml = materials.map((mat) => '<article class="potion-material craft-box-bubble material-bubble"><div class="craft-box-head"><span class="craft-box-label" title="' + esc(mat.name) + '">' + esc(mat.name) + '</span><span class="craft-count-pill" title="' + esc(mat.tier) + (potionMaterialIsSpecial(mat.id) ? ' · special ingredient; not returned' : ' · ' + fmt(mat.effective) + ' required after returns, rounded up (gross ' + fmt(mat.needed) + ')') + '">x' + fmt(mat.effective) + '</span></div><div class="craft-box-body"><span class="craft-box-icon">' + craftIngredientIconHtml({ id: mat.id, tier: Number(String(mat.tier).replace(/^T/, "")) || recipe.tier, enchant: 0 }) + '</span><input class="craft-bubble-input" type="number" min="0" step="0.01" value="' + (mat.price || '') + '" placeholder="0" data-potion-price="' + esc(mat.id) + '" aria-label="' + esc(mat.name) + ' unit price"></div></article>').join("");
+    const materialHtml = materials.map((mat) => '<article class="potion-material craft-box-bubble material-bubble"><div class="craft-box-head"><span class="craft-box-label" title="' + esc(mat.name) + '">' + esc(mat.name) + '</span><span class="craft-count-pill" title="' + esc(mat.tier + ' · ' + fmt(mat.needed) + ' needed per craft') + '">x' + fmt(mat.needed) + '</span></div><div class="craft-box-body"><span class="craft-box-icon">' + craftIngredientIconHtml({ id: mat.id, tier: Number(String(mat.tier).replace(/^T/, "")) || recipe.tier, enchant: 0 }) + '</span><input class="craft-bubble-input" type="number" min="0" step="0.01" value="' + (mat.price || '') + '" placeholder="0" data-potion-price="' + esc(mat.id) + '" aria-label="' + esc(mat.name) + ' unit price"></div></article>').join("");
     const returnSettings = craftReturnSettings();
     const rrMode = returnSettings.mode === "hideout" ? "hideout" : (returnSettings.mode === "custom" ? "custom" : (potionFocus ? "city-focus" : "city-nofocus"));
     const rrActive = (value) => rrMode === value ? " is-active" : "";
@@ -7900,7 +7848,7 @@
       '<div class="potion-topbar"><div class="craft-topgroup"><span class="craft-label">TIER</span><div class="segmented">' + potionFamilyRecipes(recipe).map((variant) => '<button class="seg-btn' + (variant.id === recipe.id ? ' is-active' : '') + '" type="button" data-potion-tier="' + esc(variant.id) + '" aria-pressed="' + (variant.id === recipe.id) + '">' + variant.tier + '</button>').join('') + '</div></div><div class="craft-topgroup"><span class="craft-label">ENCHANT</span><div class="segmented">' + [0,1,2,3].map((level) => '<button class="seg-btn' + (potionEnchant === level ? ' is-active' : '') + '" type="button" data-potion-enchant="' + level + '" aria-pressed="' + (potionEnchant === level) + '">' + (level ? '.' + level : '.0') + '</button>').join('') + '</div></div><div class="craft-topgroup potion-yield"><span class="craft-label">PER CRAFT</span><strong class="potion-yield-value">' + fmt(recipe.batch) + ' potions</strong></div></div>' +
       '<div class="potion-dashboard"><div class="potion-main"><section class="craft-card potion-material-card"><header><h2>⚡ CRAFTING · ' + esc(recipe.name + (potionEnchant ? ' .' + potionEnchant : '')).toUpperCase() + '</h2><button class="potion-fetch" type="button" id="potion-fetch-prices">＋ GET PRICES</button></header><div class="potion-materials">' + materialHtml + '</div><div class="potion-pricing"><label class="potion-price-card' + (potionMarketTarget === 'city' ? ' is-selected' : '') + '"><button type="button" class="potion-market-pick" data-potion-market="city">SELL PRICE</button><input type="number" min="0" step="0.01" value="' + (salePrice || '') + '" placeholder="0" data-potion-price="' + esc(outputId) + '"></label><label class="potion-price-card' + (potionMarketTarget === 'bm' ? ' is-selected' : '') + '"><button type="button" class="potion-market-pick" data-potion-market="bm">BLACK MARKET</button><input type="number" min="0" step="0.01" value="' + (Number(state.craftPriceOverrides[outputId + "@bm"]) || '') + '" placeholder="0" data-potion-price="' + esc(outputId + '@bm') + '"></label></div><div class="potion-tax"><button type="button" class="' + (salesTaxRate === .065 ? 'is-active' : '') + '" data-potion-tax="premium">PREMIUM TAX · 6.5%</button><button type="button" class="' + (salesTaxRate === .105 ? 'is-active' : '') + '" data-potion-tax="none">NO PREMIUM TAX · 10.5%</button></div></section>' +
       returnCardHtml +
-      '<section class="craft-card potion-best"><span class="craft-label">🏆 PROFIT · ONE CRAFT BATCH <strong>' + esc(recipe.name + (potionEnchant ? ' .' + potionEnchant : '')).toUpperCase() + '</strong></span><p><strong>' + (salePrice ? fmt(profit) + ' estimated profit' : 'Enter ingredient and sell prices to calculate profit.') + '</strong> Based on one batch of ' + fmt(actualOutput) + ' potions. ' + (salePrice ? 'Net sales ' + fmtPotionSilver(netRevenue) + ' (' + fmt(actualOutput) + ' × ' + fmtPotionSilver(salePrice) + ' less ' + fmtPotionSilver(salesTax) + ' tax) − ' + fmtPotionSilver(materialCost) + ' ingredient cost. Material requirements round up to whole items after returns.' : '') + '</p></section></div>' +
+      '<section class="craft-card potion-best"><span class="craft-label">🏆 PROFIT · ONE CRAFT BATCH <strong>' + esc(recipe.name + (potionEnchant ? ' .' + potionEnchant : '')).toUpperCase() + '</strong></span><p><strong>' + (salePrice ? fmt(profit) + ' estimated profit' : 'Enter ingredient and sell prices to calculate profit.') + '</strong> Based on one batch of ' + fmt(actualOutput) + ' potions. ' + (salePrice ? 'Net sales ' + fmtPotionSilver(netRevenue) + ' (' + fmt(actualOutput) + ' × ' + fmtPotionSilver(salePrice) + ' less ' + fmtPotionSilver(salesTax) + ' tax) − ' + fmtPotionSilver(materialCost) + ' ingredient cost. Ingredient counts show the full recipe; the return rate is applied to ingredient cost in the profit calculation.' : '') + '</p></section></div>' +
       '<aside class="craft-card potion-rail"><div class="potion-rail-title"><div><strong>' + esc(recipe.name + (potionEnchant ? ' .' + potionEnchant : '')) + '</strong><small>POTIONS · T' + recipe.tier + (potionEnchant ? '.' + potionEnchant : '.0') + ' · ' + (potionMarketTarget === 'bm' ? 'BLACK MARKET' : 'CITY SELL') + '</small></div></div><div class="potion-hero"><span class="tier-badge craft-item-tier">T' + recipe.tier + (potionEnchant ? '.' + potionEnchant : '.0') + '</span><img src="https://render.albiononline.com/v1/item/' + encodeURIComponent(outputId) + '.png" alt="' + esc(recipe.name + (potionEnchant ? ' .' + potionEnchant : '')) + '" loading="lazy" onerror="this.remove()"></div><div class="craft-item-stats"><div class="craft-stat-line investment"><span>Investment</span><strong>' + fmt(materialCost) + '</strong></div><div class="craft-stat-line"><span>Net profit</span><strong class="' + (profit >= 0 ? 'is-positive' : 'is-negative') + '">' + (salePrice ? (profit >= 0 ? '+' : '') + fmt(profit) : '—') + '</strong></div><div class="craft-stat-line"><span>Margin</span><strong class="' + marginClass + '">' + (marginPct !== null ? marginPct.toFixed(2) + '%' : '—') + '</strong></div><span class="craft-margin-track"><span class="craft-margin-fill ' + marginClass + '" style="width:' + (marginPct !== null ? Math.min(100, Math.abs(marginPct)).toFixed(2) : 0) + '%"></span></span></div></aside></div>';
     renderPotionList();
   }
@@ -10072,7 +10020,7 @@
         '<div class="craft-box-bubble material-bubble">' +
           '<div class="craft-box-head">' +
             '<span class="craft-box-label">' + esc(label) + "</span>" +
-            '<span class="craft-count-pill">x' + fmt(primaryMat.count) + "</span>" +
+            '<span class="craft-count-pill" title="' + esc(fmt(primaryMat.count) + " needed per craft") + '">x' + fmt(primaryMat.count) + "</span>" +
           "</div>" +
           '<div class="craft-box-body">' +
             '<span class="craft-box-icon">' + craftIngredientIconHtml(primaryMat) + "</span>" +
@@ -10088,7 +10036,7 @@
         '<div class="craft-box-bubble material-bubble">' +
           '<div class="craft-box-head">' +
             '<span class="craft-box-label">' + esc(label) + "</span>" +
-            '<span class="craft-count-pill">x' + fmt(secondaryMat.count) + "</span>" +
+            '<span class="craft-count-pill" title="' + esc(fmt(secondaryMat.count) + " needed per craft") + '">x' + fmt(secondaryMat.count) + "</span>" +
           "</div>" +
           '<div class="craft-box-body">' +
             '<span class="craft-box-icon">' + craftIngredientIconHtml(secondaryMat) + "</span>" +
