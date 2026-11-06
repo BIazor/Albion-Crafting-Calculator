@@ -5357,6 +5357,7 @@
   .app-content { background-color: transparent; }
   #panel-craft { background: transparent !important; }
   #panel-potions { background: transparent !important; }
+  #panel-refining { background: transparent !important; }
   #panel-planner { background: transparent !important; }
   #panel-database { background: transparent !important; }
   #panel-spec { background: transparent !important; border: 0 !important; }
@@ -6430,6 +6431,14 @@
   .planner-summary-metric.is-roi .planner-summary-copy strong { color: var(--gold-fg); }
   .planner-summary-metric.is-sell-value .planner-summary-icon { color: var(--gold); }
   .planner-summary-metric.is-sell-value .planner-summary-copy strong { color: var(--gold); }
+  /* Refining planner */
+  .planner-session-craft.refine-plan-card { grid-template-columns: minmax(140px, 1fr) 62px minmax(200px, 1.6fr) 110px 110px 24px; gap: 16px; }
+  .refine-plan-card .planner-craft-return { grid-column: 4; }
+  .refine-plan-card .planner-craft-profit { grid-column: 5; }
+  .refine-plan-card .planner-craft-delete { grid-column: 6; }
+  .refine-plan-kind { flex: 0 0 auto; padding: 4px 6px; border: 1px solid rgba(var(--gold-rgb), .22); border-radius: 999px; background: rgba(201, 118, 65, .08); color: var(--gold); font: 800 8px var(--font); letter-spacing: .06em; }
+  .refine-plan-card .planner-requirement-image .gear-icon { width: 22px; height: 22px; --gear-size: 22px; }
+  .refine-plan-materials .planner-material-image .gear-icon { width: 30px; height: 30px; --gear-size: 30px; }
   @media (max-width: 1180px) {
     .planner-session-craft { grid-template-columns: minmax(180px, 1.1fr) 76px minmax(220px, 1.5fr) minmax(150px, 1fr) 80px 104px 104px 24px; gap: 10px; padding: 12px; }
   }
@@ -6446,6 +6455,9 @@
     .planner-craft-requirements, .planner-craft-journals, .planner-craft-focus { grid-column: 1 / -1; }
     .planner-session-craft .planner-craft-return, .planner-session-craft .planner-craft-profit { grid-column: auto; grid-row: auto; }
     .planner-session-craft .planner-craft-delete { grid-column: auto; justify-self: end; }
+  }
+  @media (max-width: 900px) {
+    .planner-session-craft.refine-plan-card { grid-template-columns: minmax(0, 1fr) 76px; gap: 14px; }
   }
 
 
@@ -7188,6 +7200,39 @@
   .refine-rule { margin:14px 0 0;color:var(--text-muted);font-size:11.5px;line-height:1.6; }
   .refine-pricing { grid-template-columns:minmax(0,320px); }
   .refine-pricing .potion-market-pick { cursor:default; }
+  #refining-workspace .potion-topbar .seg-btn.is-active,
+  #refining-workspace .potion-topbar .seg-btn.is-active:hover {
+    border-color: transparent;
+    background: linear-gradient(100deg, #ef4038, #ff6669);
+    color: #ffffff;
+    font-weight: 800;
+    box-shadow: 0 4px 14px rgba(240, 70, 75, 0.32);
+  }
+  .refine-best { padding:18px 22px; }
+  .refine-best-head { display:flex;align-items:center;justify-content:space-between;gap:12px; }
+  .refine-best-heading { display:flex;align-items:center;gap:8px;min-width:0;margin:0;color:var(--text);font-size:12px;font-weight:800;letter-spacing:.08em;line-height:1.3;text-transform:uppercase; }
+  .refine-best-heading svg { flex:0 0 auto;color:var(--gold); }
+  .refine-best-heading strong { overflow:hidden;color:var(--gold);text-overflow:ellipsis;white-space:nowrap; }
+  .refine-best-badge { flex:0 0 auto;padding:4px 7px;border:1px solid var(--border-soft);border-radius:999px;background:var(--s-1);color:var(--gold);font-size:8px;font-weight:800;letter-spacing:.08em;white-space:nowrap; }
+  .refine-best-list { display:flex;flex-direction:column;gap:6px;max-height:360px;margin-top:14px;padding-right:4px;overflow-y:auto; }
+  .refine-best-row { display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:14px;width:100%;padding:9px 12px;border:1px solid var(--border-soft);border-radius:10px;background:var(--s-1);color:var(--text);cursor:pointer;font:inherit;text-align:left;transition:border-color .15s,background .15s; }
+  .refine-best-row:hover { border-color:var(--border);background:var(--s-2); }
+  .refine-best-row.is-current { border-color:var(--gold);background:rgba(var(--overlay-rgb),.05); }
+  .refine-best-item { display:flex;align-items:center;gap:10px;min-width:0; }
+  .refine-best-rank { flex:0 0 auto;min-width:26px;color:var(--gold);font-size:12px;font-weight:900;font-variant-numeric:tabular-nums; }
+  .refine-best-thumb { position:relative;display:inline-flex;flex:0 0 auto;width:38px;height:38px; }
+  .refine-best-thumb .gear-icon { --gear-size:38px;width:38px;height:38px;border-radius:9px; }
+  .refine-best-thumb .gear-render-img { display:block;width:100%;height:100%;object-fit:contain; }
+  .refine-best-name { display:flex;flex-direction:column;gap:3px;min-width:0; }
+  .refine-best-name strong { overflow:hidden;color:var(--text);font-size:11px;font-weight:800;letter-spacing:.02em;text-overflow:ellipsis;white-space:nowrap; }
+  .refine-best-name small { color:var(--faint);font-size:9px;font-weight:800;letter-spacing:.04em; }
+  .refine-best-numbers { display:flex;flex-direction:column;align-items:flex-end;gap:2px;white-space:nowrap; }
+  .refine-best-profit { font-size:12px;font-weight:900;font-variant-numeric:tabular-nums; }
+  .refine-best-profit.is-positive { color:var(--success,#5ec58b); }
+  .refine-best-profit.is-negative { color:var(--danger,#ef7272); }
+  .refine-best-margin { color:var(--text-muted);font-size:9px;font-weight:700; }
+  .refine-best-empty { margin:0;padding:14px 2px;color:var(--text-muted);font-size:11.5px;line-height:1.55; }
+  .refine-best-empty strong { color:var(--text); }
   .refine-margins { padding:18px 22px; }
   .refine-margin-note { margin:10px 0 0;color:var(--text-muted);font-size:11.5px;line-height:1.6; }
   .refine-margin-wrap { margin-top:14px;overflow-x:auto; }
@@ -7201,8 +7246,19 @@
   .refine-margin-cell.is-missing { color:var(--faint); }
   .refine-margin-cell.is-empty { border-color:transparent;color:transparent;background:transparent;cursor:default; }
   .refine-margin-cell.is-active { border-color:var(--gold);box-shadow:0 0 0 1px var(--gold) inset; }
-  @media(max-width:560px) { .refine-margins { padding:14px; } }
-  #sidebar-potions .craft-option { width:100%; }
+  @media(max-width:560px) {
+    .refine-margins { padding:14px; }
+    .refine-best { padding:14px; }
+    .refine-best-row { gap:8px;padding:8px 10px; }
+    .refine-best-list { max-height:320px; }
+    .refine-best-rank { min-width:20px;font-size:10px; }
+    .refine-best-thumb,.refine-best-thumb .gear-icon { width:32px;height:32px; }
+    .refine-best-thumb .gear-icon { --gear-size:32px; }
+  }
+  #sidebar-potions .craft-option, #sidebar-refining .craft-option { width:100%; }
+  #sidebar-refining .refine-category { padding:9px 10px; }
+  #sidebar-refining .refine-category .craft-option-name { font-size:12px; font-weight:800; letter-spacing:.045em; text-transform:uppercase; }
+  #sidebar-refining .refine-category .craft-option-meta { color:var(--faint); font-size:9px; font-weight:700; letter-spacing:.03em; }
   @media(max-width:900px) { .potion-columns { grid-template-columns:1fr; } .potion-controls { grid-template-columns:repeat(2,minmax(130px,1fr)); } }
   @media(max-width:560px) { .potion-workspace { padding:16px; } .potion-materials { grid-template-columns:1fr; } .potion-material { padding:14px; } }
 
@@ -7226,9 +7282,9 @@
     <div class="app-sidebar-content">
       <div class="app-nav" role="tablist" aria-label="Calculator, planner, potions and refining">
         <button class="app-nav-btn active" type="button" role="tab" aria-selected="true" data-view="calculator" data-page-entry="craft">Refining</button>
-        <button class="app-nav-btn" type="button" role="tab" aria-selected="false" data-view="planner" data-page-entry="craft,potions">Planner</button>
         <button class="app-nav-btn" type="button" role="tab" aria-selected="false" data-view="potions" data-page-entry="potions">Potions</button>
         <button class="app-nav-btn" type="button" role="tab" aria-selected="false" data-view="refining" data-page-entry="refining">Refining</button>
+        <button class="app-nav-btn" type="button" role="tab" aria-selected="false" data-view="planner" data-page-entry="craft,potions,refining">Planner</button>
       </div>
 
       <div class="app-sidebar-body">
@@ -7277,19 +7333,9 @@
           <span id="save-text">Saved locally</span>
         </div>
 
-        <button class="app-util-btn" type="button" data-tab="spec">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="16" height="20" x="4" y="2" rx="2"></rect><line x1="8" x2="16" y1="6" y2="6"></line><line x1="16" x2="16" y1="14" y2="18"></line><path d="M16 10h.01M12 10h.01M8 10h.01M12 14h.01M8 14h.01M12 18h.01M8 18h.01"></path></svg>
-          Spec Calculator
-        </button>
-
         <button class="app-util-btn" type="button" data-tab="database">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="8" ry="3"></ellipse><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5"></path><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"></path></svg>
           Database
-        </button>
-
-        <button class="app-util-btn" type="button" data-tab="destiny">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="5"></circle><circle cx="12" cy="12" r="1"></circle></svg>
-          Destiny Board
         </button>
 
         <button class="app-settings-btn" type="button" id="open-settings" aria-haspopup="dialog">
@@ -7457,11 +7503,9 @@
         <div class="db-page-title"><div><h1>DATABASE <button id="db-get-prices" class="db-get-prices" type="button"><span aria-hidden="true">◎</span> GET PRICES</button></h1><p>Update your market prices here. We recommend doing this once or twice a month to keep your calculations accurate.</p></div></div>
         <div class="db-view-tabs" role="tablist" aria-label="Database views">
           <button type="button" class="db-view-tab is-active" data-db-view="resources" role="tab" aria-selected="true">Resources</button>
-          <button type="button" class="db-view-tab" data-db-view="journals" role="tab" aria-selected="false">Journals</button>
         </div>
       </div>
       <div id="db-resources-panel" class="db-view-panel" role="tabpanel"><div id="db-resources"></div></div>
-      <div id="db-journals-panel" class="db-view-panel" role="tabpanel" hidden><div id="db-journal-prices"></div></div>
     </section>
 
     <section class="panel" id="panel-spec" role="tabpanel" aria-labelledby="tab-spec" hidden>
@@ -7911,7 +7955,6 @@
   let refineType = "wood";
   let refineTier = 4;
   let refineEnchant = 0;
-  let refineQty = 1;
   let refineSearch = "";
   const REFINE_PLAN_KEY = "albion-hideout-tracker.refining-plan.v1";
   let refiningPlan = [];
@@ -7922,12 +7965,39 @@
 
   const refineGroup = () => REFINE_GROUPS.find((group) => group.key === refineType) || REFINE_GROUPS[0];
 
+  function refineRecipeLevels(group, tier) {
+    if (tier < 4) return [0];
+    return group && group.key === "stone" ? [0, 1, 2, 3] : [0, 1, 2, 3, 4];
+  }
+
+  function refineStoneYield(level) {
+    return [1, 2, 4, 8][Number(level) || 0] || 1;
+  }
+
+  function refineRawCount(tier) {
+    if (tier <= 2) return 1;
+    if (tier <= 4) return 2;
+    if (tier === 5) return 3;
+    if (tier === 6) return 4;
+    return 5;
+  }
+
   function refineId(baseId, enchant) {
     return enchant ? baseId + "_LEVEL" + enchant + "@" + enchant : baseId;
   }
 
   function refineTierLabel(tier, enchant) {
     return "T" + tier + "." + (tier >= 4 ? (Number(enchant) || 0) : 0);
+  }
+
+  function refineRecipeLabel(group, tier, enchant) {
+    const level = Number(enchant) || 0;
+    if (group && group.key === "stone" && level > 0) return refineTierLabel(tier, level) + " ROCK";
+    return refineTierLabel(tier, level);
+  }
+
+  function refineOutputTierLabel(group, tier, enchant) {
+    return group && group.key === "stone" ? refineTierLabel(tier, 0) : refineTierLabel(tier, enchant);
   }
 
   // Refining can legitimately use a 0% custom rate, so do not fall back to the
@@ -7946,20 +8016,24 @@
     let tier = Number(refineTier);
     if (!Number.isInteger(tier) || tier < 2 || tier > 8) tier = 4;
     let enchant = Number(refineEnchant) || 0;
-    if (tier < 4) enchant = 0;
-    if (enchant < 0 || enchant > 4) enchant = 0;
+    if (!refineRecipeLevels(group, tier).includes(enchant)) enchant = 0;
     refineTier = tier;
     refineEnchant = enchant;
-    refineQty = Math.max(1, Math.floor(Number(refineQty) || 1));
-    return { group, tier, enchant, qty: refineQty };
+    return { group, tier, enchant, qty: 1 };
   }
 
-  // Albion refining: T2 takes one raw resource; T3 and above take two raw plus
-  // one refined material of the previous tier. Enchantment carries across the
-  // raw input and the lower-tier refined input; T4 enchanted uses T3.0 because
-  // T3 has no enchanted refined material.
+  // Albion refining: T2 takes one raw resource; T3-T4 take two, T5 three,
+  // T6 four, and T7-T8 five, plus one refined material of the previous tier.
+  // Enchantment carries across the raw input and the lower-tier refined input;
+  // T4 enchanted uses T3.0 because T3 has no enchanted refined material.
+  // Stone is special: .1-.3 raw rock keeps the normal raw count, but doubles,
+  // quadruples, or octuples the lower-tier block input and base block output.
   function refineRecipe(group, tier, enchant) {
-    const level = Number(enchant) || 0;
+    const requested = Number(enchant) || 0;
+    const isStone = group.key === "stone";
+    const level = refineRecipeLevels(group, tier).includes(requested) ? requested : 0;
+    const outputLevel = isStone ? 0 : level;
+    const outputCount = isStone ? refineStoneYield(level) : 1;
     const outputBaseId = "T" + tier + "_" + group.code;
     const rows = [];
     const rawBaseId = "T" + tier + "_" + group.rawCode;
@@ -7969,11 +8043,11 @@
       name: group.raw[tier - 2],
       tier,
       enchant: level,
-      count: tier === 2 ? 1 : 2
+      count: refineRawCount(tier)
     });
     if (tier > 2) {
       const previousTier = tier - 1;
-      const previousEnchant = tier === 4 ? 0 : level;
+      const previousEnchant = isStone ? 0 : (tier === 4 ? 0 : level);
       const previousBaseId = "T" + previousTier + "_" + group.code;
       rows.push({
         role: "refined",
@@ -7981,16 +8055,18 @@
         name: group.refined[previousTier - 2],
         tier: previousTier,
         enchant: previousEnchant,
-        count: 1
+        count: isStone ? outputCount : 1
       });
     }
     return {
       group,
       tier,
       enchant: level,
+      outputEnchant: outputLevel,
       outputBaseId,
-      outputId: refineId(outputBaseId, level),
+      outputId: refineId(outputBaseId, outputLevel),
       outputName: group.refined[tier - 2],
+      outputCount,
       rows
     };
   }
@@ -8000,9 +8076,15 @@
     const tax = taxRate === undefined
       ? (state.ui.craft && state.ui.craft.taxMode === "none" ? 0.105 : 0.065)
       : taxRate;
+    const outputCount = Math.max(1, Number(selection.outputCount) || 1);
+    const targetQty = Math.max(1, Number(qty) || 1);
+    const crafts = outputCount > 1 ? Math.ceil(targetQty / outputCount) : targetQty;
+    const outputQty = crafts * outputCount;
     const rows = selection.rows.map((row) => {
       const price = craftPriceInfo(row.id).value;
-      const need = row.count * qty;
+      // Keep the full recipe quantity for the item page; the return-adjusted
+      // quantity is used for planner material counts, investment, and profit.
+      const need = row.count * crafts;
       const effective = need * (1 - rate);
       return { ...row, price, need, effective, cost: price * effective };
     });
@@ -8011,44 +8093,40 @@
     const saved = gross - investment;
     const sell = craftPriceInfo(selection.outputId).value;
     const priced = rows.every((row) => row.price > 0) && sell > 0;
-    const revenue = sell * qty;
+    const revenue = sell * outputQty;
     const netRevenue = revenue * (1 - tax);
     const profit = priced ? netRevenue - investment : null;
     const margin = profit !== null && investment > 0 ? (profit / investment) * 100 : null;
-    return { rows, gross, investment, saved, sell, priced, revenue, netRevenue, profit, margin, rate, tax };
+    return { rows, gross, investment, saved, sell, priced, revenue, netRevenue, profit, margin, rate, tax, outputCount, crafts, outputQty, targetQty };
   }
 
   function renderRefineOptions() {
     const list = $("#refine-option-list");
     if (!list) return;
     const query = refineSearch.trim().toLowerCase();
-    const groupsHtml = REFINE_GROUPS.map((group) => {
-      const rows = [];
-      for (let tier = 2; tier <= 8; tier += 1) {
-        const name = group.refined[tier - 2];
-        const haystack = (group.type + " " + name + " T" + tier + " " + group.raw[tier - 2]).toLowerCase();
-        if (query && !haystack.includes(query)) continue;
-        const selected = group.key === refineType && tier === refineTier;
-        rows.push(
-          '<button type="button" class="craft-side-item refine-side-item' + (selected ? " selected" : "") + '" data-refine-type="' + esc(group.key) + '" data-refine-tier="' + tier + '" role="option" aria-selected="' + selected + '">' +
-            '<span>' + esc(name) + '</span>' +
-            '<span class="refine-tier-tag">T' + tier + '</span>' +
-          '</button>'
-        );
-      }
-      if (!rows.length) return "";
-      return '<div class="refine-group"><div class="refine-group-head"><span>' + esc(group.type) + '</span><small>T2–T8</small></div>' + rows.join("") + '</div>';
-    }).join("");
-    list.innerHTML = groupsHtml || '<div class="sidebar-empty"><strong>No material matches</strong><p>Try planks, bars, leather, cloth, or a tier.</p></div>';
+    const groups = REFINE_GROUPS.filter((group) => {
+      const tier4Name = group.refined[2] || group.refined[0] || "";
+      const haystack = (group.type + " " + tier4Name + " T4.0 " + (group.raw[2] || "")).toLowerCase();
+      return !query || haystack.includes(query);
+    });
+    list.innerHTML = groups.length ? groups.map((group) => {
+      const selected = group.key === refineType;
+      const tier4Name = group.refined[2] || group.refined[0] || "";
+      const tier4Id = "T4_" + group.code;
+      return '<button type="button" class="craft-option refine-category' + (selected ? " selected" : "") + '" data-refine-type="' + esc(group.key) + '" role="option" aria-selected="' + selected + '">' +
+        '<span class="gear-icon"><img class="gear-render-img" src="https://render.albiononline.com/v1/item/' + encodeURIComponent(tier4Id) + '.png" alt="" loading="lazy" onerror="this.remove()"></span>' +
+        '<span class="craft-option-copy"><span class="craft-option-name">' + esc(group.type) + '</span><span class="craft-option-meta">' + esc(tier4Name) + ' · T4.0</span></span>' +
+      '</button>';
+    }).join("") : '<div class="sidebar-empty"><strong>No resource matches</strong><p>Try wood, ore, hide, fiber, or stone.</p></div>';
   }
 
   function refineMarginGridHtml(group, currentTier, currentEnchant, rate, tax) {
-    const levels = [0, 1, 2, 3, 4];
+    const levels = refineRecipeLevels(group, 8);
     let html = '<span class="refine-margin-head"></span>' + levels.map((level) => '<span class="refine-margin-head">.' + level + '</span>').join("");
     for (let tier = 2; tier <= 8; tier += 1) {
       html += '<span class="refine-margin-tier">T' + tier + '</span>';
       for (const level of levels) {
-        if (tier < 4 && level > 0) {
+        if (!refineRecipeLevels(group, tier).includes(level)) {
           html += '<span class="refine-margin-cell is-empty" aria-hidden="true">·</span>';
           continue;
         }
@@ -8064,7 +8142,55 @@
         }
       }
     }
-    return '<div class="refine-margin-wrap"><div class="refine-margin-grid">' + html + '</div></div>';
+    return '<div class="refine-margin-wrap"><div class="refine-margin-grid" style="grid-template-columns:repeat(' + (levels.length + 1) + ',minmax(54px,1fr))">' + html + '</div></div>';
+  }
+
+  function refineBestRows(group, rate, tax) {
+    const rows = [];
+    for (let tier = 2; tier <= 8; tier += 1) {
+      const levels = refineRecipeLevels(group, tier);
+      for (const enchant of levels) {
+        const recipe = refineRecipe(group, tier, enchant);
+        const econ = refineEconomics(recipe, 1, rate, tax);
+        if (!econ.priced || econ.profit === null) continue;
+        rows.push({ recipe, econ, tier, enchant });
+      }
+    }
+    return rows.sort((a, b) => b.econ.profit - a.econ.profit || (b.econ.margin ?? 0) - (a.econ.margin ?? 0));
+  }
+
+  function refineBestCardHtml(group, currentTier, currentEnchant, rate, tax) {
+    const rows = refineBestRows(group, rate, tax);
+    const rowsHtml = rows.length ? rows.map((row, index) => {
+      const econ = row.econ;
+      const tierLabel = refineRecipeLabel(row.recipe.group, row.tier, row.enchant);
+      const outputLabel = refineOutputTierLabel(row.recipe.group, row.tier, row.enchant);
+      const current = row.tier === currentTier && row.enchant === currentEnchant;
+      const profitText = (econ.profit > 0 ? "+" : "") + fmt(econ.profit);
+      const marginText = econ.margin === null ? "—" : (econ.margin >= 0 ? "+" : "") + econ.margin.toFixed(2) + "% margin";
+      const rowClass = econ.profit >= 0 ? "is-positive" : "is-negative";
+      const detail = tierLabel + " " + row.recipe.outputName + " " + outputLabel + (econ.outputCount > 1 ? " · " + econ.outputCount + "× blocks" : "") + " — investment " + fmt(econ.investment) + ", net profit " + fmt(econ.profit) + (econ.margin === null ? "" : ", margin " + econ.margin.toFixed(2) + "%") + " · city sell";
+      return (
+        '<button type="button" class="refine-best-row' + (current ? " is-current" : "") + '" data-refine-best-tier="' + row.tier + '" data-refine-best-enchant="' + row.enchant + '" aria-pressed="' + current + '" title="' + esc(detail) + '">' +
+          '<span class="refine-best-item">' +
+            '<span class="refine-best-rank">#' + (index + 1) + "</span>" +
+            '<span class="refine-best-thumb">' + refineIconHtml(row.recipe.outputId) + "</span>" +
+            '<span class="refine-best-name"><strong>' + esc(row.recipe.outputName.toUpperCase()) + '</strong><small>' + esc(tierLabel + (econ.outputCount > 1 ? " · " + econ.outputCount + "×" : "")) + "</small></span>" +
+          "</span>" +
+          '<span class="refine-best-numbers">' +
+            '<span class="refine-best-profit ' + rowClass + '">' + profitText + "</span>" +
+            '<span class="refine-best-margin">' + esc(marginText) + "</span>" +
+          "</span>" +
+        "</button>"
+      );
+    }).join("") : '<p class="refine-best-empty"><strong>No complete saved prices yet.</strong> Enter every ingredient and sell price for a tier to rank it here.</p>';
+    return '<section class="craft-card refine-best" aria-labelledby="refine-best-title">' +
+      '<div class="refine-best-head">' +
+        '<h2 class="refine-best-heading" id="refine-best-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 4h8v5a4 4 0 0 1-8 0V4Z"></path><path d="M8 6H5v2a3 3 0 0 0 3 3"></path><path d="M16 6h3v2a3 3 0 0 1-3 3"></path><path d="M12 13v4"></path><path d="M9 21h6"></path><path d="M10 17h4"></path></svg><span>BEST TO CRAFT</span><strong>· ' + esc(group.type) + '</strong></h2>' +
+        '<span class="refine-best-badge">BY PROFIT</span>' +
+      "</div>" +
+      '<div class="refine-best-list" aria-live="polite">' + rowsHtml + "</div>" +
+    "</section>";
   }
 
   function refineIconHtml(itemId) {
@@ -8115,6 +8241,11 @@
     const selection = refineRecipe(stateSelection.group, stateSelection.tier, stateSelection.enchant);
     const econ = refineEconomics(selection, stateSelection.qty);
     const tierLabel = refineTierLabel(selection.tier, selection.enchant);
+    const outputLabel = refineOutputTierLabel(selection.group, selection.tier, selection.enchant);
+    const recipeLabel = refineRecipeLabel(selection.group, selection.tier, selection.enchant);
+    const isStoneRecipe = selection.group.key === "stone" && selection.enchant > 0;
+    const outputCount = Math.max(1, Number(selection.outputCount) || 1);
+    const recipeLevels = refineRecipeLevels(selection.group, selection.tier);
     const taxMode = state.ui.craft && state.ui.craft.taxMode === "none" ? "none" : "premium";
     const profitClass = econ.profit === null ? "" : (econ.profit >= 0 ? "is-positive" : "is-negative");
     const profitText = econ.profit === null ? "—" : (econ.profit >= 0 ? "+" : "") + fmt(econ.profit);
@@ -8123,31 +8254,32 @@
     const marginClass = econ.margin === null ? "is-muted" : (econ.margin < 0 ? "is-negative" : "");
     const materialHtml = econ.rows.map((row) => {
       const label = row.name.toUpperCase() + " " + refineTierLabel(row.tier, row.enchant);
+      const perCraft = row.count;
       return '<article class="potion-material craft-box-bubble material-bubble">' +
-        '<div class="craft-box-head"><span class="craft-box-label" title="' + esc(label + " · " + fmt(row.effective) + " net of returns") + '">' + esc(row.name.toUpperCase()) + ' <small class="refine-sub">' + esc(refineTierLabel(row.tier, row.enchant)) + '</small></span><span class="craft-count-pill">x' + fmt(row.need) + '</span></div>' +
+        '<div class="craft-box-head"><span class="craft-box-label" title="' + esc(label + " · " + fmt(perCraft) + " needed per craft") + '">' + esc(row.name.toUpperCase()) + ' <small class="refine-sub">' + esc(refineTierLabel(row.tier, row.enchant)) + '</small></span><span class="craft-count-pill">x' + fmt(perCraft) + '</span></div>' +
         '<div class="craft-box-body"><span class="craft-box-icon">' + refineIconHtml(row.id) + '</span>' + refinePriceField(row.id, row.price, row.name + " price", true) + '</div>' +
       '</article>';
     }).join("");
-    const rule = selection.tier === 2
-      ? "T2 needs 1 raw material and returns 1 refined material; there is no lower-tier refined input."
-      : "2 raw + 1 " + refineTierLabel(selection.tier - 1, selection.tier === 4 ? 0 : selection.enchant) + " refined → 1 " + tierLabel + ". Enchanted refining uses a matching enchant on the raw and lower-tier refined material; T4 enchanted refines from T3.0.";
-    const heroImg = '<img src="https://render.albiononline.com/v1/item/' + encodeURIComponent(selection.outputId) + '.png" alt="' + esc(selection.outputName + " " + tierLabel) + '" loading="lazy" onerror="this.remove()">';
+    const heroImg = '<img src="https://render.albiononline.com/v1/item/' + encodeURIComponent(selection.outputId) + '.png" alt="' + esc(selection.outputName + " " + outputLabel + (isStoneRecipe ? " (" + recipeLabel + ")" : "")) + '" loading="lazy" onerror="this.remove()">';
     const tierButtons = [2, 3, 4, 5, 6, 7, 8].map((tier) => '<button class="seg-btn' + (tier === selection.tier ? " is-active" : "") + '" type="button" data-refine-tier="' + tier + '" aria-pressed="' + (tier === selection.tier) + '">' + tier + '</button>').join("");
-    const enchantButtons = [0, 1, 2, 3, 4].map((level) => '<button class="seg-btn' + (level === selection.enchant ? " is-active" : "") + '" type="button" data-refine-enchant="' + level + '" aria-pressed="' + (level === selection.enchant) + '"' + (selection.tier < 4 && level > 0 ? " disabled" : "") + '>' + (level ? "." + level : ".0") + '</button>').join("");
+    const enchantButtons = recipeLevels.map((level) => {
+      const title = selection.group.key === "stone"
+        ? (level ? "T" + selection.tier + "." + level + " rock recipe · " + refineStoneYield(level) + "× blocks" : "T" + selection.tier + ".0 base recipe")
+        : "T" + selection.tier + "." + level + " enchant";
+      return '<button class="seg-btn' + (level === selection.enchant ? " is-active" : "") + '" type="button" data-refine-enchant="' + level + '" aria-pressed="' + (level === selection.enchant) + '" title="' + esc(title) + '">' + (level ? "." + level : ".0") + '</button>';
+    }).join("");
     root.innerHTML =
-      '<div class="potion-head refine-head"><div><span class="craft-label">REFINING WORKSTATION</span><h1>' + esc(selection.outputName) + ' <small>' + tierLabel + '</small></h1><p>' + esc(selection.group.type.toUpperCase()) + (selection.tier === 2 ? " · 1 RAW → 1 REFINED" : " · 2 RAW + 1 LOWER-TIER REFINED → 1 REFINED") + '</p></div></div>' +
+      '<div class="potion-head refine-head"><div><span class="craft-label">REFINING WORKSTATION</span><h1>' + esc(selection.outputName) + ' <small>' + outputLabel + '</small></h1></div></div>' +
       '<div class="potion-topbar"><div class="craft-topgroup"><span class="craft-label">TIER</span><div class="segmented">' + tierButtons + '</div></div>' +
-      '<div class="craft-topgroup"><span class="craft-label">ENCHANT</span><div class="segmented">' + enchantButtons + '</div></div>' +
-      '<label class="potion-quantity-control"><span>OUTPUT</span><input id="refine-quantity" type="number" min="1" step="1" inputmode="numeric" value="' + stateSelection.qty + '"></label></div>' +
+      '<div class="craft-topgroup"><span class="craft-label">' + (selection.group.key === "stone" ? "RECIPE" : "ENCHANT") + '</span><div class="segmented">' + enchantButtons + '</div></div></div>' +
       '<div class="potion-dashboard"><div class="potion-main">' +
-        '<section class="craft-card potion-material-card refine-card"><header><h2>⚡ REFINING · ' + esc(selection.outputName.toUpperCase()) + ' ' + tierLabel + '</h2><button class="potion-fetch" type="button" id="refine-fetch-prices">＋ GET PRICES</button></header><div class="potion-materials refine-materials">' + materialHtml + '</div><p class="refine-rule">' + rule + '</p>' +
+        '<section class="craft-card potion-material-card refine-card"><header><h2>⚡ REFINING · ' + esc(selection.outputName.toUpperCase()) + ' ' + outputLabel + (isStoneRecipe ? ' · ' + esc(recipeLabel) + ' · ' + outputCount + '× OUTPUT' : '') + '</h2><button class="potion-fetch" type="button" id="refine-fetch-prices">＋ GET PRICES</button></header><div class="potion-materials refine-materials">' + materialHtml + '</div>' +
         '<div class="potion-pricing refine-pricing"><label class="potion-price-card is-selected"><span class="potion-market-pick">SELL PRICE · CITY</span>' + refinePriceField(selection.outputId, econ.sell, selection.outputName + " sell price", false) + '</label></div>' +
         '<div class="potion-tax"><button type="button" class="' + (taxMode === "premium" ? "is-active" : "") + '" data-refine-tax="premium">PREMIUM TAX · 6.5%</button><button type="button" class="' + (taxMode === "none" ? "is-active" : "") + '" data-refine-tax="none">NO PREMIUM TAX · 10.5%</button></div></section>' +
         refineReturnCardHtml(econ.rate) +
-        '<section class="craft-card potion-best refine-margins"><span class="craft-label">MARGIN BY TIER · ' + esc(selection.group.type.toUpperCase()) + '</span><p class="refine-margin-note">Every tier and enchant of ' + esc(selection.group.type.toLowerCase()) + ' refining, priced from your saved price book. A dash means a price is missing. Click any cell to open it.</p>' + refineMarginGridHtml(selection.group, selection.tier, selection.enchant, econ.rate, econ.tax) + '</section>' +
-        '<section class="craft-card potion-best refining-planner"><header><h2>REFINING PLANNER</h2><button class="potion-fetch" type="button" data-refine-plan-add>Add this batch</button></header><p class="refine-margin-note">Queue refining batches for this session. Your plan is saved in this browser.</p><div class="planner-page-list">' + (refiningPlan.length ? refiningPlan.map((entry, index) => '<article class="planner-craft-row"><strong>' + esc(entry.type) + ' · ' + esc(refineTierLabel(entry.tier, entry.enchant)) + ' ' + esc(entry.name) + '</strong><span>×' + fmt(entry.qty) + '</span><button type="button" class="btn ghost small" data-refine-plan-remove="' + index + '" aria-label="Remove ' + esc(entry.name) + ' from refining planner">Remove</button></article>').join("") : '<p class="planner-empty-note">No batches planned yet.</p>') + '</div></section>' +
+        refineBestCardHtml(stateSelection.group, stateSelection.tier, stateSelection.enchant, econ.rate, taxMode === "none" ? 0.105 : 0.065) +
       '</div>' +
-      '<aside class="craft-card potion-rail refine-rail"><div class="potion-rail-title"><div><strong>' + esc(selection.outputName) + '</strong><small>REFINING · ' + tierLabel + ' · CITY SELL</small></div></div><div class="potion-hero"><span class="tier-badge craft-item-tier">' + tierLabel + '</span>' + heroImg + '</div><div class="craft-item-stats"><div class="craft-stat-line investment"><span>Investment</span><strong>' + fmt(econ.investment) + '</strong></div><div class="craft-stat-line"><span>Saved by return</span><strong>' + fmt(econ.saved) + '</strong></div><div class="craft-stat-line"><span>Revenue after tax</span><strong>' + (econ.sell > 0 ? fmt(econ.netRevenue) : "—") + '</strong></div><div class="craft-stat-line"><span>Net profit</span><strong class="' + profitClass + '">' + profitText + '</strong></div><div class="craft-stat-line"><span>Margin</span><strong class="' + marginClass + '">' + marginText + '</strong></div><span class="craft-margin-track"><span class="craft-margin-fill ' + marginClass + '" style="width:' + marginWidth.toFixed(2) + '%"></span></span></div></aside></div>';
+      '<aside class="craft-card potion-rail refine-rail"><div class="potion-rail-title"><div><strong>' + esc(selection.outputName) + '</strong><small>REFINING · ' + outputLabel + (isStoneRecipe ? ' · ' + esc(recipeLabel) : '') + ' · CITY SELL</small></div></div><div class="potion-hero"><span class="tier-badge craft-item-tier">' + outputLabel + '</span>' + heroImg + '</div><div class="craft-item-stats"><div class="craft-stat-line investment"><span>Investment</span><strong>' + fmt(econ.investment) + '</strong></div><div class="craft-stat-line"><span>Net profit</span><strong class="' + profitClass + '">' + profitText + '</strong></div><div class="craft-stat-line"><span>Margin</span><strong class="' + marginClass + '">' + marginText + '</strong></div><span class="craft-margin-track"><span class="craft-margin-fill ' + marginClass + '" style="width:' + marginWidth.toFixed(2) + '%"></span></span></div></aside></div>';
     renderRefineOptions();
   }
 
@@ -8165,8 +8297,7 @@
         const button = event.target.closest("[data-refine-type]");
         if (!button) return;
         refineType = button.dataset.refineType;
-        refineTier = Number(button.dataset.refineTier) || 4;
-        if (refineTier < 4) refineEnchant = 0;
+        if (!refineRecipeLevels(refineGroup(), refineTier).includes(refineEnchant)) refineEnchant = 0;
         renderRefining();
       });
     }
@@ -8186,11 +8317,6 @@
         state.craftReturn = state.craftReturn || {};
         state.craftReturn.rate = roundReturnRate(event.target.value);
         state.craftReturn.mode = "custom";
-        renderRefining();
-        return;
-      }
-      if (event.target.id === "refine-quantity") {
-        refineQty = Math.max(1, Math.floor(Number(event.target.value) || 1));
         renderRefining();
         return;
       }
@@ -8226,6 +8352,14 @@
         renderRefining();
         return;
       }
+      const best = event.target.closest("[data-refine-best-tier]");
+      if (best) {
+        refineTier = Number(best.dataset.refineBestTier) || 4;
+        refineEnchant = Number(best.dataset.refineBestEnchant) || 0;
+        if (!refineRecipeLevels(refineGroup(), refineTier).includes(refineEnchant)) refineEnchant = 0;
+        renderRefining();
+        return;
+      }
       const cell = event.target.closest("[data-refine-cell-tier]");
       if (cell) {
         refineTier = Number(cell.dataset.refineCellTier) || 4;
@@ -8236,7 +8370,7 @@
       const tier = event.target.closest("[data-refine-tier]");
       if (tier) {
         refineTier = Number(tier.dataset.refineTier) || 4;
-        if (refineTier < 4) refineEnchant = 0;
+        if (!refineRecipeLevels(refineGroup(), refineTier).includes(refineEnchant)) refineEnchant = 0;
         renderRefining();
         return;
       }
@@ -8447,7 +8581,8 @@
   ];
 
   // Refining families. Each family refines one raw resource into one refined
-  // material, from T2 through T8. Enchanted variants exist from T4 onward.
+  // material, from T2 through T8. Wood, ore, hide and fiber have enchanted
+  // variants from T4 onward; stone blocks do not.
   const REFINE_GROUPS = [
     {
       key: "wood",
@@ -8480,6 +8615,15 @@
       rawCode: "FIBER",
       refined: ["Simple Cloth", "Neat Cloth", "Fine Cloth", "Ornate Cloth", "Lavish Cloth", "Opulent Cloth", "Baroque Cloth"],
       raw: ["Cotton", "Flax", "Hemp", "Skyflower", "Redleaf Cotton", "Sunflax", "Ghost Hemp"]
+    },
+    {
+      key: "stone",
+      type: "Stone",
+      code: "STONEBLOCK",
+      rawCode: "ROCK",
+      enchants: false,
+      refined: ["Limestone Block", "Sandstone Block", "Travertine Block", "Granite Block", "Slate Block", "Basalt Block", "Marble Block"],
+      raw: ["Limestone", "Sandstone", "Travertine", "Granite", "Slate", "Basalt", "Marble"]
     }
   ];
 
@@ -8515,6 +8659,58 @@
   const BASE_BY_ID = new Map(BASE_MATERIALS.map(m => [m.id, m]));
   const BASE_BY_ITEM_ID = new Map(BASE_MATERIALS.map(m => [m.itemId, m]));
   const ITEM_CODE_BY_TYPE = { Wood: "PLANKS", Ore: "METALBAR", Hide: "LEATHER", Fiber: "CLOTH" };
+
+  // Database price coverage for refining: every raw input and refined output.
+  // Stone is special: raw rock has .1-.3 enchantments, but blocks never do.
+  const REFINE_DB_RAW_LABELS = { Wood: "WOOD", Ore: "ORE", Hide: "HIDE", Fiber: "FIBER", Stone: "ROCK" };
+  const REFINE_DB_REFINED_LABELS = { Wood: "PLANKS", Ore: "STEEL", Hide: "LEATHER", Fiber: "CLOTH", Stone: "BLOCK" };
+  const DB_REFINE_MATERIALS = [];
+  for (const group of REFINE_GROUPS) {
+    group.refined.forEach((name, index) => {
+      const tierNumber = index + 2;
+      const tier = "T" + tierNumber;
+      const refinedLevels = group.enchants === false || tierNumber < 4 ? [0] : enchantLevelsFor(tierNumber);
+      // Enchanted stone is special: raw rock exists at .1-.3, but there are no
+      // enchanted stone blocks; enchanted rock yields more base-tier blocks.
+      const rawLevels = group.key === "stone" && tierNumber >= 4 ? [0, 1, 2, 3] : refinedLevels;
+      for (const level of rawLevels) {
+        const suffix = level ? "_LEVEL" + level : "";
+        const atSuffix = level ? "@" + level : "";
+        const keySuffix = tier.toLowerCase() + (level ? "-e" + level : "");
+        const rawId = tier + "_" + group.rawCode + suffix;
+        DB_REFINE_MATERIALS.push({
+          id: "refine-raw-" + group.key + "-" + keySuffix,
+          name: group.raw[index],
+          type: group.type,
+          stage: "Raw",
+          tier,
+          enchant: "." + level,
+          itemId: rawId,
+          priceKey: rawId + atSuffix,
+          dbLabel: REFINE_DB_RAW_LABELS[group.type] || group.type.toUpperCase(),
+          base: true
+        });
+      }
+      for (const level of refinedLevels) {
+        const suffix = level ? "_LEVEL" + level : "";
+        const atSuffix = level ? "@" + level : "";
+        const keySuffix = tier.toLowerCase() + (level ? "-e" + level : "");
+        const refinedId = tier + "_" + group.code + suffix;
+        DB_REFINE_MATERIALS.push({
+          id: "refine-refined-" + group.key + "-" + keySuffix,
+          name,
+          type: group.type,
+          stage: "Refined",
+          tier,
+          enchant: "." + level,
+          itemId: refinedId,
+          priceKey: refinedId + atSuffix,
+          dbLabel: REFINE_DB_REFINED_LABELS[group.type] || group.type.toUpperCase(),
+          base: true
+        });
+      }
+    });
+  }
 
   const $ = (sel, root = document) => root.querySelector(sel);
   const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
@@ -8656,6 +8852,31 @@
     const ids = new Set();
     entries.slice(0, 500).forEach((entry) => {
       if (!entry || typeof entry !== "object") return;
+      const isRefining = entry.kind === "refining" || typeof entry.refineType === "string";
+      if (isRefining) {
+        const group = REFINE_GROUPS.find((candidate) => candidate.key === entry.refineType);
+        if (!group) return;
+        const tier = Number(entry.tier);
+        const enchant = Number(entry.enchant);
+        const qty = Math.floor(Number(entry.qty));
+        const rate = Number(entry.returnRate);
+        let id = (typeof entry.id === "string" && entry.id) ? entry.id : uid("plan");
+        if (ids.has(id)) id = uid("plan");
+        ids.add(id);
+        const safeTier = Number.isInteger(tier) && tier >= 2 && tier <= 8 ? tier : 4;
+        const safeEnchant = refineRecipeLevels(group, safeTier).includes(enchant) ? enchant : 0;
+        list.push({
+          id,
+          kind: "refining",
+          refineType: group.key,
+          tier: safeTier,
+          enchant: safeEnchant,
+          qty: Number.isFinite(qty) && qty > 0 ? Math.min(qty, 1000000) : 1,
+          returnRate: Number.isFinite(rate) && rate >= 0 && rate <= 100 ? Math.round(rate * 100) / 100 : 0,
+          done: Boolean(entry.done)
+        });
+        return;
+      }
       const itemKey = typeof entry.itemKey === "string" ? entry.itemKey.slice(0, 200) : "";
       if (!itemKey || !PLANNER_ITEM_BY_KEY.has(itemKey)) return;
       const tier = Number(entry.tier);
@@ -10275,6 +10496,7 @@
   /* Planner                                                                 */
   /* ---------------------------------------------------------------------- */
   let plannerDialogOpen = false;
+  let plannerDialogMode = "craft";
   let plannerItemKey = "";
   let plannerPreviewKey = "";
 
@@ -10354,6 +10576,14 @@
     let totalProfit = 0;
     let profitReady = true;
     for (const entry of session.entries || []) {
+      if (entry.kind === "refining") {
+        const metrics = refinePlannerEntryMetrics(entry);
+        if (!metrics) continue;
+        if (metrics.econ.profit === null) profitReady = false;
+        else totalProfit += metrics.econ.profit;
+        items.push({ itemKey: "refining:" + metrics.group.key, name: metrics.recipe.outputName, tier: metrics.tier, enchant: metrics.enchant, qty: metrics.econ.outputQty, outputId: metrics.recipe.outputId, outputLabel: refineOutputTierLabel(metrics.group, metrics.tier, metrics.enchant), recipeLabel: refineRecipeLabel(metrics.group, metrics.tier, metrics.enchant) });
+        continue;
+      }
       const item = PLANNER_ITEM_BY_KEY.get(entry.itemKey);
       const recipe = item && item[3][entry.tier];
       if (!item || !recipe) continue;
@@ -10394,7 +10624,7 @@
     const session = state.plannerSessions.find((entry) => entry.id === id);
     if (!session || session.completedAt) return;
     if (!(session.entries || []).length) {
-      showToast("Add at least one craft before completing this session.");
+      showToast(PAGE_MODE === "refining" ? "Add at least one refining batch before completing this session." : "Add at least one craft before completing this session.");
       return;
     }
     const snapshot = plannerSessionCompletionSnapshot(session);
@@ -10436,8 +10666,13 @@
     }
     const rows = Array.from(items.values()).sort((a, b) => a.name.localeCompare(b.name) || a.tier - b.tier || a.enchant - b.enchant).map((item) => {
       const craft = PLANNER_ITEM_BY_KEY.get(item.itemKey);
-      const icon = craft ? craftIconHtml(craft, item.tier, item.enchant) : '<span class="planner-lifetime-icon-placeholder" aria-hidden="true"></span>';
-      const label = item.name + " " + item.tier + "." + item.enchant;
+      const refineGroup = /^refining:/.test(item.itemKey || "") ? REFINE_GROUPS.find((group) => "refining:" + group.key === item.itemKey) : null;
+      const icon = craft
+        ? craftIconHtml(craft, item.tier, item.enchant)
+        : (refineGroup
+          ? refineIconHtml(item.outputId || refineId("T" + item.tier + "_" + refineGroup.code, item.enchant))
+          : '<span class="planner-lifetime-icon-placeholder" aria-hidden="true"></span>');
+      const label = item.name + " " + (item.outputLabel || (item.tier + "." + item.enchant)) + (item.recipeLabel && item.recipeLabel !== item.outputLabel ? " · " + item.recipeLabel : "");
       return '<div class="planner-lifetime-item">' + icon + '<strong title="' + esc(label) + '">' + esc(label) + '</strong><b>' + fmt(item.qty) + '×</b></div>';
     }).join("");
     const profitText = allProfitsReady ? ((totalProfit > 0 ? "+" : "") + fmtMoney(Math.round(totalProfit))) : "—";
@@ -10536,6 +10771,96 @@
     return baseFocusCost * Math.pow(0.5, efficiency / 10000);
   }
 
+  function refinePlannerEntryMetrics(entry) {
+    const group = REFINE_GROUPS.find((candidate) => candidate.key === entry.refineType);
+    if (!group) return null;
+    const tier = Math.max(2, Math.min(8, Number(entry.tier) || 4));
+    const requestedEnchant = Number(entry.enchant) || 0;
+    const enchant = refineRecipeLevels(group, tier).includes(requestedEnchant) ? requestedEnchant : 0;
+    const qty = Math.max(1, Math.min(1000000, Number(entry.qty) || 1));
+    const rate = Math.max(0, Math.min(100, Number(entry.returnRate) || 0)) / 100;
+    const recipe = refineRecipe(group, tier, enchant);
+    const econ = refineEconomics(recipe, qty, rate);
+    return { group, tier, enchant, qty, recipe, econ };
+  }
+
+  function refinePlannerMaterialNeed(row) {
+    return Math.max(0, Math.ceil(Number(row.effective) || 0));
+  }
+
+  function renderRefiningPlannerPage(session) {
+    let totalInvestment = 0;
+    let totalProfit = 0;
+    let totalNetRevenue = 0;
+    let hasEntries = false;
+    let allMaterialsPriced = true;
+    let allProfitsReady = true;
+    const materialTotals = new Map();
+    const cards = (session.entries || []).map((entry) => {
+      if (entry.kind !== "refining") return "";
+      const metrics = refinePlannerEntryMetrics(entry);
+      if (!metrics) return "";
+      hasEntries = true;
+      const { group, recipe, econ, qty, tier, enchant } = metrics;
+      const tierLabel = refineRecipeLabel(group, tier, enchant);
+      const materialsPriced = econ.rows.every((row) => row.price > 0);
+      const profitReady = materialsPriced && econ.sell > 0;
+      if (!materialsPriced) allMaterialsPriced = false;
+      if (profitReady) totalProfit += econ.profit;
+      else allProfitsReady = false;
+      totalInvestment += econ.investment;
+      totalNetRevenue += econ.netRevenue;
+      for (const row of econ.rows) {
+        const current = materialTotals.get(row.id) || { id: row.id, name: row.name, tier: row.tier, enchant: row.enchant, need: 0 };
+        current.need += refinePlannerMaterialNeed(row);
+        materialTotals.set(row.id, current);
+      }
+      const requirementChips = econ.rows.map((row) => {
+        const needed = refinePlannerMaterialNeed(row);
+        const detail = fmt(needed) + " needed after returns";
+        return '<span class="planner-requirement-chip refine-plan-requirement" title="' + esc(row.name + " " + refineTierLabel(row.tier, row.enchant) + " · " + detail) + '"><span class="planner-requirement-image">' + refineIconHtml(row.id) + '</span><b>' + fmt(needed) + '</b><span>' + esc(row.name) + ' ' + refineTierLabel(row.tier, row.enchant) + '</span></span>';
+      }).join("");
+      const profitText = profitReady ? ((econ.profit > 0 ? "+" : "") + fmtMoney(Math.round(econ.profit))) : "—";
+      const profitClass = !profitReady ? "is-unpriced" : (econ.profit >= 0 ? "is-positive" : "is-negative");
+      return '<article class="planner-session-craft refine-plan-card' + (entry.done ? ' is-done' : '') + '">' +
+        '<div class="planner-craft-identity"><span class="planner-craft-image">' + refineIconHtml(recipe.outputId) + '</span><strong>' + esc(recipe.outputName) + ' ' + tierLabel + '</strong><span class="refine-plan-kind">REFINING</span></div>' +
+        '<label class="planner-craft-stat planner-craft-quantity"><span>QTY</span><input type="number" min="1" max="1000000" step="1" value="' + qty + '" data-planner-entry-qty="' + esc(entry.id) + '" aria-label="Quantity for ' + esc(recipe.outputName) + '"></label>' +
+        '<div class="planner-craft-stat planner-craft-requirements"><span>MATERIALS NEEDED</span><div class="planner-requirements-list">' + requirementChips + '</div></div>' +
+        '<label class="planner-craft-stat planner-craft-return"><span>RETURN RATE</span><span class="planner-return-input-wrap"><input class="planner-return-input" type="number" min="0" max="100" step="0.1" value="' + (Number(entry.returnRate) || 0).toFixed(1) + '" data-planner-entry-return="' + esc(entry.id) + '" aria-label="Return rate for ' + esc(recipe.outputName) + '"><i>%</i></span></label>' +
+        '<div class="planner-craft-stat planner-craft-profit"><span>NET PROFIT</span><strong class="' + profitClass + '">' + profitText + '</strong></div>' +
+        '<button type="button" class="planner-craft-delete" data-planner-remove="' + esc(entry.id) + '" aria-label="Remove ' + esc(recipe.outputName) + ' from planner" title="Remove batch">' + ICON_TRASH + '</button>' +
+      '</article>';
+    }).join("");
+    const materialCards = Array.from(materialTotals.values())
+      .sort((a, b) => a.tier - b.tier || a.enchant - b.enchant || a.name.localeCompare(b.name))
+      .map((row) => '<article class="planner-material-bubble"><span class="planner-material-image">' + refineIconHtml(row.id) + '</span><span class="planner-material-name"><strong>' + esc(row.name) + '</strong><small>' + refineTierLabel(row.tier, row.enchant) + '</small></span><b>' + fmt(row.need) + '</b></article>')
+      .join("");
+    const investmentSummary = hasEntries && allMaterialsPriced ? fmtMoney(Math.round(totalInvestment)) : "—";
+    const profitSummary = hasEntries && allProfitsReady ? ((totalProfit > 0 ? "+" : "") + fmtMoney(Math.round(totalProfit))) : "—";
+    const roiSummary = hasEntries && allMaterialsPriced && allProfitsReady && totalInvestment > 0
+      ? ((totalProfit / totalInvestment) * 100).toFixed(2) + "%"
+      : "—";
+    const sellValueSummary = hasEntries && allMaterialsPriced && allProfitsReady ? fmtMoney(Math.round(totalNetRevenue)) : "—";
+
+    return '<h2 class="planner-active-session-title">' + esc(session.name) + '</h2>' +
+      '<section class="planner-session-card" aria-label="Refining batches in ' + esc(session.name) + '">' +
+        '<header class="planner-session-card-head"><div><span>REFINING BATCHES</span></div></header>' +
+        '<div class="planner-session-crafts">' + (cards || '<div class="planner-session-empty">This session has no refining batches yet. Pick a material in Refining and use Add to planner.</div>') + '</div>' +
+      '</section>' +
+      '<section class="planner-materials-session-card refine-plan-materials" aria-label="Materials needed for ' + esc(session.name) + '">' +
+        '<header class="planner-materials-session-head"><span>MATERIALS NEEDED</span></header>' +
+        '<div class="planner-materials-session-grid">' + (materialCards || '<div class="planner-session-empty">No materials needed for this session.</div>') + '</div>' +
+      '</section>' +
+      '<div class="planner-craft-summary-wrap">' +
+      '<header class="planner-craft-summary-heading"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16M4 12h16M4 19h16"></path><path d="M2 5h.01M2 12h.01M2 19h.01"></path></svg><h3>SESSION SUMMARY</h3><i></i></header>' +
+      '<section class="planner-craft-summary" aria-label="Session summary for ' + esc(session.name) + '">' +
+        '<article class="planner-summary-metric is-investment"><span class="planner-summary-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5A2.5 2.5 0 0 1 5.5 4H20v16H5.5A2.5 2.5 0 0 1 3 17.5z"></path><path d="M3 7h17M16 13h4M6 4v3"></path><circle cx="16" cy="13" r=".7"></circle></svg></span><span class="planner-summary-copy"><small>TOTAL INVESTMENT</small><strong>' + investmentSummary + '</strong></span></article>' +
+        '<article class="planner-summary-metric is-profit"><span class="planner-summary-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 17 6-6 4 4 8-9"></path><path d="M14 6h7v7"></path></svg></span><span class="planner-summary-copy"><small>TOTAL PROFIT</small><strong>' + profitSummary + '</strong></span></article>' +
+        '<article class="planner-summary-metric is-roi"><span class="planner-summary-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="7" cy="7" r="3"></circle><circle cx="17" cy="17" r="3"></circle><path d="M19 5 5 19"></path></svg></span><span class="planner-summary-copy"><small>ROI</small><strong>' + roiSummary + '</strong></span></article>' +
+        '<article class="planner-summary-metric is-sell-value"><span class="planner-summary-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7.5h14a2 2 0 0 1 2 2v9H5a2 2 0 0 1-2-2v-11a2 2 0 0 1 2-2h13"></path><path d="M16 12h4M7 7.5v-4"></path><circle cx="16.5" cy="13" r=".7"></circle></svg></span><span class="planner-summary-copy"><small>TOTAL SELL VALUE</small><strong>' + sellValueSummary + '</strong></span></article>' +
+      '</section></div>';
+  }
+
   function renderPlannerPage() {
     const page = $("#planner-page");
     if (!page) return;
@@ -10544,6 +10869,11 @@
     renderPlannerSidebar();
     if (!active) {
       page.innerHTML = '<div class="planner-no-sessions"><strong>No sessions planned</strong><button type="button" class="planner-session-new" data-session-new>Create one now</button></div>';
+      return;
+    }
+
+    if (PAGE_MODE === "refining") {
+      page.innerHTML = renderRefiningPlannerPage(active);
       return;
     }
 
@@ -10875,10 +11205,17 @@
   /* ---------------------------------------------------------------------- */
   /* Planner dialog                                                          */
   /* ---------------------------------------------------------------------- */
+  function plannerRefineGroup() {
+    const key = String(plannerItemKey || "").replace(/^refining:/, "");
+    return REFINE_GROUPS.find((group) => group.key === key) || null;
+  }
+
   function populatePlannerTierSelect(item, selectedTier) {
     const select = $("#planner-tier");
     if (!select) return;
-    const tiers = Object.keys(item[3]).map(Number).sort((a, b) => a - b);
+    const tiers = plannerDialogMode === "refining"
+      ? [2, 3, 4, 5, 6, 7, 8]
+      : Object.keys(item[3]).map(Number).sort((a, b) => a - b);
     select.innerHTML = tiers.map((tier) =>
       '<option value="' + tier + '">' + tier + "</option>"
     ).join("");
@@ -10889,8 +11226,11 @@
   function populatePlannerEnchantSelect(tier, selectedEnchant) {
     const select = $("#planner-enchant");
     if (!select) return;
+    const refineGroupForDialog = plannerDialogMode === "refining" ? plannerRefineGroup() : null;
     const currentItem = PLANNER_ITEM_BY_KEY.get(plannerItemKey);
-    const levels = currentItem && currentItem[1] === "Potions" ? [0] : enchantLevelsFor(Number(tier) || 4);
+    const levels = plannerDialogMode === "refining"
+      ? (Number(tier) < 4 || (refineGroupForDialog && refineGroupForDialog.enchants === false) ? [0] : [0, 1, 2, 3, 4])
+      : (currentItem && currentItem[1] === "Potions" ? [0] : enchantLevelsFor(Number(tier) || 4));
     select.innerHTML = levels.map((level) =>
       '<option value="' + level + '">' + ENCHANTS[level] + "</option>"
     ).join("");
@@ -10923,10 +11263,9 @@
   }
 
   function syncPlannerPreview() {
-    const item = PLANNER_ITEM_BY_KEY.get(plannerItemKey);
     const art = $("#planner-item-art");
     const name = $("#planner-item-name");
-    if (!item || !art || !name) return;
+    if (!art || !name) return;
     const tierSelect = $("#planner-tier");
     const enchantSelect = $("#planner-enchant");
     const tier = Number(tierSelect ? tierSelect.value : 4) || 4;
@@ -10934,12 +11273,23 @@
     const key = plannerItemKey + "|" + tier + "|" + enchant;
     if (key === plannerPreviewKey && art.firstChild) return;
     plannerPreviewKey = key;
+    if (plannerDialogMode === "refining") {
+      const group = plannerRefineGroup();
+      if (!group) return;
+      const recipe = refineRecipe(group, Math.max(2, Math.min(8, tier)), enchant);
+      art.innerHTML = refineIconHtml(recipe.outputId);
+      name.textContent = recipe.outputName;
+      return;
+    }
+    const item = PLANNER_ITEM_BY_KEY.get(plannerItemKey);
+    if (!item) return;
     art.innerHTML = craftIconHtml(item, tier, enchant);
     const variant = item[3][tier];
     name.textContent = variant && variant[0] ? variant[0] : item[0];
   }
 
   function plannerDialogRate() {
+    if (plannerDialogMode === "refining") return roundReturnRate(refineReturnRate());
     return roundReturnRate(plannerItemKey && PLANNER_ITEM_BY_KEY.get(plannerItemKey)?.[1] === "Potions" ? potionReturnRate() * 100 : craftReturnRate());
   }
 
@@ -10950,7 +11300,7 @@
     const addBtn = $("#planner-dialog-add");
     if (!tierSelect || !qtyInput || !rateInput || !addBtn) return;
 
-    const item = PLANNER_ITEM_BY_KEY.get(plannerItemKey);
+    const item = plannerDialogMode === "refining" ? plannerRefineGroup() : PLANNER_ITEM_BY_KEY.get(plannerItemKey);
     const qty = Math.max(1, Math.floor(Number(qtyInput.value) || 0));
     const rate = plannerDialogRate();
 
@@ -10980,10 +11330,31 @@
   function openPlannerDialog() {
     const dialog = $("#planner-dialog");
     if (!dialog) return;
-    const isPotion = state.ui.tab === "potions";
+    plannerDialogOpen = true;
+    plannerDialogMode = state.ui.tab === "refining" ? "refining" : (state.ui.tab === "potions" ? "potions" : "craft");
+    const isPotion = plannerDialogMode === "potions";
+
+    if (plannerDialogMode === "refining") {
+      const current = refineSelection();
+      plannerItemKey = "refining:" + current.group.key;
+      populatePlannerTierSelect(null, current.tier);
+      populatePlannerEnchantSelect(current.tier, current.enchant);
+      const enchantPills = $("#planner-enchant-pills");
+      const enchantField = enchantPills && enchantPills.parentElement;
+      const tierGrid = enchantField && enchantField.parentElement;
+      if (enchantField) enchantField.hidden = false;
+      if (tierGrid) tierGrid.style.gridTemplateColumns = "";
+      populatePlannerSessionSelect();
+      const qtyInput = $("#planner-qty");
+      if (qtyInput) qtyInput.value = "1";
+      syncPlannerPreview();
+      syncPlannerDialog();
+      dialog.showModal();
+      return;
+    }
+
     const selection = isPotion ? null : ensureCraftSelection();
     plannerItemKey = isPotion ? POTION_PLANNER_BY_ID.get(potionOutputId()) : CRAFT_ITEM_KEY(selection.item);
-    plannerDialogOpen = true;
 
     const item = PLANNER_ITEM_BY_KEY.get(plannerItemKey) || CRAFT_ITEMS[0];
     if (!isPotion) plannerItemKey = CRAFT_ITEM_KEY(item);
@@ -11012,6 +11383,40 @@
     const qtyInput = $("#planner-qty");
     const sessionSelect = $("#planner-session");
     if (!tierSelect || !qtyInput) return;
+
+    if (plannerDialogMode === "refining") {
+      const group = plannerRefineGroup();
+      if (!group) return;
+      const tier = Math.max(2, Math.min(8, Number(tierSelect.value) || 4));
+      const enchant = tier < 4 || group.enchants === false ? 0 : Math.max(0, Math.min(4, Number(enchantSelect ? enchantSelect.value : 0) || 0));
+      const qty = Math.max(1, Math.floor(Number(qtyInput.value) || 1));
+
+      ensurePlannerSessions();
+      let target = state.plannerSessions.find((s) => s.id === (sessionSelect ? sessionSelect.value : state.plannerActive));
+      if (!target) target = plannerActiveSession();
+      if (!target) {
+        addPlannerSession();
+        target = plannerActiveSession();
+      }
+      if (!target) return;
+      target.entries.push({
+        id: uid("plan"),
+        kind: "refining",
+        refineType: group.key,
+        tier,
+        enchant,
+        qty,
+        returnRate: plannerDialogRate(),
+        done: false
+      });
+      state.plannerActive = target.id;
+      scheduleSave();
+      const dialog = $("#planner-dialog");
+      if (dialog) dialog.close();
+      renderPlannerPage();
+      showToast(group.refined[tier - 2] + " " + refineTierLabel(tier, enchant) + " added to " + (target.name || "planner") + ".");
+      return;
+    }
 
     const itemKey = plannerItemKey;
     const item = PLANNER_ITEM_BY_KEY.get(itemKey);
@@ -11163,13 +11568,13 @@
   let DB_ALL_RECORDS = null;
 
   function setDatabaseView(view) {
-    dbActiveView = ["resources", "journals"].includes(view) ? view : "resources";
+    dbActiveView = "resources";
     document.querySelectorAll("[data-db-view]").forEach((button) => {
       const active = button.dataset.dbView === dbActiveView;
       button.classList.toggle("is-active", active);
       button.setAttribute("aria-selected", String(active));
     });
-    const panels = { resources: "#db-resources-panel", journals: "#db-journals-panel" };
+    const panels = { resources: "#db-resources-panel" };
     for (const [key, selector] of Object.entries(panels)) {
       const panel = $(selector);
       if (panel) panel.hidden = key !== dbActiveView;
@@ -11251,21 +11656,25 @@
   function renderDbResources() {
     const root = $("#db-resources");
     if (!root) return;
-    const typeOrder = { Fiber: 0, Ore: 1, Wood: 2, Hide: 3 };
-    const typeLabels = { Fiber: "CLOTH", Ore: "STEEL", Wood: "PLANKS", Hide: "LEATHER" };
-    const tiers = Array.from(new Set(BASE_MATERIALS.map((m) => Number(m.tier.slice(1))))).sort((a, b) => a - b);
-    root.innerHTML = tiers.map((tier) => {
-      const mats = BASE_MATERIALS.filter((m) => Number(m.tier.slice(1)) === tier).sort((a, b) => Number(a.enchant.slice(1)) - Number(b.enchant.slice(1)) || typeOrder[a.type] - typeOrder[b.type]);
+    const sectionOrder = ["FIBER", "CLOTH", "ORE", "STEEL", "WOOD", "PLANKS", "HIDE", "LEATHER", "ROCK", "BLOCK"];
+    const sections = sectionOrder.map((label) => ({
+      label,
+      mats: DB_REFINE_MATERIALS
+        .filter((m) => m.dbLabel === label)
+        .sort((a, b) => Number(a.tier.slice(1)) - Number(b.tier.slice(1)) || Number(a.enchant.slice(1)) - Number(b.enchant.slice(1)))
+    })).filter((section) => section.mats.length);
+    root.innerHTML = sections.map((section) => {
+      const mats = section.mats;
       const cards = mats.map((m) => {
         const enchant = Number(m.enchant.slice(1)) || 0;
-        const priceKey = m.itemId + (enchant ? "@" + enchant : "");
+        const priceKey = m.priceKey;
         const price = Number(state.craftPriceOverrides[priceKey]) || 0;
         return '<div class="db-resource-card">' +
-          '<label for="db-resource-' + esc(m.id) + '">' + typeLabels[m.type] + ' ' + tier + '.' + enchant + '</label>' +
-          '<div class="db-resource-edit">' + iconHtml(m) + '<div class="db-resource-price"><input id="db-resource-' + esc(m.id) + '" type="number" min="0" step="any" inputmode="decimal" placeholder="0" value="' + (price ? String(price) : '') + '" data-resource-price-key="' + esc(priceKey) + '" aria-label="' + esc(typeLabels[m.type] + ' tier ' + tier + ' enchant ' + enchant + ' price') + '">' + (price > 0 ? priceAgeHtml(priceKey) : '') + '</div></div>' +
+          '<label for="db-resource-' + esc(m.id) + '" title="' + esc(m.name) + '">' + esc(m.dbLabel) + ' ' + m.tier.slice(1) + '.' + enchant + '</label>' +
+          '<div class="db-resource-edit">' + iconHtml(m) + '<div class="db-resource-price"><input id="db-resource-' + esc(m.id) + '" type="number" min="0" step="any" inputmode="decimal" placeholder="0" value="' + (price ? String(price) : '') + '" data-resource-price-key="' + esc(priceKey) + '" aria-label="' + esc(m.dbLabel + ' tier ' + m.tier.slice(1) + ' enchant ' + enchant + ' price') + '">' + (price > 0 ? priceAgeHtml(priceKey) : '') + '</div></div>' +
         '</div>';
       }).join("");
-      return '<section class="db-resource-tier"><h2>TIER ' + tier + '</h2><div class="db-resource-grid">' + cards + '</div></section>';
+      return '<section class="db-resource-tier"><h2>' + esc(section.label) + '</h2><div class="db-resource-grid">' + cards + '</div></section>';
     }).join("");
   }
 
@@ -11298,7 +11707,6 @@
   function renderDatabase() {
     setDatabaseView(dbActiveView);
     renderDbResources();
-    renderJournalPrices();
     populateDbCategoryFilter();
     const tbody = $("#db-table-body");
     if (!tbody) return;
@@ -11508,7 +11916,7 @@
     const addToPlannerBtn = $("#add-to-planner");
     const crumbEl = $("#craft-breadcrumb");
     const sectionTitleEl = $("#topbar-section-title");
-    if (addToPlannerBtn) addToPlannerBtn.hidden = !["craft", "potions"].includes(name);
+    if (addToPlannerBtn) addToPlannerBtn.hidden = !["craft", "potions", "refining"].includes(name);
     if (crumbEl && sectionTitleEl) {
       if (name === "craft") {
         crumbEl.hidden = false;
@@ -12648,20 +13056,7 @@
       const getPricesButton = $("#db-get-prices");
       if (getPricesButton) {
         getPricesButton.addEventListener("click", async () => {
-          let ids = [];
-          if (dbActiveView === "resources") {
-            ids = BASE_MATERIALS.map((m) => {
-              const enchant = Number(m.enchant.slice(1)) || 0;
-              return m.itemId + (enchant ? "@" + enchant : "");
-            });
-          } else if (dbActiveView === "journals") {
-            ids = JOURNAL_TYPES.flatMap((type) => [3, 4, 5, 6, 7, 8].map((tier) => "T" + tier + "_JOURNAL_" + type.itemCode + "_EMPTY"));
-            ids.push(...JOURNAL_TYPES.flatMap((type) => [4, 5, 6, 7, 8].map((tier) => "T" + tier + "_JOURNAL_" + type.itemCode + "_FULL")));
-          } else {
-            const filtered = getFilteredDbRecords();
-            const startIdx = (dbFilters.page - 1) * (dbFilters.pageSize || 50);
-            ids = Array.from(new Set(filtered.slice(startIdx, startIdx + (dbFilters.pageSize || 50)).map((r) => r.productId))).filter(Boolean);
-          }
+          const ids = DB_REFINE_MATERIALS.map((m) => m.priceKey);
           await fetchDbPrices(ids);
         });
       }
@@ -12912,9 +13307,11 @@
         if (index === -1) return;
         const removed = session.entries.splice(index, 1)[0];
         const item = CRAFT_BY_KEY.get(removed.itemKey);
+        const refineGroup = removed.kind === "refining" ? REFINE_GROUPS.find((group) => group.key === removed.refineType) : null;
+        const removedName = item ? item[0] : (refineGroup ? refineGroup.refined[(Number(removed.tier) || 4) - 2] : "");
         scheduleSave();
         renderPlannerPage();
-        showToast(item ? item[0] + " removed from " + session.name + "." : "Removed from planner.");
+        showToast(removedName ? removedName + " removed from " + session.name + "." : "Removed from planner.");
         return;
       }
 
